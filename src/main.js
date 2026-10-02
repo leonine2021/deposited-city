@@ -141,27 +141,25 @@ document.querySelector('#app').innerHTML = `
   ${zone('drawn', intro('drawn') + byZone('drawn').map(workScene).join(''))}
   ${zone('pressed', intro('pressed') + byZone('pressed').map(workScene).join(''))}
 
-  <div class="dark-run">
-    ${zone('deposited', intro('deposited') + byZone('deposited').map(workScene).join(''))}
-    ${zone(
-      'synthesis',
-      `<section class="scene scene--synthesis" id="synthesis">
-        <div class="stage">
-          <canvas class="salt" aria-hidden="true"></canvas>
-          <svg class="ink" aria-hidden="true"></svg>
-          <figure class="work vignette" aria-label="${site.synthesis.title.en}">${t(site.synthesis.pending)}</figure>
-        </div>
-      </section>
-      <section class="synthesis-text">
-        <div class="prose reveal">
-          <span class="kicker">${t(site.synthesis.kicker)}</span>
-          <h2>${t(site.synthesis.title)}</h2>
-          ${t(site.synthesis.body, 'p')}
-          <span class="label__medium">${t(site.synthesis.label)}</span>
-        </div>
-      </section>`,
-    )}
-  </div>
+  ${zone('deposited', intro('deposited') + byZone('deposited').map(workScene).join(''))}
+  ${zone(
+    'synthesis',
+    `<section class="scene scene--synthesis" id="synthesis">
+      <div class="stage">
+        <canvas class="salt" aria-hidden="true"></canvas>
+        <svg class="ink" aria-hidden="true"></svg>
+        <figure class="work vignette" aria-label="${site.synthesis.title.en}">${t(site.synthesis.pending)}</figure>
+      </div>
+    </section>
+    <section class="synthesis-text">
+      <div class="prose reveal">
+        <span class="kicker">${t(site.synthesis.kicker)}</span>
+        <h2>${t(site.synthesis.title)}</h2>
+        ${t(site.synthesis.body, 'p')}
+        <span class="label__medium">${t(site.synthesis.label)}</span>
+      </div>
+    </section>`,
+  )}
 
   ${zone(
     'coda',
@@ -267,18 +265,6 @@ for (const svg of document.querySelectorAll('.intro__sample')) {
     gsap.from(svg.querySelectorAll('circle'), { opacity: 0, scale: 0, transformOrigin: '50% 50%', duration: 0.6, stagger: 0.025, ...tl })
   }
 }
-
-/* dark ground for the salt and the river */
-const themeMeta = document.querySelector('meta[name="theme-color"]')
-ScrollTrigger.create({
-  trigger: '.dark-run',
-  start: 'top 55%',
-  end: 'bottom 55%',
-  onToggle(self) {
-    document.documentElement.classList.toggle('is-dark', self.isActive)
-    themeMeta.content = self.isActive ? '#121211' : '#f4f2ed'
-  },
-})
 
 /* header: current zone name and reading progress */
 const zoneLabel = document.querySelector('.bar__zone')

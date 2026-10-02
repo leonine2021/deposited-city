@@ -4,7 +4,7 @@
   --muted: #77736b;
   --hair: rgba(22, 21, 20, 0.14);
   --bar: rgba(244, 242, 237, 0.72);
-  --salt: #f3f1ea;
+  --grain: #6e695f;
   --water: #4d7891;
   --serif: 'Noto Serif SC', 'Songti SC', 'STSong', Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB',
@@ -13,15 +13,6 @@
   --gutter: 24px;
   --measure: 34rem;
   color-scheme: light;
-}
-
-:root.is-dark {
-  --paper: #121211;
-  --ink: #ecebe6;
-  --muted: #8f8b83;
-  --hair: rgba(236, 235, 230, 0.16);
-  --bar: rgba(18, 18, 17, 0.7);
-  color-scheme: dark;
 }
 
 *,
@@ -41,9 +32,6 @@ body {
   color: var(--ink);
   font: 400 17px/1.7 var(--sans);
   -webkit-font-smoothing: antialiased;
-  transition:
-    background-color 0.9s ease,
-    color 0.9s ease;
 }
 
 :root[data-lang='zh'] .en,
@@ -80,7 +68,6 @@ button {
   -webkit-backdrop-filter: saturate(180%) blur(18px);
   backdrop-filter: saturate(180%) blur(18px);
   border-bottom: 1px solid var(--hair);
-  transition: background-color 0.9s ease;
 }
 
 .bar__home {
@@ -389,8 +376,8 @@ button {
   place-items: center;
   border: 1px solid var(--hair);
   background:
-    linear-gradient(180deg, rgba(225, 120, 150, 0.16), rgba(80, 140, 160, 0.14) 55%, rgba(120, 160, 90, 0.16)),
-    #1b1b1a;
+    linear-gradient(180deg, rgba(225, 120, 150, 0.14), rgba(80, 140, 160, 0.12) 55%, rgba(120, 160, 90, 0.14)),
+    #ebe8e1;
   color: var(--muted);
   font-size: 12px;
   letter-spacing: 0.14em;
@@ -636,9 +623,5 @@ button {
 
   .statement .piece {
     opacity: 1;
-  }
-
-  body {
-    transition: none;
   }
 }

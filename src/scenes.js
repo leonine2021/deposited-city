@@ -180,15 +180,33 @@ function makeSalt(seed, n) {
   })
 }
 
-function dot(ctx, x, y, radius, alpha) {
+/**
+ * One grain of salt on paper: small grains are graphite specks; larger ones are
+ * drawn as crystals, a paper-white core with a fine rim, like the salt blooms
+ * in the prints themselves.
+ */
+function dot(ctx, colors, x, y, radius, alpha) {
   ctx.globalAlpha = alpha
   ctx.beginPath()
   ctx.arc(x, y, radius, 0, TAU)
+  if (radius < 1.7) {
+    ctx.fillStyle = colors.grain
+    ctx.fill()
+    return
+  }
+  ctx.fillStyle = colors.paper
   ctx.fill()
+  ctx.strokeStyle = colors.grain
+  ctx.lineWidth = 0.75
+  ctx.stroke()
 }
 
-function saltColor() {
-  return getComputedStyle(document.documentElement).getPropertyValue('--salt').trim() || '#f3f1ea'
+function saltColors() {
+  const css = getComputedStyle(document.documentElement)
+  return {
+    grain: css.getPropertyValue('--grain').trim() || '#6e695f',
+    paper: css.getPropertyValue('--paper').trim() || '#f4f2ed',
+  }
 }
 
 /* ------------------------------------------------------------------------ */
@@ -352,7 +370,7 @@ export function deposited(section, aspect, seed) {
       place(fig, b)
       placeBelow(label, b)
       salt?.size()
-      color = saltColor()
+      color = saltColors()
     },
     render(p) {
       const o = ease.inOut(seg(p, 0.6, 0.84))
@@ -362,7 +380,6 @@ export function deposited(section, aspect, seed) {
       if (!salt?.active) return
       const { ctx } = salt
       ctx.clearRect(0, 0, b.W, b.H)
-      ctx.fillStyle = color
       const shown = seg(p, 0, 0.12)
       const s = ease.inOut(seg(p, 0.1, 0.36))
       for (const g of grains) {
@@ -375,7 +392,7 @@ export function deposited(section, aspect, seed) {
         const [px, py, nx, ny] = perimeter(b, g.u)
         const x = lerp(lerp(ax, sx, s), px + nx * g.out, q)
         const y = lerp(lerp(ay, sy, s), py + ny * g.out, q)
-        dot(ctx, x, y, lerp(0.85, g.r, q), lerp(0.9, g.a, q))
+        dot(ctx, color, x, y, lerp(0.85, g.r, q), lerp(0.9, g.a, q))
       }
       ctx.globalAlpha = 1
     },
@@ -404,7 +421,7 @@ export function synthesis(section) {
       viewBox(svg, b)
       axis.setAttribute('d', `M${b.cx} ${b.top}V${b.H + 2}`)
       salt?.size()
-      color = saltColor()
+      color = saltColors()
     },
     render(p) {
       const solid = seg(p, 0.3, 0.42)
@@ -415,12 +432,11 @@ export function synthesis(section) {
       const { ctx } = salt
       ctx.clearRect(0, 0, b.W, b.H)
       if (solid >= 1) return
-      ctx.fillStyle = color
       const g0 = ease.inOut(seg(p, 0, 0.34))
       for (const g of grains) {
         const x = lerp(g.sx * b.W, b.cx + g.jx * 0.4, g0)
         const y = lerp(lerp(b.top, b.H, g.sy), lerp(b.top, b.H, g.line), g0)
-        dot(ctx, x, y, lerp(g.r, 0.8, g0), g.a * (1 - solid))
+        dot(ctx, color, x, y, lerp(g.r, 0.8, g0), g.a * (1 - solid))
       }
       ctx.globalAlpha = 1
     },
