@@ -48,6 +48,11 @@ img {
   max-width: 100%;
 }
 
+/* author display rules (e.g. the lightbox's grid) must never resurrect hidden elements */
+[hidden] {
+  display: none !important;
+}
+
 button {
   font: inherit;
   color: inherit;
@@ -146,9 +151,37 @@ button {
 .work {
   position: absolute;
   margin: 0;
-  cursor: zoom-in;
   will-change: transform, opacity, clip-path;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* a quiet hint on pointer devices that a work opens larger; touch users simply tap */
+.work__zoom {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(22, 21, 20, 0.72);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--paper);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .work.is-zoomable:hover .work__zoom {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .work img {
@@ -603,7 +636,6 @@ button {
   background: rgba(10, 10, 10, 0.94);
   opacity: 0;
   transition: opacity 0.35s ease;
-  cursor: zoom-out;
 }
 
 .lightbox.is-open {

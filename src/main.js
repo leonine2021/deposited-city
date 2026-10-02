@@ -43,10 +43,11 @@ const split = (o, cls) =>
 
 /* ---------------------------------------------------------------- markup */
 
-function figure(w, extra = '') {
+function figure(w, extra = '', zoomable = true) {
   const m = meta[w.id]
-  return `<figure class="work" data-id="${w.id}" ${extra}>
+  return `<figure class="work${zoomable ? ' is-zoomable' : ''}" data-id="${w.id}" ${extra}>
     <img src="${img(w.id)}" width="${m.w}" height="${m.h}" alt="${w.title.en}, Wenlu Guo" decoding="async" ${w.id === '00' ? '' : 'loading="lazy"'} />
+    ${zoomable ? `<span class="work__zoom" aria-hidden="true">${t(site.enlarge)}</span>` : ''}
   </figure>`
 }
 
@@ -205,7 +206,7 @@ document.querySelector('#app').innerHTML = `
     <section class="scene scene--exit" id="exit">
       <div class="stage">
         <svg class="ink" aria-hidden="true"></svg>
-        ${figure(cover, 'aria-hidden="true"').replace('loading="lazy"', '')}
+        ${figure(cover, 'aria-hidden="true"', false).replace('loading="lazy"', '')}
         ${t(site.exit.line, 'p', 'exit__line')}
         <button class="exit__back" type="button">${t(site.exit.back)}</button>
       </div>
@@ -387,8 +388,7 @@ function closeBox() {
   document.documentElement.style.overflow = ''
   setTimeout(() => (box.hidden = true), 350)
 }
-for (const fig of document.querySelectorAll('.work[data-id]')) {
-  if (fig.closest('#exit')) continue
+for (const fig of document.querySelectorAll('.work.is-zoomable')) {
   fig.addEventListener('click', () => openBox(fig.dataset.id))
 }
 box.addEventListener('click', closeBox)

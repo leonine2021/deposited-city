@@ -57,6 +57,7 @@ export const site = {
     },
     back: { zh: '回到入口', en: 'Back to the entrance' },
   },
+  enlarge: { zh: '放大', en: 'Enlarge' },
   index: { zh: '作品索引', en: 'Index of works' },
   credit: { zh: '© 2026 Wenlu Guo · 保留所有权利', en: '© 2026 Wenlu Guo · All rights reserved' },
 }
