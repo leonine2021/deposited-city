@@ -18,13 +18,22 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;500;600&display=swap"
     />
     <script>
-      // pick the language before first paint so the page never flashes the wrong one
+      // pick language and theme before first paint so the page never flashes the wrong one
       var lang = /^zh/i.test(navigator.language) ? 'zh' : 'en'
       try {
         lang = localStorage.getItem('lang') || lang
       } catch (e) {}
       document.documentElement.dataset.lang = lang
       document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : 'en'
+      // theme: the visitor's saved choice, otherwise the system setting
+      var theme = null
+      try {
+        theme = localStorage.getItem('theme')
+      } catch (e) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      }
+      document.documentElement.dataset.theme = theme
     </script>
   </head>
   <body>

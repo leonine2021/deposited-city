@@ -136,7 +136,13 @@ document.querySelector('#app').innerHTML = `
 <header class="bar">
   <a class="bar__home" href="#top">${t(site.short)}</a>
   <span class="bar__zone" aria-live="polite"></span>
-  <button class="bar__lang" type="button" aria-label="Switch language / 切换语言"></button>
+  <div class="bar__tools">
+    <button class="bar__theme" type="button" aria-label="Switch light or dark / 切换浅色或深色">
+      <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+    </button>
+    <button class="bar__lang" type="button" aria-label="Switch language / 切换语言"></button>
+  </div>
   <span class="bar__progress"></span>
 </header>
 
@@ -351,6 +357,37 @@ langButton.addEventListener('click', () => {
   }
   if (currentZone) showZone(currentZone)
   ScrollTrigger.refresh()
+})
+
+/* ---------------------------------------------------------------- theme */
+
+const themeMeta = document.querySelector('meta[name="theme-color"]')
+const systemDark = window.matchMedia('(prefers-color-scheme: dark)')
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme
+  themeMeta.content = theme === 'dark' ? '#131312' : '#f4f2ed'
+  // canvases read their salt colours on layout; refresh re-lays out every scene
+  ScrollTrigger.refresh()
+}
+themeMeta.content = document.documentElement.dataset.theme === 'dark' ? '#131312' : '#f4f2ed'
+document.querySelector('.bar__theme').addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
+  applyTheme(next)
+  try {
+    localStorage.setItem('theme', next)
+  } catch {
+    // storage unavailable; the choice lasts for this visit only
+  }
+})
+// follow the system while the visitor has not chosen
+systemDark.addEventListener('change', (e) => {
+  let saved = null
+  try {
+    saved = localStorage.getItem('theme')
+  } catch {
+    // storage unavailable; treat as no saved choice
+  }
+  if (!saved) applyTheme(e.matches ? 'dark' : 'light')
 })
 
 /* ---------------------------------------------------------------- navigation */

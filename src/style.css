@@ -6,6 +6,7 @@
   --bar: rgba(244, 242, 237, 0.72);
   --grain: #6e695f;
   --water: #4d7891;
+  --vignette-ground: #ebe8e1;
   --serif: 'Noto Serif SC', 'Songti SC', 'STSong', Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB',
     'Helvetica Neue', 'Microsoft YaHei', sans-serif;
@@ -13,6 +14,19 @@
   --gutter: 24px;
   --measure: 34rem;
   color-scheme: light;
+}
+
+/* dark wall: the prints keep their own paper, like works hung on a dark gallery wall */
+:root[data-theme='dark'] {
+  --paper: #131312;
+  --ink: #ebe9e3;
+  --muted: #8e8a82;
+  --hair: rgba(235, 233, 227, 0.15);
+  --bar: rgba(19, 19, 18, 0.72);
+  --grain: #c9c4b9;
+  --water: #7ba4bc;
+  --vignette-ground: #1c1c1a;
+  color-scheme: dark;
 }
 
 *,
@@ -32,6 +46,9 @@ body {
   color: var(--ink);
   font: 400 17px/1.7 var(--sans);
   -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
 }
 
 :root[data-lang='zh'] .en,
@@ -73,6 +90,7 @@ button {
   -webkit-backdrop-filter: saturate(180%) blur(18px);
   backdrop-filter: saturate(180%) blur(18px);
   border-bottom: 1px solid var(--hair);
+  transition: background-color 0.5s ease;
 }
 
 .bar__home {
@@ -93,8 +111,40 @@ button {
   transition: opacity 0.4s ease;
 }
 
-.bar__lang {
+.bar__tools {
   justify-self: end;
+  display: flex;
+  gap: 8px;
+}
+
+.bar__theme {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--hair);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bar__theme svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:root[data-theme='dark'] .bar__theme .moon,
+:root:not([data-theme='dark']) .bar__theme .sun {
+  display: none;
+}
+
+.bar__lang {
   min-width: 44px;
   min-height: 32px;
   padding: 0 12px;
@@ -165,7 +215,7 @@ button {
   background: rgba(22, 21, 20, 0.72);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  color: var(--paper);
+  color: #f4f2ed;
   font-size: 12px;
   letter-spacing: 0.06em;
   line-height: 1.4;
@@ -433,7 +483,7 @@ button {
   border: 1px solid var(--hair);
   background:
     linear-gradient(180deg, rgba(225, 120, 150, 0.14), rgba(80, 140, 160, 0.12) 55%, rgba(120, 160, 90, 0.14)),
-    #ebe8e1;
+    var(--vignette-ground);
   color: var(--muted);
   font-size: 12px;
   letter-spacing: 0.14em;
