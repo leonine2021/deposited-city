@@ -59,12 +59,45 @@ function label(w) {
   </div>`
 }
 
-function workScene(w) {
-  const layer = w.zone === 'deposited' ? '<canvas class="salt" aria-hidden="true"></canvas>' : '<svg class="ink" aria-hidden="true"></svg>'
-  return `<section class="scene scene--${w.zone}" id="work-${w.id}" data-id="${w.id}">
-    <div class="stage">${layer}${figure(w)}${label(w)}</div>
+/**
+ * The walk, beat by beat. Each zone keeps its own logic of the line but
+ * alternates one work, a pair and a run so the rhythm keeps changing.
+ * The kind names a choreography in scenes.js.
+ */
+const choreography = {
+  drawn: [
+    { kind: 'trace', ids: ['01'] },
+    { kind: 'plan', ids: ['02', '03'] },
+    { kind: 'elevation', ids: ['04', '05'] },
+  ],
+  pressed: [
+    { kind: 'push', ids: ['06'] },
+    { kind: 'pinch', ids: ['07', '08'] },
+    { kind: 'sag', ids: ['09'] },
+  ],
+  deposited: [
+    { kind: 'crystallize', ids: ['10'] },
+    { kind: 'saltline', ids: ['11'] },
+    { kind: 'evaporate', ids: ['12', '13'] },
+    { kind: 'drift', ids: ['14', '15', '16'] },
+  ],
+}
+
+const workById = Object.fromEntries(works.map((w) => [w.id, w]))
+const SALT_KINDS = new Set(['crystallize', 'saltline', 'evaporate', 'drift'])
+
+function beatScene(beat) {
+  const ws = beat.ids.map((id) => workById[id])
+  const layer = SALT_KINDS.has(beat.kind)
+    ? '<canvas class="salt" aria-hidden="true"></canvas>'
+    : '<svg class="ink" aria-hidden="true"></svg>'
+  const items = ws.map((w) => figure(w) + label(w)).join('')
+  return `<section class="scene scene--${beat.kind}" id="beat-${beat.ids.join('-')}">
+    <div class="stage">${layer}${beat.kind === 'drift' ? `<div class="track">${items}</div>` : items}</div>
   </section>`
 }
+
+const zoneScenes = (key) => choreography[key].map(beatScene).join('')
 
 const SAMPLE = {
   drawn: '<path fill="none" pathLength="1" d="M0 20H320"/>',
@@ -96,7 +129,6 @@ function zone(key, inner) {
   return `<div class="zone" data-zone="${key}">${inner}</div>`
 }
 
-const byZone = (z) => works.filter((w) => w.zone === z)
 const cover = works[0]
 
 document.querySelector('#app').innerHTML = `
@@ -138,10 +170,10 @@ document.querySelector('#app').innerHTML = `
     </section>`,
   )}
 
-  ${zone('drawn', intro('drawn') + byZone('drawn').map(workScene).join(''))}
-  ${zone('pressed', intro('pressed') + byZone('pressed').map(workScene).join(''))}
+  ${zone('drawn', intro('drawn') + zoneScenes('drawn'))}
+  ${zone('pressed', intro('pressed') + zoneScenes('pressed'))}
 
-  ${zone('deposited', intro('deposited') + byZone('deposited').map(workScene).join(''))}
+  ${zone('deposited', intro('deposited') + zoneScenes('deposited'))}
   ${zone(
     'synthesis',
     `<section class="scene scene--synthesis" id="synthesis">
@@ -217,19 +249,25 @@ function scrollToY(y, duration = 1.6) {
 
 const triggers = {}
 scenes.hero(document.querySelector('.hero'))
-triggers['00'] = scenes.prologue(document.querySelector('#work-00'), aspect('00')).st
-
-let pressedCount = 0
-for (const w of works.slice(1)) {
-  const el = document.querySelector(`#work-${w.id}`)
-  let scene
-  if (w.zone === 'drawn') scene = scenes.drawn(el, aspect(w.id))
-  else if (w.zone === 'pressed') scene = scenes.pressed(el, aspect(w.id), pressedCount++ % 2 ? 'right' : 'left')
-  else scene = scenes.deposited(el, aspect(w.id), Number(w.id) * 7919)
-  triggers[w.id] = scene.st
+triggers['00'] = scenes.prologue(document.querySelector('#work-00'), [aspect('00')]).st
+for (const beat of Object.values(choreography).flat()) {
+  const el = document.querySelector(`#beat-${beat.ids.join('-')}`)
+  const scene = scenes[beat.kind](el, beat.ids.map(aspect), Number(beat.ids[0]) * 7919)
+  for (const id of beat.ids) triggers[id] = scene.st
 }
 scenes.synthesis(document.querySelector('#synthesis'))
-scenes.exit(document.querySelector('#exit'), aspect('00'))
+
+/* works often start off-stage (sliding or dropping in), where lazy loading would
+   only fetch them at the last moment; start loading each beat well ahead */
+for (const el of document.querySelectorAll('.scene')) {
+  ScrollTrigger.create({
+    trigger: el,
+    start: 'top bottom+=150%',
+    once: true,
+    onEnter: () => el.querySelectorAll('img[loading="lazy"]').forEach((i) => (i.loading = 'eager')),
+  })
+}
+scenes.exit(document.querySelector('#exit'), [aspect('00')])
 
 /* statement: the sentence darkens piece by piece as it scrolls through */
 for (const group of document.querySelectorAll('.statement .zh, .statement .en')) {
@@ -326,7 +364,7 @@ for (const btn of document.querySelectorAll('[data-goto]')) {
   btn.addEventListener('click', () => {
     const st = triggers[btn.dataset.goto]
     if (st) scrollToY(revealedY(st), 2)
-    else document.querySelector(`#work-${btn.dataset.goto}`).scrollIntoView()
+    else document.querySelector(`.work[data-id="${btn.dataset.goto}"]`).scrollIntoView({ block: 'center' })
   })
 }
 
