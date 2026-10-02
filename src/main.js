@@ -362,7 +362,6 @@ langButton.addEventListener('click', () => {
 /* ---------------------------------------------------------------- theme */
 
 const themeMeta = document.querySelector('meta[name="theme-color"]')
-const systemDark = window.matchMedia('(prefers-color-scheme: dark)')
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme
   themeMeta.content = theme === 'dark' ? '#131312' : '#f4f2ed'
@@ -378,16 +377,6 @@ document.querySelector('.bar__theme').addEventListener('click', () => {
   } catch {
     // storage unavailable; the choice lasts for this visit only
   }
-})
-// follow the system while the visitor has not chosen
-systemDark.addEventListener('change', (e) => {
-  let saved = null
-  try {
-    saved = localStorage.getItem('theme')
-  } catch {
-    // storage unavailable; treat as no saved choice
-  }
-  if (!saved) applyTheme(e.matches ? 'dark' : 'light')
 })
 
 /* ---------------------------------------------------------------- navigation */

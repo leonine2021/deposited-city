@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="zh-Hans" data-lang="zh">
+<html lang="zh-Hans" data-lang="zh" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>界：析出的城市 · Boundary: The Deposited City</title>
     <meta name="description" content="An architect's exhibition on where lines come from · Architect Wenlu Guo" />
-    <meta name="theme-color" content="#f4f2ed" />
+    <meta name="theme-color" content="#131312" />
     <meta property="og:title" content="界：析出的城市 · Boundary: The Deposited City" />
     <meta property="og:description" content="An architect's exhibition on where lines come from · Architect Wenlu Guo" />
     <meta property="og:type" content="website" />
@@ -25,14 +25,11 @@
       } catch (e) {}
       document.documentElement.dataset.lang = lang
       document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : 'en'
-      // theme: the visitor's saved choice, otherwise the system setting
-      var theme = null
+      // theme: dark by default; light only when the visitor has chosen it
+      var theme = 'dark'
       try {
-        theme = localStorage.getItem('theme')
+        if (localStorage.getItem('theme') === 'light') theme = 'light'
       } catch (e) {}
-      if (theme !== 'light' && theme !== 'dark') {
-        theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      }
       document.documentElement.dataset.theme = theme
     </script>
   </head>
