@@ -213,7 +213,7 @@ document.querySelector('#app').innerHTML = `
       <div class="stage">
         <svg class="ink" aria-hidden="true"></svg>
         ${figure(cover, 'aria-hidden="true"', false).replace('loading="lazy"', '')}
-        ${t(site.exit.line, 'p', 'exit__line')}
+        <p class="exit__line">${t(site.exit.line)}</p>
         <button class="exit__back" type="button">${t(site.exit.back)}</button>
       </div>
     </section>`,

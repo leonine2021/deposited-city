@@ -7,13 +7,25 @@
   --grain: #6e695f;
   --water: #4d7891;
   --vignette-ground: #ebe8e1;
-  --serif: 'Noto Serif SC', 'Songti SC', 'STSong', Georgia, serif;
-  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB',
-    'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  /* Chinese: Source Han Sans (served as Noto Sans SC), Light for display, Regular for text.
+     Latin inside Chinese text falls to Inter Tight. English: Instrument Serif for display,
+     Inter Tight for text. Instrument Serif has a single weight, so display weight stays 400. */
+  --zh: 'Inter Tight', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --en-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --en-text: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --display: var(--zh);
+  --text: var(--zh);
+  --display-weight: 300;
   --header: 52px;
   --gutter: 24px;
   --measure: 34rem;
   color-scheme: light;
+}
+
+:root[data-lang='en'] {
+  --display: var(--en-display);
+  --text: var(--en-text);
+  --display-weight: 400;
 }
 
 /* dark wall: the prints keep their own paper, like works hung on a dark gallery wall */
@@ -44,7 +56,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 400 17px/1.7 var(--sans);
+  font: 400 17px/1.7 var(--text);
   -webkit-font-smoothing: antialiased;
   transition:
     background-color 0.5s ease,
@@ -95,7 +107,7 @@ button {
 
 .bar__home {
   justify-self: start;
-  font: 500 15px/1 var(--serif);
+  font: var(--display-weight) 16px/1 var(--display);
   letter-spacing: 0.04em;
   color: inherit;
   text-decoration: none;
@@ -250,10 +262,11 @@ button {
 
 .label--side .label__title {
   font-size: 16px;
+  font-weight: 400; /* Light is too thin at this size */
 }
 
 :root[data-lang='en'] .label--side .label__title {
-  font-size: 17px;
+  font-size: 20px;
 }
 
 .label--side .label__medium {
@@ -273,7 +286,7 @@ button {
 
 .label__no {
   display: block;
-  font: 500 11px/1 var(--sans);
+  font: 400 11px/1 var(--text);
   letter-spacing: 0.16em;
   color: var(--muted);
   margin-bottom: 8px;
@@ -281,13 +294,13 @@ button {
 
 .label__title {
   display: block;
-  font: 500 19px/1.35 var(--serif);
+  font: var(--display-weight) 19px/1.35 var(--display);
 }
 
 :root[data-lang='en'] .label__title {
   font-style: italic;
-  font-weight: 300;
-  font-size: 20px;
+  font-size: 23px;
+  line-height: 1.2;
 }
 
 .label__medium {
@@ -324,13 +337,13 @@ button {
 .hero__title {
   margin: 0;
   text-align: center;
-  font: 600 clamp(44px, 13vw, 104px)/1.1 var(--serif);
-  letter-spacing: 0.02em;
+  font: var(--display-weight) clamp(44px, 13vw, 104px)/1.15 var(--display);
+  letter-spacing: 0.04em;
 }
 
 :root[data-lang='en'] .hero__title {
-  font-weight: 300;
-  font-size: clamp(34px, 9vw, 88px);
+  font-size: clamp(44px, 12vw, 112px);
+  line-height: 1;
   letter-spacing: -0.01em;
 }
 
@@ -384,15 +397,14 @@ button {
   max-width: 13em;
   margin: 0 auto;
   padding: 0 var(--gutter);
-  font: 500 clamp(30px, 8.4vw, 64px)/1.38 var(--serif);
+  font: var(--display-weight) clamp(30px, 8.4vw, 64px)/1.45 var(--display);
   text-align: center;
 }
 
 :root[data-lang='en'] .statement p {
-  max-width: 15em;
-  font-weight: 300;
-  font-size: clamp(30px, 7.6vw, 60px);
-  line-height: 1.22;
+  max-width: 14em;
+  font-size: clamp(36px, 9.4vw, 72px);
+  line-height: 1.08;
 }
 
 .statement .piece {
@@ -429,17 +441,18 @@ button {
 
 .intro__numeral {
   display: block;
-  font: 300 clamp(96px, 30vw, 200px)/1 var(--serif);
+  font: var(--display-weight) clamp(96px, 30vw, 200px)/1 var(--display);
   letter-spacing: -0.02em;
 }
 
 .intro__name {
   margin: 18px 0 0;
-  font: 600 clamp(34px, 9vw, 60px)/1.15 var(--serif);
+  font: var(--display-weight) clamp(34px, 9vw, 60px)/1.2 var(--display);
 }
 
 :root[data-lang='en'] .intro__name {
-  font-weight: 300;
+  font-size: clamp(44px, 12vw, 76px);
+  line-height: 1;
 }
 
 .intro__sample {
@@ -466,12 +479,13 @@ button {
 
 .prologue__line {
   margin: 0 0 18px;
-  font: 500 20px/1.6 var(--serif);
+  font: var(--display-weight) 20px/1.6 var(--display);
 }
 
 :root[data-lang='en'] .prologue__line {
-  font-weight: 300;
   font-style: italic;
+  font-size: 24px;
+  line-height: 1.3;
 }
 
 /* ---------- synthesis ---------- */
@@ -509,12 +523,13 @@ button {
 .synthesis-text h2,
 .coda h2 {
   margin: 0 0 24px;
-  font: 600 clamp(28px, 7.4vw, 48px)/1.25 var(--serif);
+  font: var(--display-weight) clamp(28px, 7.4vw, 48px)/1.3 var(--display);
 }
 
 :root[data-lang='en'] .synthesis-text h2,
 :root[data-lang='en'] .coda h2 {
-  font-weight: 300;
+  font-size: clamp(34px, 9vw, 58px);
+  line-height: 1.08;
 }
 
 .synthesis-text p {
@@ -555,7 +570,7 @@ button {
 }
 
 .coda li b {
-  font: 500 11px/1 var(--sans);
+  font: 400 11px/1 var(--text);
   letter-spacing: 0.16em;
   color: var(--muted);
 }
@@ -568,11 +583,12 @@ button {
   right: var(--gutter);
   margin: 0;
   text-align: center;
-  font: 500 clamp(21px, 5.6vw, 30px)/1.55 var(--serif);
+  font: var(--display-weight) clamp(21px, 5.6vw, 30px)/1.6 var(--display);
 }
 
 :root[data-lang='en'] .exit__line {
-  font-weight: 300;
+  font-size: clamp(26px, 7vw, 38px);
+  line-height: 1.2;
 }
 
 .water {
@@ -605,7 +621,7 @@ button {
 .index h2 {
   max-width: 64rem;
   margin: 0 auto 28px;
-  font: 500 22px/1.3 var(--serif);
+  font: var(--display-weight) 24px/1.3 var(--display);
 }
 
 .index ol {
@@ -660,7 +676,7 @@ button {
 
 .index .meta b {
   display: block;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--muted);
   letter-spacing: 0.1em;
   font-size: 10px;
