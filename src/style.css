@@ -395,20 +395,20 @@ button {
   color: var(--muted);
 }
 
-/* ---------- hero ---------- */
+/* ---------- covers: the entrance and each zone's opening ---------- */
 
-/* the sealed plate fills the screen, under the bar too; its edges fall into the wall */
-.hero .detail {
+/* a region fills the screen, under the bar too; its edges fall into the wall */
+.cover .detail {
   top: 0;
   bottom: 0;
 }
 
-.hero .veil {
+.cover .veil {
   background: radial-gradient(ellipse 80% 70% at 50% 42%, transparent 20%, var(--paper) 100%);
 }
 
 /* a ground for the title: the wall rises into the image from below */
-.hero__scrim {
+.scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -417,18 +417,85 @@ button {
 }
 
 /* the line crosses the image: white in difference reads on dark and light passages alike */
-.hero .ink {
+.cover .ink {
   stroke: #fff;
   mix-blend-mode: difference;
 }
 
-.hero__center {
+.cover__center {
   position: absolute;
   left: var(--gutter);
   right: var(--gutter);
   bottom: calc(72px + env(safe-area-inset-bottom, 0px));
   will-change: transform, opacity;
 }
+
+.cover__numeral {
+  display: block;
+  margin-bottom: 14px;
+  font: var(--display-weight) clamp(28px, 6vw, 48px)/1 var(--display);
+  color: var(--muted);
+}
+
+.cover__name {
+  margin: 0;
+  font: var(--display-weight) clamp(40px, 10vw, 96px)/1.1 var(--display);
+  letter-spacing: 0.04em;
+}
+
+:root[data-lang='en'] .cover__name {
+  font-size: clamp(44px, 10vw, 112px);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+}
+
+.cover__theme {
+  max-width: 20em;
+  margin: 22px 0 0;
+  font: var(--display-weight) clamp(18px, 3.4vw, 26px)/1.5 var(--display);
+}
+
+:root[data-lang='en'] .cover__theme {
+  font-style: italic;
+  font-size: clamp(22px, 3.8vw, 30px);
+  line-height: 1.2;
+}
+
+.cover__after {
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  text-align: left;
+  opacity: 0;
+}
+
+.cover__after .label__title {
+  display: inline;
+  margin: 0;
+}
+
+.cover__after .label__medium {
+  display: block;
+  margin-top: 6px;
+}
+
+.cover__after .label__no {
+  margin-bottom: 10px;
+}
+
+.cover__after .label__title {
+  font-size: 22px;
+}
+
+:root[data-lang='en'] .cover__after .label__title {
+  font-size: 28px;
+}
+
+.cover__after .detail__caption {
+  margin-top: 14px;
+}
+
+/* ---------- hero ---------- */
 
 .hero__title {
   margin: 0;
@@ -443,24 +510,6 @@ button {
   letter-spacing: -0.01em;
 }
 
-.hero__after {
-  left: var(--gutter);
-  right: var(--gutter);
-  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
-  text-align: left;
-  opacity: 0;
-}
-
-.hero__after .label__title,
-.hero__after .label__medium {
-  display: inline;
-  margin: 0 10px 0 0;
-}
-
-.hero__after .label__no {
-  margin-bottom: 10px;
-}
-
 .hero__title .line {
   display: block;
   text-wrap: balance;
@@ -473,7 +522,8 @@ button {
 .hero__title,
 .hero__sub,
 .statement p,
-.intro__name,
+.cover__name,
+.cover__theme,
 .prologue__line,
 .exit__line,
 .label__title,
@@ -541,10 +591,10 @@ button {
   text-align: left;
 }
 
-/* ---------- zone intros ---------- */
+/* ---------- zone wall texts ---------- */
 
 .intro {
-  padding: 26vh 0 22vh;
+  padding: 18vh 0 20vh;
 }
 
 .intro__head {
@@ -553,27 +603,11 @@ button {
   padding: 0 var(--gutter);
 }
 
-.intro__numeral {
-  display: block;
-  font: var(--display-weight) clamp(96px, 30vw, 200px)/1 var(--display);
-  letter-spacing: -0.02em;
-}
-
-.intro__name {
-  margin: 18px 0 0;
-  font: var(--display-weight) clamp(34px, 9vw, 60px)/1.2 var(--display);
-}
-
-:root[data-lang='en'] .intro__name {
-  font-size: clamp(44px, 12vw, 76px);
-  line-height: 1;
-}
-
 .intro__sample {
   display: block;
   width: 100%;
   height: 40px;
-  margin: 28px 0 32px;
+  margin: 0 0 32px;
   overflow: visible;
 }
 

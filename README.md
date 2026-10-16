@@ -1,7 +1,7 @@
 # 界：析出的城市 · Boundary: The Deposited City
 
 The QR-code companion site for architect Wenlu Guo's exhibition.
-A single vertical scroll walks the same loop as the gallery: prologue, three zones of lines (drawn, pressed, deposited), the synthesis, the coda and the exit. One screen, one work: figurative works are shown whole, as large as the screen allows, and never up close; abstract works are shown only as one region at scan resolution, and never whole.
+A single vertical scroll walks the same loop as the gallery: prologue, three zones of lines (drawn, pressed, deposited), the synthesis, the coda and the exit. One screen, one work: figurative works are shown whole, as large as the screen allows, and never up close; abstract works are shown only as one region at scan resolution, and never whole. The entrance and each zone open on such a region filling the screen under the title.
 
 Live: https://leonine2021.github.io/deposited-city/
 

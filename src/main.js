@@ -69,7 +69,10 @@ function label(w) {
  * - abstract prints (salt, strokes, grooves) are shown only as a `detail`,
  *   one region at scan resolution, edge to edge, never whole.
  *
- * Each zone keeps its own logic of the line meeting the work: ruled around
+ * Each zone opens on a `cover`: its first work, a region, fills the screen
+ * as the ground for the zone's number, name and theme line, as the sealed
+ * plate does for the title at the entrance; then the title gives way to the
+ * work's own label. Each zone keeps its own logic of the line meeting the work: ruled around
  * it (trace) or standing it on a ground line (rise) in the drawn zone; bent
  * aside by a work sliding in (push) or pressed into a hollow (sag) in the
  * pressed zone; salt grains settling around it (crystallize) or into the
@@ -78,20 +81,20 @@ function label(w) {
  */
 const choreography = {
   drawn: [
+    { kind: 'cover', ids: ['03'] },
     { kind: 'trace', ids: ['01'], mode: 'frame' },
     { kind: 'trace', ids: ['02'], mode: 'rise' },
-    { kind: 'detail', ids: ['03'] },
     { kind: 'trace', ids: ['04'], mode: 'frame' },
     { kind: 'trace', ids: ['05'], mode: 'rise' },
   ],
   pressed: [
-    { kind: 'detail', ids: ['06'] },
+    { kind: 'cover', ids: ['06'] },
     { kind: 'push', ids: ['07'], side: 'left' },
     { kind: 'push', ids: ['08'], side: 'right' },
     { kind: 'sag', ids: ['09'] },
   ],
   deposited: [
-    { kind: 'detail', ids: ['10'], salt: true },
+    { kind: 'cover', ids: ['10'] },
     { kind: 'saltline', ids: ['11'] },
     { kind: 'detail', ids: ['12'], salt: true },
     { kind: 'crystallize', ids: ['13'] },
@@ -101,10 +104,11 @@ const choreography = {
   ],
 }
 
-const beatId = (beat) => `${beat.kind === 'detail' ? 'detail' : 'beat'}-${beat.ids.join('-')}`
+const REGION = new Set(['detail', 'cover'])
+const beatId = (beat) => `${REGION.has(beat.kind) ? 'detail' : 'beat'}-${beat.ids.join('-')}`
 
 /* works shown only as a region; nothing on the site shows them whole */
-const detailOnly = new Set(['00', ...Object.values(choreography).flat().filter((b) => b.kind === 'detail').flatMap((b) => b.ids)])
+const detailOnly = new Set(['00', ...Object.values(choreography).flat().filter((b) => REGION.has(b.kind)).flatMap((b) => b.ids)])
 
 const workById = Object.fromEntries(works.map((w) => [w.id, w]))
 const SALT_KINDS = new Set(['crystallize', 'saltline', 'evaporate', 'drift'])
@@ -138,7 +142,34 @@ function detailScene(beat) {
   </section>`
 }
 
-function beatScene(beat) {
+/** A zone's cover: its first region fills the screen under the zone's number, name and theme line. */
+function coverScene(beat, zoneKey) {
+  const [id] = beat.ids
+  const w = workById[id]
+  const z = zones[zoneKey]
+  return `<section class="cover scene" id="${beatId(beat)}">
+    <div class="stage">
+      ${detailFigure(id, 'aria-hidden="true"')}
+      <div class="veil" aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+      <svg class="ink" aria-hidden="true"></svg>
+      <div class="cover__center">
+        <span class="cover__numeral">${t(z.numeral)}</span>
+        <h2 class="cover__name">${t(z.name)}</h2>
+        <p class="cover__theme">${t(z.theme)}</p>
+      </div>
+      <div class="cover__after label">
+        <span class="label__no">${t(site.detail)} · ${id}</span>
+        <span class="label__title">${t(quoted(w.title))}</span>
+        <span class="label__medium">${t(w.medium)}</span>
+        ${details[id] ? t(details[id], 'p', 'detail__caption') : ''}
+      </div>
+    </div>
+  </section>`
+}
+
+function beatScene(beat, zoneKey) {
+  if (beat.kind === 'cover') return coverScene(beat, zoneKey)
   if (beat.kind === 'detail') return detailScene(beat)
   const ws = beat.ids.map((id) => workById[id])
   const layer = SALT_KINDS.has(beat.kind)
@@ -149,8 +180,6 @@ function beatScene(beat) {
     <div class="stage">${layer}${beat.kind === 'drift' ? `<div class="track">${items}</div>` : items}</div>
   </section>`
 }
-
-const zoneScenes = (key) => choreography[key].map(beatScene).join('')
 
 const SAMPLE = {
   drawn: '<path fill="none" pathLength="1" d="M0 20H320"/>',
@@ -169,13 +198,17 @@ function intro(key) {
   const z = zones[key]
   return `<section class="intro" data-sample="${key}">
     <div class="intro__head reveal">
-      <span class="intro__numeral">${t(z.numeral)}</span>
-      <h2 class="intro__name">${t(z.name)}</h2>
       <svg class="intro__sample" viewBox="0 0 320 40" preserveAspectRatio="xMinYMid meet" aria-hidden="true"
         fill="currentColor" stroke="currentColor" stroke-width="1.25" stroke-linecap="round">${SAMPLE[key]}</svg>
       ${t(z.body, 'p', 'intro__body')}
     </div>
   </section>`
+}
+
+/** A zone: its cover first, then the wall text, then the rest of the walk. */
+function chapter(key) {
+  const [first, ...rest] = choreography[key]
+  return zone(key, beatScene(first, key) + intro(key) + rest.map((beat) => beatScene(beat, key)).join(''))
 }
 
 function zone(key, inner) {
@@ -201,17 +234,17 @@ document.querySelector('#app').innerHTML = `
 <main>
   ${zone(
     'prologue',
-    `<section class="hero scene" id="top">
+    `<section class="cover hero scene" id="top">
       <div class="stage">
         ${detailFigure('00', 'aria-hidden="true"')}
         <div class="veil" aria-hidden="true"></div>
-        <div class="hero__scrim" aria-hidden="true"></div>
+        <div class="scrim" aria-hidden="true"></div>
         <svg class="ink" aria-hidden="true"></svg>
-        <div class="hero__center">
+        <div class="cover__center">
           <h1 class="hero__title">${lines(site.titleLines, 'char')}</h1>
           <p class="hero__sub">${t(site.subtitle)}</p>
         </div>
-        <div class="hero__after label" id="work-00" data-id="00">
+        <div class="cover__after label" id="work-00" data-id="00">
           ${t(site.prologue, 'p', 'prologue__line')}
           <span class="label__no">00</span>
           <span class="label__title">${t(quoted(cover.title))}</span>
@@ -226,10 +259,9 @@ document.querySelector('#app').innerHTML = `
     <section class="preface"><div class="prose reveal">${t(site.preface, 'p')}</div></section>`,
   )}
 
-  ${zone('drawn', intro('drawn') + zoneScenes('drawn'))}
-  ${zone('pressed', intro('pressed') + zoneScenes('pressed'))}
-
-  ${zone('deposited', intro('deposited') + zoneScenes('deposited'))}
+  ${chapter('drawn')}
+  ${chapter('pressed')}
+  ${chapter('deposited')}
   ${zone(
     'synthesis',
     `<section class="scene scene--synthesis" id="synthesis">
@@ -298,11 +330,16 @@ function scrollToY(y, duration = 1.6) {
 /* ---------------------------------------------------------------- scenes */
 
 const triggers = {}
-triggers['00'] = scenes.hero(document.querySelector('.hero')).st
+triggers['00'] = scenes.cover(document.querySelector('.hero'), { hero: true }).st
 for (const beat of Object.values(choreography).flat()) {
   const el = document.querySelector(`#${beatId(beat)}`)
   const seed = Number(beat.ids[0]) * 7919
-  const scene = beat.kind === 'detail' ? scenes.detail(el, beat, seed) : scenes[beat.kind](el, beat.ids.map(aspect), seed, beat)
+  const scene =
+    beat.kind === 'cover'
+      ? scenes.cover(el)
+      : beat.kind === 'detail'
+        ? scenes.detail(el, beat, seed)
+        : scenes[beat.kind](el, beat.ids.map(aspect), seed, beat)
   for (const id of beat.ids) triggers[id] = scene.st
 }
 scenes.synthesis(document.querySelector('#synthesis'))

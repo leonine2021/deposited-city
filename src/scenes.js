@@ -8,8 +8,10 @@
 //
 // One screen, one work, as large as the stage allows.
 //
-// hero        a region of the sealed plate fills the screen under the title;
-//             the title gives way to the prologue line, and the line descends
+// cover       a region fills the screen as the ground for a title: the sealed
+//             plate under the exhibition title at the entrance, each zone's
+//             first region under the zone's number, name and theme line; the
+//             title gives way to the work's label, and the line descends
 // detail      an abstract work is shown only as one region at scan
 //             resolution, edge to edge; in the deposited zone, salt grains
 //             scattered over it settle into a line beneath
@@ -349,18 +351,24 @@ const onLine = (g, b) => [b.cx + g.jx, lerp(b.top, b.H, g.line)]
 
 /* ---------------------------------------------------------- framing */
 
-export function hero(section) {
+/**
+ * A cover: a region fills the screen as the ground for a title. The region
+ * surfaces out of the veil; the title gives way to the work's own label;
+ * the line descends through the image. The entrance (hero) also plays its
+ * title in on load.
+ */
+export function cover(section, { hero = false } = {}) {
   const stage = section.querySelector('.stage')
   const svg = stage.querySelector('.ink')
   const fig = stage.querySelector('.detail')
   const im = fig.querySelector('img')
   const veil = stage.querySelector('.veil')
-  const center = stage.querySelector('.hero__center')
-  const after = stage.querySelector('.hero__after')
+  const center = stage.querySelector('.cover__center')
+  const after = stage.querySelector('.cover__after')
   const cue = stage.querySelector('.hero__cue')
   svg.innerHTML = '<path/>'
   const line = svg.firstChild
-  const intro = { t: reduced ? 1 : 0 }
+  const intro = { t: reduced || !hero ? 1 : 0 }
   let b
 
   const scene = pinScene(section, {
@@ -370,23 +378,29 @@ export function hero(section) {
       viewBox(svg, b)
     },
     render(p) {
-      // the plate surfaces, then the title gives way to the prologue line
-      const o = ease.out(intro.t)
+      // the plate surfaces, then the title gives way to the work's label
+      const o = hero ? ease.out(intro.t) : ease.out(seg(p, 0, 0.3))
       fig.style.opacity = o
       im.style.transform = `scale(${1.08 - 0.08 * o})`
       veil.style.opacity = 1 - 0.55 * ease.inOut(seg(p, 0.1, 0.5))
-      const out = ease.inOut(seg(p, 0.22, 0.42))
-      center.style.opacity = 1 - out
-      center.style.transform = `translate3d(0,${-out * 40}px,0)`
+      const out = ease.inOut(seg(p, 0.3, 0.5))
+      if (!hero) {
+        const inn = ease.out(seg(p, 0.04, 0.26))
+        center.style.opacity = Math.min(inn, 1 - out)
+        center.style.transform = `translate3d(0,${(1 - inn) * 24 - out * 40}px,0)`
+      } else {
+        center.style.opacity = 1 - out
+        center.style.transform = `translate3d(0,${-out * 40}px,0)`
+      }
       center.style.pointerEvents = out > 0.5 ? 'none' : ''
-      fade(after, seg(p, 0.46, 0.64))
-      cue.style.opacity = 1 - seg(p, 0, 0.12)
-      const y = lerp(b.top, b.H + 2, ease.inOut(seg(p, 0.5, 1)))
+      fade(after, seg(p, 0.54, 0.7))
+      if (cue) cue.style.opacity = 1 - seg(p, 0, 0.12)
+      const y = lerp(b.top, b.H + 2, ease.inOut(seg(p, 0.56, 1)))
       line.setAttribute('d', y - b.top > 0.5 ? `M${b.cx} ${b.top}V${y}` : '')
     },
   })
 
-  if (!reduced) {
+  if (hero && !reduced) {
     gsap.to(intro, { t: 1, duration: 2.4, ease: 'none', delay: 0.2, onUpdate: scene.draw })
     gsap.from(center.querySelectorAll('.char'), {
       opacity: 0,
