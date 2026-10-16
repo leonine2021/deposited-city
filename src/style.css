@@ -351,6 +351,19 @@ button {
   color: #8e8a82;
 }
 
+/* ---------- veil ---------- */
+
+/* the edges fall away into the wall: an image seen up close, before it is understood */
+.veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 62% at 50% 50%, transparent 20%, var(--paper) 100%);
+  opacity: 0;
+  will-change: opacity;
+  transition: background 0.5s ease;
+}
+
 /* ---------- details ---------- */
 
 .detail {
@@ -362,6 +375,16 @@ button {
   cursor: pointer;
   will-change: opacity;
   -webkit-tap-highlight-color: transparent;
+}
+
+.detail[aria-hidden] {
+  cursor: default;
+}
+
+/* the sealed plate: on a wide band, keep the black block in view */
+.scene--prologue .detail img,
+.scene--exit .detail img {
+  object-position: 50% 78%;
 }
 
 .detail img {
@@ -385,61 +408,15 @@ button {
   left: var(--gutter);
   right: var(--gutter);
   bottom: calc(22px + env(safe-area-inset-bottom, 0px));
-  display: flex;
-  gap: 20px;
-  align-items: flex-end;
-}
-
-.detail__key {
-  position: relative;
-  flex: 0 0 auto;
-  width: 60px;
-  will-change: transform, opacity;
-}
-
-@media (min-width: 720px) {
-  .detail__key {
-    width: 84px;
-  }
-
-  .detail__meta {
-    gap: 28px;
-  }
-}
-
-.detail__key img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* the region ruled on the whole work: a hairline of ink on a paper halo, so it reads on dark passages too */
-.detail__key svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  fill: none;
-}
-
-.detail__key rect {
-  stroke: #161514;
-  stroke-width: 1.25;
-  stroke-dasharray: 1 1;
-  stroke-dashoffset: 1;
-  vector-effect: non-scaling-stroke;
-}
-
-.detail__key .halo {
-  stroke: #f4f2ed;
-  stroke-width: 3.5;
 }
 
 .detail__text {
-  flex: 1 1 auto;
-  min-width: 0;
+  max-width: 34rem;
   will-change: transform, opacity;
+}
+
+.detail__text .label__medium {
+  margin-top: 2px;
 }
 
 .detail__text .label__title {
@@ -784,6 +761,7 @@ button {
 }
 
 .index .thumb {
+  display: block;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   background: rgba(127, 127, 127, 0.08);

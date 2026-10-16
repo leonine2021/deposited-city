@@ -6,20 +6,24 @@
 // meets the work, but varies the beat (one work, a pair, a run of three) and
 // borrows the architect's drawing types so the walk never repeats itself.
 //
-// prologue    the line descends and stops at the sealed plate's upper edge
-// drawn       trace (one frame ruled) · plan (construction grid, two frames)
-//             · elevation (ground lines, works rise from them)
-// pressed     push (a work bends the line aside) · pinch (two works squeeze
-//             it into an S) · sag (a work drops onto a level line)
-// deposited   crystallize (grains settle around a work) · saltline (grains
-//             fall into the wall's salt line) · evaporate (a waterline
-//             recedes, leaving salt) · drift (a gallery slides past while
-//             scattered salt condenses back into one line)
-// detail      one region of a work at scan resolution fills the stage; a
-//             key below rules the region on the whole work, like a detail
-//             callout on a drawing
+// prologue    a region of the sealed plate surfaces out of the dark; the
+//             line descends and stops at its upper edge
+// reveal      a figurative work fills the stage up close at its focal point,
+//             then pulls back until the whole of it stands on the wall and
+//             the zone's line meets it: ruled around it (drawn) or bent
+//             aside by it (pressed)
+// detail      an abstract work is shown only as one region at scan
+//             resolution, edge to edge; in the deposited zone, salt grains
+//             scattered over it settle into a line beneath
+// trace       one frame ruled around a work · sag: a work drops onto a
+//             level line · saltline: grains fall into the wall's salt line
+//             · drift: a gallery slides past while scattered salt condenses
+//             back into one line  (the framed beats, used for works still
+//             waiting for a scan)
+// plan, elevation, push, pinch, crystallize, evaporate: earlier beats, kept
+//             for when more scans arrive
 // synthesis   the grains regather into the river's axis
-// exit        the sealed plate returns with a waterline beneath it
+// exit        the sealed plate's region returns with a waterline across it
 
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -107,6 +111,37 @@ function placeSide(el, box, L, inset = 22) {
     textAlign: box.side === 'left' ? 'left' : 'right',
   })
   el.style.top = `${box.b - el.offsetHeight}px`
+}
+
+/**
+ * A work as large as the stage allows. On a wide stage it stands edge to
+ * edge in height with its label beside it on the wall; on a narrow one it
+ * fills the width with the label beneath.
+ */
+function fitBig(stage, aspect) {
+  const s = stageBox(stage)
+  if (s.W > s.H * 1.05) {
+    const room = s.H - s.top - 48
+    const w = Math.min(room * aspect, s.W * 0.62)
+    const h = w / aspect
+    const x = (s.W - w) / 2
+    const y = s.top + 24 + (room - h) / 2
+    return { ...s, x, y, w, h, r: x + w, b: y + h, wide: true }
+  }
+  return { ...fit(stage, aspect, { maxW: 9999, maxHRatio: 0.78, below: 120 }), wide: false }
+}
+
+/** Label on the wall to the left of a large work, bottom-aligned with it. */
+function placeBeside(el, b) {
+  const gutter = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gutter')) || 24
+  el.classList.add('label--side')
+  Object.assign(el.style, {
+    left: `${gutter}px`,
+    right: 'auto',
+    width: `${Math.max(120, b.x - 32 - gutter)}px`,
+    textAlign: 'right',
+  })
+  el.style.top = `${b.b - el.offsetHeight}px`
 }
 
 function fade(el, o, dy = 14) {
@@ -352,29 +387,114 @@ export function hero(section) {
   return scene
 }
 
-export function prologue(section, [aspect]) {
-  const { stage, svg, figs, labels } = parts(section)
-  const [fig] = figs
-  const [label] = labels
+export function prologue(section) {
+  const stage = section.querySelector('.stage')
+  const svg = stage.querySelector('.ink')
+  const fig = stage.querySelector('.detail')
+  const im = fig.querySelector('img')
+  const veil = stage.querySelector('.veil')
+  const label = stage.querySelector('.label')
   svg.innerHTML = '<path/>'
   const line = svg.firstChild
+  const gap = 96
   let b
 
   return pinScene(section, {
-    length: 1.1,
+    length: 1.3,
     layout() {
-      b = fit(stage, aspect, { maxW: 340, maxHRatio: 0.5, below: 190 })
-      place(fig, b)
-      placeBelow(label, b, 30)
+      b = stageBox(stage)
       viewBox(svg, b)
+      fig.style.top = `${b.top + gap}px`
+      fig.style.bottom = `${label.offsetHeight + 64}px`
+      placeBelow(label, { b: b.H - label.offsetHeight - 64 }, 24)
     },
     render(p) {
-      const o = ease.out(seg(p, 0, 0.3))
+      // the plate surfaces slowly out of the dark and never quite clears
+      const o = ease.out(seg(p, 0, 0.42))
       fig.style.opacity = o
-      fig.style.transform = `scale(${0.94 + 0.06 * o})`
-      const y = lerp(b.top, b.y, ease.inOut(seg(p, 0.22, 0.56)))
+      im.style.transform = `scale(${1.08 - 0.08 * o})`
+      veil.style.opacity = 1 - 0.5 * ease.inOut(seg(p, 0.2, 0.7))
+      const y = lerp(b.top, b.top + gap, ease.inOut(seg(p, 0.3, 0.6)))
       line.setAttribute('d', y - b.top > 0.5 ? `M${b.cx} ${b.top}V${y}` : '')
-      fade(label, seg(p, 0.56, 0.76))
+      fade(label, seg(p, 0.6, 0.8))
+    },
+  })
+}
+
+/* -------------------------------------------------------------- reveal */
+
+/**
+ * Up close first: the print fills the stage at its focal point, veiled at
+ * the edges. Then it pulls back until the whole work stands on the wall,
+ * and the line arrives: ruled around it (frame) or bent aside by it (bend).
+ */
+export function reveal(section, [aspect], { focal = [0.5, 0.5], end = 'frame' } = {}) {
+  const { stage, svg, figs, labels } = parts(section)
+  const [fig] = figs
+  const [label] = labels
+  const veil = stage.querySelector('.veil')
+  svg.innerHTML = '<path/><path/>'
+  const [lead, line] = svg.children
+  let b, S, tx, ty, perim
+
+  return pinScene(section, {
+    length: 1.8,
+    layout() {
+      b = fitBig(stage, aspect)
+      place(fig, b)
+      if (b.wide) placeBeside(label, b)
+      else placeBelow(label, b)
+      viewBox(svg, b)
+
+      // the zoomed state: the focal point at the stage's centre, the print covering the stage
+      const [fx, fy] = focal
+      S = Math.max(2.2, Math.max(b.W / b.w, b.H / b.h) * 1.3)
+      fig.style.transformOrigin = `${fx * 100}% ${fy * 100}%`
+      const ox = b.x + fx * b.w
+      const oy = b.y + fy * b.h
+      tx = b.cx - ox
+      ty = (b.top + b.H) / 2 - oy
+      const left = ox + tx - fx * b.w * S
+      const right = left + b.w * S
+      if (left > 0) tx -= left
+      else if (right < b.W) tx += b.W - right
+      const top = oy + ty - fy * b.h * S
+      const bottom = top + b.h * S
+      if (top > 0) ty -= top
+      else if (bottom < b.H) ty += b.H - bottom
+
+      if (end === 'frame') {
+        line.removeAttribute('pathLength')
+        line.setAttribute('d', rectPath(b))
+        perim = 2 * (b.w + b.h)
+        line.style.strokeDasharray = `${perim} ${perim}`
+      } else {
+        const k = Math.max(28, Math.min(120, b.y - b.top - 4))
+        const bx = b.r + 12
+        line.setAttribute('pathLength', '1')
+        line.style.strokeDasharray = '1 1'
+        line.setAttribute(
+          'd',
+          `M${b.cx} ${b.top}V${b.y - k}C${b.cx} ${b.y - k * 0.45} ${bx} ${b.y - k * 0.55} ${bx} ${b.y}V${b.b}` +
+            `C${bx} ${b.b + k * 0.55} ${b.cx} ${b.b + k * 0.45} ${b.cx} ${b.b + k}V${b.H}`,
+        )
+        perim = 1
+      }
+    },
+    render(p) {
+      const o = ease.out(seg(p, 0, 0.2))
+      fig.style.opacity = o
+      const z = 1 - ease.inOut(seg(p, 0.3, 0.72)) // 1 = up close, 0 = whole
+      fig.style.transform = `translate3d(${tx * z}px,${ty * z}px,0) scale(${1 + (S - 1) * z})`
+      veil.style.opacity = z
+      if (end === 'frame') {
+        const y = lerp(b.top, b.y, ease.inOut(seg(p, 0.6, 0.74)))
+        lead.setAttribute('d', y - b.top > 0.5 ? `M${b.cx} ${b.top}V${y}` : '')
+        line.style.strokeDashoffset = perim * (1 - ease.inOut(seg(p, 0.7, 0.92)))
+      } else {
+        line.style.strokeDashoffset = 1 - ease.inOut(seg(p, 0.62, 0.9))
+      }
+      fade(label, seg(p, 0.8, 0.94))
     },
   })
 }
@@ -851,36 +971,51 @@ export function drift(section, aspects, seed) {
 /* ------------------------------------------------------------- detail */
 
 /**
- * The detail settles into focus and keeps moving very slowly, as an eye does
- * across a print held close. Then the key rules its outline on the whole work.
+ * The region settles into focus out of the veil and keeps moving very
+ * slowly, as an eye does across a print held close. With salt, grains
+ * scattered over the stage gather into one line beneath the region.
  */
-export function detail(section) {
+export function detail(section, { salt = false } = {}, seed = 1) {
   const stage = section.querySelector('.stage')
   const fig = stage.querySelector('.detail')
   const im = fig.querySelector('img')
+  const veil = stage.querySelector('.veil')
   const meta = stage.querySelector('.detail__meta')
-  const key = stage.querySelector('.detail__key')
-  const rects = [...key.querySelectorAll('rect')]
   const text = stage.querySelector('.detail__text')
+  const canvas = stage.querySelector('.salt')
+  const grains = salt ? makeSalt(seed, 300) : null
+  let b, lineY
 
-  return pinScene(section, {
-    length: 1.5,
+  const config = {
+    length: 1.6,
     layout() {
-      const b = stageBox(stage)
+      b = stageBox(stage)
       fig.style.top = `${b.top}px`
-      fig.style.bottom = `${meta.offsetHeight + 44}px`
+      const band = meta.offsetHeight + 44
+      fig.style.bottom = `${band}px`
+      lineY = b.H - band + 10
     },
-    render(p) {
-      const o = ease.out(seg(p, 0, 0.24))
+    render(p, holder) {
+      const o = ease.out(seg(p, 0, 0.28))
       fig.style.opacity = o
       const drift = ease.inOut(seg(p, 0.08, 0.96))
-      im.style.transform = `scale(${1.12 - 0.07 * o}) translate3d(${(0.5 - drift) * 3}%,${(drift - 0.5) * 2}%,0)`
-      fade(key, seg(p, 0.3, 0.46), 10)
-      const ruled = 1 - ease.inOut(seg(p, 0.4, 0.64))
-      for (const r of rects) r.style.strokeDashoffset = ruled
+      im.style.transform = `scale(${1.14 - 0.08 * o}) translate3d(${(0.5 - drift) * 3}%,${(drift - 0.5) * 2}%,0)`
+      veil.style.opacity = 1 - 0.75 * ease.inOut(seg(p, 0.1, 0.62))
       fade(text, seg(p, 0.5, 0.68))
+      if (!holder) return
+      const { ctx } = holder.salt
+      ctx.clearRect(0, 0, b.W, b.H)
+      const c = ease.inOut(seg(p, 0.24, 0.84))
+      for (const g of grains) {
+        const x = lerp(g.sx * b.W, 20 + g.line * (b.W - 40), c) + Math.sin(c * Math.PI) * g.jx * 10
+        const y = lerp(lerp(b.top, b.H, g.sy), lineY + g.n * 1.6, c)
+        dot(ctx, holder.colors, x, y, lerp(g.r, 0.8, c), g.a * (0.6 + 0.4 * c))
+      }
+      ctx.globalAlpha = 1
     },
-  })
+  }
+  if (!grains) return pinScene(section, { ...config, render: (p) => config.render(p, null) })
+  return withSalt(section, canvas, config, () => b)
 }
 
 /* ---------------------------------------------------------- synthesis */
@@ -926,9 +1061,11 @@ export function synthesis(section) {
   )
 }
 
-export function exit(section, [aspect]) {
-  const { stage, svg, figs } = parts(section)
-  const [fig] = figs
+export function exit(section) {
+  const stage = section.querySelector('.stage')
+  const svg = stage.querySelector('.ink')
+  const fig = stage.querySelector('.detail')
+  const im = fig.querySelector('img')
   const text = stage.querySelector('.exit__line')
   const back = stage.querySelector('.exit__back')
   svg.innerHTML = '<path class="water" pathLength="1" stroke-dasharray="1 1"/>'
@@ -936,28 +1073,31 @@ export function exit(section, [aspect]) {
   let b
 
   return pinScene(section, {
-    length: 1.1,
+    length: 1.2,
     layout() {
-      b = fit(stage, aspect, { maxW: 230, maxHRatio: 0.34, below: 250 })
-      place(fig, b)
+      b = stageBox(stage)
       viewBox(svg, b)
-      const wy = b.b + 30
+      const band = text.offsetHeight + 44 + 28 + 56
+      fig.style.top = `${b.top}px`
+      fig.style.bottom = `${band}px`
+      // the river runs along the plate's lower edge, across the whole wall
+      const wy = b.H - band - 28
       const pts = []
-      for (let x = b.x - 40; x <= b.r + 40; x += 3) {
+      for (let x = -4; x <= b.W + 4; x += 3) {
         pts.push(`${x.toFixed(1)} ${(wy + Math.sin((x / 30) * TAU * 0.5) * 3).toFixed(1)}`)
       }
       water.setAttribute('d', `M${pts.join('L')}`)
-      text.style.top = `${wy + 34}px`
-      back.style.top = `${wy + 34 + text.offsetHeight + 28}px`
+      text.style.top = `${b.H - band + 28}px`
+      back.style.top = `${b.H - band + 28 + text.offsetHeight + 24}px`
     },
     render(p) {
-      const o = ease.out(seg(p, 0, 0.25))
+      const o = ease.out(seg(p, 0, 0.3))
       fig.style.opacity = o
-      fig.style.transform = `translate3d(0,${(1 - o) * 24}px,0)`
-      water.style.strokeDashoffset = 1 - ease.inOut(seg(p, 0.22, 0.58))
-      fade(text, seg(p, 0.5, 0.68))
-      back.style.opacity = seg(p, 0.62, 0.78)
-      back.style.pointerEvents = p > 0.7 ? '' : 'none'
+      im.style.transform = `scale(${1.06 - 0.06 * o})`
+      water.style.strokeDashoffset = 1 - ease.inOut(seg(p, 0.28, 0.62))
+      fade(text, seg(p, 0.52, 0.7))
+      back.style.opacity = seg(p, 0.64, 0.8)
+      back.style.pointerEvents = p > 0.72 ? '' : 'none'
     },
   })
 }

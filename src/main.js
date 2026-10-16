@@ -64,65 +64,74 @@ function label(w) {
 }
 
 /**
- * The walk, beat by beat. Each zone keeps its own logic of the line but
- * alternates one work, a pair and a run so the rhythm keeps changing.
- * The kind names a choreography in scenes.js. A detail beat follows the
- * whole work and steps up close to one region of it, at scan resolution,
- * where the zone's kind of line is actually visible: burlap and thread
- * grooves, salt where water last stood. The drawn zone shows only whole
- * works: a drawn line is read entire.
+ * The walk, beat by beat. Two ways of showing a work, by what it is:
+ *
+ * - figurative prints (a tower, a facade, a figure, an organ) are shown
+ *   whole, in a `reveal`: the print first fills the stage up close, at the
+ *   focal point, then pulls back until the whole of it stands on the wall
+ *   and the zone's line meets it (ruled around it in the drawn zone, bent
+ *   aside by it in the pressed zone);
+ * - abstract prints (salt, strokes, grooves) are shown only as a `detail`,
+ *   one region at scan resolution, never whole.
+ *
+ * Works still waiting for a scan sit in the quieter framed scenes (trace,
+ * sag, saltline, drift), which also give the eye a far beat between the
+ * near ones. The kind names a choreography in scenes.js; `focal` is the
+ * point (fractions of the print) the reveal starts on.
  */
 const choreography = {
   drawn: [
-    { kind: 'trace', ids: ['01'] },
-    { kind: 'plan', ids: ['02', '03'] },
-    { kind: 'elevation', ids: ['04', '05'] },
+    { kind: 'reveal', ids: ['01'], focal: [0.5, 0.55], end: 'frame' },
+    { kind: 'reveal', ids: ['02'], focal: [0.55, 0.68], end: 'frame' },
+    { kind: 'detail', ids: ['03'] },
+    { kind: 'trace', ids: ['04'] },
+    { kind: 'reveal', ids: ['05'], focal: [0.45, 0.5], end: 'frame' },
   ],
   pressed: [
-    { kind: 'push', ids: ['06'] },
     { kind: 'detail', ids: ['06'] },
-    { kind: 'pinch', ids: ['07', '08'] },
-    { kind: 'detail', ids: ['08'] },
+    { kind: 'reveal', ids: ['07'], focal: [0.45, 0.22], end: 'bend' },
+    { kind: 'reveal', ids: ['08'], focal: [0.62, 0.17], end: 'bend' },
     { kind: 'sag', ids: ['09'] },
   ],
   deposited: [
-    { kind: 'crystallize', ids: ['10'] },
-    { kind: 'detail', ids: ['10'] },
+    { kind: 'detail', ids: ['10'], salt: true },
     { kind: 'saltline', ids: ['11'] },
-    { kind: 'evaporate', ids: ['12', '13'] },
-    { kind: 'detail', ids: ['12'] },
-    { kind: 'drift', ids: ['14', '15', '16'] },
+    { kind: 'detail', ids: ['12'], salt: true },
+    { kind: 'drift', ids: ['13', '14', '15', '16'] },
   ],
 }
 
 const beatId = (beat) => `${beat.kind === 'detail' ? 'detail' : 'beat'}-${beat.ids.join('-')}`
 
+/* works shown only as a region: the index and the lightbox show that region too */
+const detailOnly = new Set(['00', ...Object.values(choreography).flat().filter((b) => b.kind === 'detail').flatMap((b) => b.ids)])
+
 const workById = Object.fromEntries(works.map((w) => [w.id, w]))
 const SALT_KINDS = new Set(['crystallize', 'saltline', 'evaporate', 'drift'])
 
-/**
- * A detail: the region fills the stage; below it, a key shows where on the
- * whole work the region sits, as a detail callout on an architect's drawing.
- */
+/** The region of a work, edge to edge; its text sits in a band beneath. */
+function detailFigure(id, extra = '') {
+  const w = workById[id]
+  const d = meta[id].detail
+  return `<figure class="detail" data-id="${id}" ${extra}>
+    <img src="${img(id, 'detail')}" width="${d.w}" height="${d.h}" alt="${w.title.en}, detail, Wenlu Guo" decoding="async" ${id === '00' ? '' : 'loading="lazy"'} />
+    <span class="work__zoom" aria-hidden="true">${t(site.enlarge)}</span>
+  </figure>`
+}
+
 function detailScene(beat) {
   const [id] = beat.ids
   const w = workById[id]
-  const d = meta[id].detail
-  const box = `x="${d.x * 100}" y="${d.y * 100}" width="${d.cw * 100}" height="${d.ch * 100}" pathLength="1"`
   return `<section class="scene scene--detail" id="${beatId(beat)}">
     <div class="stage">
-      <figure class="detail" data-id="${id}">
-        <img src="${img(id, 'detail')}" width="${d.w}" height="${d.h}" alt="${w.title.en}, detail, Wenlu Guo" decoding="async" loading="lazy" />
-        <span class="work__zoom" aria-hidden="true">${t(site.whole)}</span>
-      </figure>
+      ${detailFigure(id)}
+      ${beat.salt ? '<canvas class="salt" aria-hidden="true"></canvas>' : ''}
+      <div class="veil" aria-hidden="true"></div>
       <div class="detail__meta">
-        <div class="detail__key" aria-hidden="true">
-          <img src="${img(id, 'thumb')}" alt="" loading="lazy" decoding="async" />
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none"><rect class="halo" ${box}/><rect ${box}/></svg>
-        </div>
         <div class="detail__text">
           <span class="label__no">${t(site.detail)} · ${id}</span>
           <span class="label__title">${t(quoted(w.title))}</span>
+          <span class="label__medium">${t(w.medium)}</span>
           ${details[id] ? t(details[id], 'p', 'detail__caption') : ''}
         </div>
       </div>
@@ -130,8 +139,22 @@ function detailScene(beat) {
   </section>`
 }
 
+function revealScene(beat) {
+  const [id] = beat.ids
+  const w = workById[id]
+  return `<section class="scene scene--reveal" id="${beatId(beat)}">
+    <div class="stage">
+      <svg class="ink" aria-hidden="true"></svg>
+      ${figure(w)}
+      <div class="veil" aria-hidden="true"></div>
+      ${label(w)}
+    </div>
+  </section>`
+}
+
 function beatScene(beat) {
   if (beat.kind === 'detail') return detailScene(beat)
+  if (beat.kind === 'reveal') return revealScene(beat)
   const ws = beat.ids.map((id) => workById[id])
   const layer = SALT_KINDS.has(beat.kind)
     ? '<canvas class="salt" aria-hidden="true"></canvas>'
@@ -211,7 +234,8 @@ document.querySelector('#app').innerHTML = `
     `<section class="scene scene--prologue" id="work-00" data-id="00">
       <div class="stage">
         <svg class="ink" aria-hidden="true"></svg>
-        ${figure(cover)}
+        ${detailFigure('00')}
+        <div class="veil" aria-hidden="true"></div>
         <div class="label">
           ${t(site.prologue, 'p', 'prologue__line')}
           <span class="label__title">${t(quoted(cover.title))}</span>
@@ -255,8 +279,8 @@ document.querySelector('#app').innerHTML = `
     </section>
     <section class="scene scene--exit" id="exit">
       <div class="stage">
+        ${detailFigure('00', 'aria-hidden="true"')}
         <svg class="ink" aria-hidden="true"></svg>
-        ${figure(cover, 'aria-hidden="true"', false).replace('loading="lazy"', '')}
         <p class="exit__line">${t(site.exit.line)}</p>
         <button class="exit__back" type="button">${t(site.exit.back)}</button>
       </div>
@@ -268,7 +292,7 @@ document.querySelector('#app').innerHTML = `
     <ol>${works
       .map(
         (w) => `<li><button type="button" data-goto="${w.id}">
-          <span class="thumb"><img src="${img(w.id, 'thumb')}" alt="" loading="lazy" decoding="async" /></span>
+          <span class="thumb"><img src="${img(w.id, detailOnly.has(w.id) ? 'detail-thumb' : 'thumb')}" alt="" loading="lazy" decoding="async" /></span>
           <span class="meta"><b>${w.id}</b>${t(quoted(w.title))}</span>
         </button></li>`,
       )
@@ -300,14 +324,16 @@ function scrollToY(y, duration = 1.6) {
 
 const triggers = {}
 scenes.hero(document.querySelector('.hero'))
-triggers['00'] = scenes.prologue(document.querySelector('#work-00'), [aspect('00')]).st
+triggers['00'] = scenes.prologue(document.querySelector('#work-00')).st
 for (const beat of Object.values(choreography).flat()) {
   const el = document.querySelector(`#${beatId(beat)}`)
-  if (beat.kind === 'detail') {
-    scenes.detail(el)
-    continue // the index keeps pointing at the whole work
-  }
-  const scene = scenes[beat.kind](el, beat.ids.map(aspect), Number(beat.ids[0]) * 7919)
+  const seed = Number(beat.ids[0]) * 7919
+  const scene =
+    beat.kind === 'detail'
+      ? scenes.detail(el, beat, seed)
+      : beat.kind === 'reveal'
+        ? scenes.reveal(el, beat.ids.map(aspect), beat)
+        : scenes[beat.kind](el, beat.ids.map(aspect), seed)
   for (const id of beat.ids) triggers[id] = scene.st
 }
 scenes.synthesis(document.querySelector('#synthesis'))
@@ -322,7 +348,7 @@ for (const el of document.querySelectorAll('.scene')) {
     onEnter: () => el.querySelectorAll('img[loading="lazy"]').forEach((i) => (i.loading = 'eager')),
   })
 }
-scenes.exit(document.querySelector('#exit'), [aspect('00')])
+scenes.exit(document.querySelector('#exit'))
 
 /* statement: the sentence darkens piece by piece as it scrolls through */
 for (const group of document.querySelectorAll('.statement .zh, .statement .en')) {
@@ -449,8 +475,9 @@ const box = document.querySelector('.lightbox')
 const boxImg = box.querySelector('img')
 function openBox(id) {
   const w = works.find((x) => x.id === id)
-  boxImg.src = img(id)
-  boxImg.alt = `${w.title.en}, Wenlu Guo`
+  const region = detailOnly.has(id)
+  boxImg.src = img(id, region ? 'detail' : '')
+  boxImg.alt = `${w.title.en}${region ? ', detail' : ''}, Wenlu Guo`
   box.hidden = false
   requestAnimationFrame(() => box.classList.add('is-open'))
   lenis?.stop()
@@ -462,7 +489,7 @@ function closeBox() {
   document.documentElement.style.overflow = ''
   setTimeout(() => (box.hidden = true), 350)
 }
-for (const fig of document.querySelectorAll('.work.is-zoomable, .detail')) {
+for (const fig of document.querySelectorAll('.work.is-zoomable, .detail:not([aria-hidden])')) {
   fig.addEventListener('click', () => openBox(fig.dataset.id))
 }
 box.addEventListener('click', closeBox)

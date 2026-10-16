@@ -58,7 +58,6 @@ export const site = {
     back: { zh: '回到入口', en: 'Back to the entrance' },
   },
   enlarge: { zh: '放大', en: 'Enlarge' },
-  whole: { zh: '看整幅', en: 'Whole work' },
   detail: { zh: '局部', en: 'Detail' },
   pendingWork: { zh: '作品图待补', en: 'Image forthcoming' },
   index: { zh: '作品索引', en: 'Index of works' },
@@ -151,10 +150,19 @@ export const works = [
   { id: '16', zone: 'deposited', title: { zh: '弧', en: 'Arcs' }, medium: T.mono },
 ]
 
-// Detail scenes: one region of a print at full scan resolution, with a line
-// that ties it to the zone's argument. DRAFT captions, to be confirmed by the
-// artist; the regions themselves are set in scripts/prepare_images.py.
+// Detail scenes: the abstract works are shown only as one region at full scan
+// resolution, never whole, with a line that ties the region to the zone's
+// argument. DRAFT captions, to be confirmed by the artist; the regions
+// themselves are set in scripts/prepare_images.py.
 export const details = {
+  '00': {
+    zh: '版被封住了。黑的那一块下面，有东西还没说。',
+    en: 'The plate is sealed. Under the black, something has not yet been said.',
+  },
+  '03': {
+    zh: '窗的分格是意志画出的线；到了纸上，它只剩下断续的黑。',
+    en: 'The division of a window is a line of will; on the paper it survives only as broken black.',
+  },
   '06': {
     zh: '一根线压进纸面，留下一道沟。这不是画出的血管，是线走过的证据。',
     en: 'A thread pressed into the paper leaves a groove: not a drawn vessel, but evidence that a thread passed.',

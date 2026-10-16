@@ -11,8 +11,9 @@ Sources, in order of preference:
 
 Each scan is cropped to the printed area plus a margin of real paper, the
 paper tone is neutralized, and a large WebP and a thumbnail are written to
-public/works. Works listed in DETAILS also get a NN-detail.webp: a region of
-the print at full scan resolution, for the detail scenes. src/works-meta.json
+public/works. Works listed in DETAILS also get NN-detail.webp and NN-detail-thumb.webp:
+a region of the print at full scan resolution, for the detail scenes. Those
+works are shown only as that region, never whole. src/works-meta.json
 records pixel sizes, the detail region and which works are pending.
 
 Run: python scripts/prepare_images.py [NN ...]   (needs pillow, numpy; pymupdf for PDFs)
@@ -61,8 +62,9 @@ PLACEHOLDER_H = 1200
 
 # work id -> detail region (x0, y0, x1, y1) as fractions of the exported image
 DETAILS = {
+    "00": (0.12, 0.22, 0.92, 0.82),  # the sealed black block and the swirl above it
+    "03": (0.30, 0.12, 0.80, 0.55),  # broken black marks of the window grid
     "06": (0.30, 0.30, 0.75, 0.68),  # thread grooves as vessels
-    "08": (0.04, 0.28, 0.56, 0.68),  # burlap mesh pressed into the paper
     "10": (0.33, 0.18, 0.97, 0.62),  # salt crystals on the dark ground
     "12": (0.27, 0.07, 0.67, 0.47),  # salt rings, each the edge of one drop
 }
@@ -151,6 +153,9 @@ def export(key, img):
         fx0, fy0, fx1, fy1 = DETAILS[key]
         W, H = out.size
         detail = out.crop((int(fx0 * W), int(fy0 * H), int(fx1 * W), int(fy1 * H)))
+        thumb = detail.copy()
+        thumb.thumbnail((THUMB, THUMB), Image.LANCZOS)
+        thumb.save(OUT / f"{key}-detail-thumb.webp", quality=78, method=6)
         detail.thumbnail((DETAIL, DETAIL), Image.LANCZOS)
         detail.save(OUT / f"{key}-detail.webp", quality=84, method=6)
         info["detail"] = {
