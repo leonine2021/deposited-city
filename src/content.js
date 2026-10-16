@@ -57,7 +57,6 @@ export const site = {
     },
     back: { zh: '回到入口', en: 'Back to the entrance' },
   },
-  enlarge: { zh: '放大', en: 'Enlarge' },
   detail: { zh: '局部', en: 'Detail' },
   pendingWork: { zh: '作品图待补', en: 'Image forthcoming' },
   index: { zh: '作品索引', en: 'Index of works' },
