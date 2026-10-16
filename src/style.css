@@ -326,6 +326,139 @@ button {
   padding: 0 var(--gutter);
 }
 
+/* ---------- pending works ---------- */
+
+/* a flat placeholder stands in for a work not yet scanned sharply */
+.work.is-pending {
+  cursor: default;
+}
+
+.work.is-pending img {
+  outline: 1px solid rgba(22, 21, 20, 0.08);
+  outline-offset: -1px;
+}
+
+.work__pending {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  padding: 0 12px;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  color: #8e8a82;
+}
+
+/* ---------- details ---------- */
+
+.detail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0;
+  overflow: hidden;
+  cursor: pointer;
+  will-change: opacity;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.detail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (hover: hover) {
+  .detail:hover .work__zoom {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.detail__meta {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.detail__key {
+  position: relative;
+  flex: 0 0 auto;
+  width: 60px;
+  will-change: transform, opacity;
+}
+
+@media (min-width: 720px) {
+  .detail__key {
+    width: 84px;
+  }
+
+  .detail__meta {
+    gap: 28px;
+  }
+}
+
+.detail__key img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* the region ruled on the whole work: a hairline of ink on a paper halo, so it reads on dark passages too */
+.detail__key svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+}
+
+.detail__key rect {
+  stroke: #161514;
+  stroke-width: 1.25;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.detail__key .halo {
+  stroke: #f4f2ed;
+  stroke-width: 3.5;
+}
+
+.detail__text {
+  flex: 1 1 auto;
+  min-width: 0;
+  will-change: transform, opacity;
+}
+
+.detail__text .label__title {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+:root[data-lang='en'] .detail__text .label__title {
+  font-size: 20px;
+}
+
+.detail__caption {
+  max-width: 30rem;
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
 /* ---------- hero ---------- */
 
 .hero__center {

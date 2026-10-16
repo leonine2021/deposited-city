@@ -4,7 +4,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import './style.css'
-import { site, zones, works } from './content.js'
+import { site, zones, works, details } from './content.js'
 import meta from './works-meta.json'
 import * as scenes from './scenes.js'
 
@@ -13,7 +13,7 @@ ScrollTrigger.config({ ignoreMobileResize: true })
 
 const { reduced } = scenes
 const base = import.meta.env.BASE_URL
-const img = (id, thumb = false) => `${base}works/${id}${thumb ? '-thumb' : ''}.webp`
+const img = (id, kind = '') => `${base}works/${id}${kind ? `-${kind}` : ''}.webp`
 const aspect = (id) => meta[id].w / meta[id].h
 
 /** Both languages side by side; CSS shows the active one. */
@@ -45,9 +45,12 @@ const split = (o, cls) =>
 
 function figure(w, extra = '', zoomable = true) {
   const m = meta[w.id]
-  return `<figure class="work${zoomable ? ' is-zoomable' : ''}" data-id="${w.id}" ${extra}>
+  // a pending work shows a flat placeholder: nothing to enlarge
+  const zoom = zoomable && !m.pending
+  return `<figure class="work${zoom ? ' is-zoomable' : ''}${m.pending ? ' is-pending' : ''}" data-id="${w.id}" ${extra}>
     <img src="${img(w.id)}" width="${m.w}" height="${m.h}" alt="${w.title.en}, Wenlu Guo" decoding="async" ${w.id === '00' ? '' : 'loading="lazy"'} />
-    ${zoomable ? `<span class="work__zoom" aria-hidden="true">${t(site.enlarge)}</span>` : ''}
+    ${zoom ? `<span class="work__zoom" aria-hidden="true">${t(site.enlarge)}</span>` : ''}
+    ${m.pending ? `<span class="work__pending">${t(site.pendingWork)}</span>` : ''}
   </figure>`
 }
 
@@ -63,7 +66,11 @@ function label(w) {
 /**
  * The walk, beat by beat. Each zone keeps its own logic of the line but
  * alternates one work, a pair and a run so the rhythm keeps changing.
- * The kind names a choreography in scenes.js.
+ * The kind names a choreography in scenes.js. A detail beat follows the
+ * whole work and steps up close to one region of it, at scan resolution,
+ * where the zone's kind of line is actually visible: burlap and thread
+ * grooves, salt where water last stood. The drawn zone shows only whole
+ * works: a drawn line is read entire.
  */
 const choreography = {
   drawn: [
@@ -73,27 +80,64 @@ const choreography = {
   ],
   pressed: [
     { kind: 'push', ids: ['06'] },
+    { kind: 'detail', ids: ['06'] },
     { kind: 'pinch', ids: ['07', '08'] },
+    { kind: 'detail', ids: ['08'] },
     { kind: 'sag', ids: ['09'] },
   ],
   deposited: [
     { kind: 'crystallize', ids: ['10'] },
+    { kind: 'detail', ids: ['10'] },
     { kind: 'saltline', ids: ['11'] },
     { kind: 'evaporate', ids: ['12', '13'] },
+    { kind: 'detail', ids: ['12'] },
     { kind: 'drift', ids: ['14', '15', '16'] },
   ],
 }
 
+const beatId = (beat) => `${beat.kind === 'detail' ? 'detail' : 'beat'}-${beat.ids.join('-')}`
+
 const workById = Object.fromEntries(works.map((w) => [w.id, w]))
 const SALT_KINDS = new Set(['crystallize', 'saltline', 'evaporate', 'drift'])
 
+/**
+ * A detail: the region fills the stage; below it, a key shows where on the
+ * whole work the region sits, as a detail callout on an architect's drawing.
+ */
+function detailScene(beat) {
+  const [id] = beat.ids
+  const w = workById[id]
+  const d = meta[id].detail
+  const box = `x="${d.x * 100}" y="${d.y * 100}" width="${d.cw * 100}" height="${d.ch * 100}" pathLength="1"`
+  return `<section class="scene scene--detail" id="${beatId(beat)}">
+    <div class="stage">
+      <figure class="detail" data-id="${id}">
+        <img src="${img(id, 'detail')}" width="${d.w}" height="${d.h}" alt="${w.title.en}, detail, Wenlu Guo" decoding="async" loading="lazy" />
+        <span class="work__zoom" aria-hidden="true">${t(site.whole)}</span>
+      </figure>
+      <div class="detail__meta">
+        <div class="detail__key" aria-hidden="true">
+          <img src="${img(id, 'thumb')}" alt="" loading="lazy" decoding="async" />
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none"><rect class="halo" ${box}/><rect ${box}/></svg>
+        </div>
+        <div class="detail__text">
+          <span class="label__no">${t(site.detail)} · ${id}</span>
+          <span class="label__title">${t(quoted(w.title))}</span>
+          ${details[id] ? t(details[id], 'p', 'detail__caption') : ''}
+        </div>
+      </div>
+    </div>
+  </section>`
+}
+
 function beatScene(beat) {
+  if (beat.kind === 'detail') return detailScene(beat)
   const ws = beat.ids.map((id) => workById[id])
   const layer = SALT_KINDS.has(beat.kind)
     ? '<canvas class="salt" aria-hidden="true"></canvas>'
     : '<svg class="ink" aria-hidden="true"></svg>'
   const items = ws.map((w) => figure(w) + label(w)).join('')
-  return `<section class="scene scene--${beat.kind}" id="beat-${beat.ids.join('-')}">
+  return `<section class="scene scene--${beat.kind}" id="${beatId(beat)}">
     <div class="stage">${layer}${beat.kind === 'drift' ? `<div class="track">${items}</div>` : items}</div>
   </section>`
 }
@@ -224,7 +268,7 @@ document.querySelector('#app').innerHTML = `
     <ol>${works
       .map(
         (w) => `<li><button type="button" data-goto="${w.id}">
-          <span class="thumb"><img src="${img(w.id, true)}" alt="" loading="lazy" decoding="async" /></span>
+          <span class="thumb"><img src="${img(w.id, 'thumb')}" alt="" loading="lazy" decoding="async" /></span>
           <span class="meta"><b>${w.id}</b>${t(quoted(w.title))}</span>
         </button></li>`,
       )
@@ -258,7 +302,11 @@ const triggers = {}
 scenes.hero(document.querySelector('.hero'))
 triggers['00'] = scenes.prologue(document.querySelector('#work-00'), [aspect('00')]).st
 for (const beat of Object.values(choreography).flat()) {
-  const el = document.querySelector(`#beat-${beat.ids.join('-')}`)
+  const el = document.querySelector(`#${beatId(beat)}`)
+  if (beat.kind === 'detail') {
+    scenes.detail(el)
+    continue // the index keeps pointing at the whole work
+  }
   const scene = scenes[beat.kind](el, beat.ids.map(aspect), Number(beat.ids[0]) * 7919)
   for (const id of beat.ids) triggers[id] = scene.st
 }
@@ -414,7 +462,7 @@ function closeBox() {
   document.documentElement.style.overflow = ''
   setTimeout(() => (box.hidden = true), 350)
 }
-for (const fig of document.querySelectorAll('.work.is-zoomable')) {
+for (const fig of document.querySelectorAll('.work.is-zoomable, .detail')) {
   fig.addEventListener('click', () => openBox(fig.dataset.id))
 }
 box.addEventListener('click', closeBox)

@@ -58,6 +58,9 @@ export const site = {
     back: { zh: '回到入口', en: 'Back to the entrance' },
   },
   enlarge: { zh: '放大', en: 'Enlarge' },
+  whole: { zh: '看整幅', en: 'Whole work' },
+  detail: { zh: '局部', en: 'Detail' },
+  pendingWork: { zh: '作品图待补', en: 'Image forthcoming' },
   index: { zh: '作品索引', en: 'Index of works' },
   credit: { zh: '© 2026 Wenlu Guo · 保留所有权利', en: '© 2026 Wenlu Guo · All rights reserved' },
 }
@@ -147,3 +150,25 @@ export const works = [
   { id: '15', zone: 'deposited', title: { zh: '色带', en: 'Bands' }, medium: T.collage },
   { id: '16', zone: 'deposited', title: { zh: '弧', en: 'Arcs' }, medium: T.mono },
 ]
+
+// Detail scenes: one region of a print at full scan resolution, with a line
+// that ties it to the zone's argument. DRAFT captions, to be confirmed by the
+// artist; the regions themselves are set in scripts/prepare_images.py.
+export const details = {
+  '06': {
+    zh: '一根线压进纸面，留下一道沟。这不是画出的血管，是线走过的证据。',
+    en: 'A thread pressed into the paper leaves a groove: not a drawn vessel, but evidence that a thread passed.',
+  },
+  '08': {
+    zh: '粗麻网压进纸里。每一个格子都是一次接触，没有一个是描绘。',
+    en: 'Burlap pressed into paper. Every cell is a contact; none is a depiction.',
+  },
+  '10': {
+    zh: '水走了，盐留在它最后停留的地方。白点是水的脚印。',
+    en: 'The water left; the salt stayed where it last stood. The white spots are its footprints.',
+  },
+  '12': {
+    zh: '每一圈边缘，都是一滴水蒸发的路径。形状由缺席决定。',
+    en: 'Each ring is the path of one drop evaporating. The shape was decided by absence.',
+  },
+}

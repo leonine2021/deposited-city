@@ -1,27 +1,71 @@
-"""Extract each artwork scan from the exhibition PDFs and export web images.
+"""Export each artwork as web images into public/works.
 
-For every PDF in the parent folder: take the embedded scan, crop it to the
-printed area plus a margin of real paper, neutralize the paper tone, and write
-a large WebP and a thumbnail into public/works, plus src/works-meta.json with
-pixel sizes. Run: python scripts/prepare_images.py (needs pymupdf, pillow, numpy).
+Sources, in order of preference:
+
+1. High-resolution scans in ../works/ (JPEG), listed in SCANS with the
+   rotation that brings each one upright (the works were scanned sideways).
+2. A flat placeholder, for works in PENDING that have no usable scan yet. It
+   keeps the proportions recorded in works-meta.json so the layouts hold.
+3. The exhibition PDFs in the parent folder (../NN_*.pdf). Reading them needs
+   pymupdf; without it they are left as built.
+
+Each scan is cropped to the printed area plus a margin of real paper, the
+paper tone is neutralized, and a large WebP and a thumbnail are written to
+public/works. Works listed in DETAILS also get a NN-detail.webp: a region of
+the print at full scan resolution, for the detail scenes. src/works-meta.json
+records pixel sizes, the detail region and which works are pending.
+
+Run: python scripts/prepare_images.py [NN ...]   (needs pillow, numpy; pymupdf for PDFs)
+
+When a scan arrives for a pending work: add it to SCANS, drop it from PENDING,
+run the script with that number.
 """
 import io
 import json
 import pathlib
+import sys
 
 import numpy as np
-import pymupdf
 from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT.parent
+SCAN_DIR = SRC / "works"
 OUT = ROOT / "public" / "works"
 META = ROOT / "src" / "works-meta.json"
 
-LARGE = 1800
+LARGE = 2600
+DETAIL = 2400
 THUMB = 640
 PAPER = np.array([246, 245, 241], dtype=np.float32)
-ROTATE_180 = {"01"}  # scanned upside down
+ROTATE_180 = {"01"}  # PDF scan of 01 is upside down
+
+# work id -> (scan file, degrees to rotate counter-clockwise to stand upright)
+SCANS = {
+    "00": ("wave.jpg", 90),
+    "01": ("wtc.jpg", 90),
+    "02": ("brick.jpg", 90),
+    "03": ("bamboo.jpg", -90),
+    "05": ("dream.jpg", -90),
+    "06": ("blood.jpg", -90),
+    "07": ("heart.jpg", 90),
+    "08": ("island.jpg", 90),
+    "10": ("salt fload001.jpg", 90),
+    "12": ("drops.jpg", -90),
+}
+
+# works without a sharp scan yet: a flat placeholder instead of a blurry image
+PENDING = {"04", "09", "11", "13", "14", "15", "16"}
+PLACEHOLDER = (220, 217, 210)
+PLACEHOLDER_H = 1200
+
+# work id -> detail region (x0, y0, x1, y1) as fractions of the exported image
+DETAILS = {
+    "06": (0.30, 0.30, 0.75, 0.68),  # thread grooves as vessels
+    "08": (0.04, 0.28, 0.56, 0.68),  # burlap mesh pressed into the paper
+    "10": (0.33, 0.18, 0.97, 0.62),  # salt crystals on the dark ground
+    "12": (0.27, 0.07, 0.67, 0.47),  # salt rings, each the edge of one drop
+}
 
 
 def ink_bbox(a):
@@ -61,13 +105,33 @@ def main_run(density, threshold=0.04, gap=0.015):
     return kept[0][0], kept[-1][1]
 
 
-def process(pdf):
+def load_scan(key):
+    name, deg = SCANS[key]
+    img = Image.open(SCAN_DIR / name).convert("RGB")
+    return img.rotate(deg, expand=True) if deg else img
+
+
+def load_pdf(key):
+    import pymupdf
+
+    (pdf,) = SRC.glob(f"{key}_*.pdf")
     doc = pymupdf.open(pdf)
     xref = doc[0].get_images(full=True)[0][0]
     img = Image.open(io.BytesIO(doc.extract_image(xref)["image"])).convert("RGB")
-    key = pdf.name[:2]
-    if key in ROTATE_180:
-        img = img.rotate(180)
+    return img.rotate(180) if key in ROTATE_180 else img
+
+
+def save_pair(key, out):
+    large = out.copy()
+    large.thumbnail((LARGE, LARGE), Image.LANCZOS)
+    large.save(OUT / f"{key}.webp", quality=84, method=6)
+    thumb = out.copy()
+    thumb.thumbnail((THUMB, THUMB), Image.LANCZOS)
+    thumb.save(OUT / f"{key}-thumb.webp", quality=78, method=6)
+    return {"w": large.width, "h": large.height}
+
+
+def export(key, img):
     a = np.asarray(img)
     h, w, _ = a.shape
     y0, y1, x0, x1 = ink_bbox(a)
@@ -82,21 +146,52 @@ def process(pdf):
     gain = PAPER / np.median(bright, axis=0)
     out = Image.fromarray(np.clip(crop * gain, 0, 255).astype(np.uint8))
 
-    large = out.copy()
-    large.thumbnail((LARGE, LARGE), Image.LANCZOS)
-    large.save(OUT / f"{key}.webp", quality=84, method=6)
-    thumb = out.copy()
-    thumb.thumbnail((THUMB, THUMB), Image.LANCZOS)
-    thumb.save(OUT / f"{key}-thumb.webp", quality=78, method=6)
-    return key, {"w": large.width, "h": large.height}
+    info = save_pair(key, out)
+    if key in DETAILS:
+        fx0, fy0, fx1, fy1 = DETAILS[key]
+        W, H = out.size
+        detail = out.crop((int(fx0 * W), int(fy0 * H), int(fx1 * W), int(fy1 * H)))
+        detail.thumbnail((DETAIL, DETAIL), Image.LANCZOS)
+        detail.save(OUT / f"{key}-detail.webp", quality=84, method=6)
+        info["detail"] = {
+            "x": round(fx0, 3),
+            "y": round(fy0, 3),
+            "cw": round(fx1 - fx0, 3),
+            "ch": round(fy1 - fy0, 3),
+            "w": detail.width,
+            "h": detail.height,
+        }
+    return info
 
 
-def main():
+def placeholder(key, old):
+    aspect = old["w"] / old["h"] if old else 4 / 5
+    h = PLACEHOLDER_H
+    out = Image.new("RGB", (round(h * aspect), h), PLACEHOLDER)
+    info = save_pair(key, out)
+    info["pending"] = True
+    return info
+
+
+def main(keys):
     OUT.mkdir(parents=True, exist_ok=True)
-    meta = dict(process(p) for p in sorted(SRC.glob("[0-9][0-9]_*.pdf")))
-    META.write_text(json.dumps(meta, indent=2) + "\n")
-    print(json.dumps(meta))
+    meta = json.loads(META.read_text()) if META.exists() else {}
+    for key in keys:
+        if key in PENDING:
+            meta[key] = placeholder(key, meta.get(key))
+        else:
+            if key in SCANS:
+                img = load_scan(key)
+            else:
+                try:
+                    img = load_pdf(key)
+                except ImportError:
+                    print(f"{key}: no scan and pymupdf missing, left as is")
+                    continue
+            meta[key] = export(key, img)
+        print(key, meta[key])
+    META.write_text(json.dumps(dict(sorted(meta.items())), indent=2) + "\n")
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:] or [f"{i:02d}" for i in range(17)])

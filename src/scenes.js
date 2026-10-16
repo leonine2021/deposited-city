@@ -15,6 +15,9 @@
 //             fall into the wall's salt line) · evaporate (a waterline
 //             recedes, leaving salt) · drift (a gallery slides past while
 //             scattered salt condenses back into one line)
+// detail      one region of a work at scan resolution fills the stage; a
+//             key below rules the region on the whole work, like a detail
+//             callout on a drawing
 // synthesis   the grains regather into the river's axis
 // exit        the sealed plate returns with a waterline beneath it
 
@@ -843,6 +846,41 @@ export function drift(section, aspects, seed) {
     },
     () => b,
   )
+}
+
+/* ------------------------------------------------------------- detail */
+
+/**
+ * The detail settles into focus and keeps moving very slowly, as an eye does
+ * across a print held close. Then the key rules its outline on the whole work.
+ */
+export function detail(section) {
+  const stage = section.querySelector('.stage')
+  const fig = stage.querySelector('.detail')
+  const im = fig.querySelector('img')
+  const meta = stage.querySelector('.detail__meta')
+  const key = stage.querySelector('.detail__key')
+  const rects = [...key.querySelectorAll('rect')]
+  const text = stage.querySelector('.detail__text')
+
+  return pinScene(section, {
+    length: 1.5,
+    layout() {
+      const b = stageBox(stage)
+      fig.style.top = `${b.top}px`
+      fig.style.bottom = `${meta.offsetHeight + 44}px`
+    },
+    render(p) {
+      const o = ease.out(seg(p, 0, 0.24))
+      fig.style.opacity = o
+      const drift = ease.inOut(seg(p, 0.08, 0.96))
+      im.style.transform = `scale(${1.12 - 0.07 * o}) translate3d(${(0.5 - drift) * 3}%,${(drift - 0.5) * 2}%,0)`
+      fade(key, seg(p, 0.3, 0.46), 10)
+      const ruled = 1 - ease.inOut(seg(p, 0.4, 0.64))
+      for (const r of rects) r.style.strokeDashoffset = ruled
+      fade(text, seg(p, 0.5, 0.68))
+    },
+  })
 }
 
 /* ---------------------------------------------------------- synthesis */
