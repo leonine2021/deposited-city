@@ -272,7 +272,6 @@ button {
 }
 
 :root[data-lang='en'] .label__title {
-  font-style: italic;
   font-size: 23px;
   line-height: 1.2;
 }
@@ -459,7 +458,6 @@ button {
 }
 
 :root[data-lang='en'] .cover__theme {
-  font-style: italic;
   font-size: clamp(22px, 3.8vw, 30px);
   line-height: 1.2;
 }
@@ -638,7 +636,6 @@ button {
 
 :root[data-lang='en'] .prologue__line {
   max-width: 16em;
-  font-style: italic;
   font-size: clamp(28px, 5.6vw, 48px);
   line-height: 1.15;
 }
