@@ -7,14 +7,16 @@
   --grain: #6e695f;
   --water: #4d7891;
   --vignette-ground: #ebe8e1;
-  /* Chinese: Source Han Sans (served as Noto Sans SC), Light for display, Regular for text.
-     Latin inside Chinese text falls to Inter Tight. English: Instrument Serif for display,
-     Inter Tight for text. Instrument Serif has a single weight, so display weight stays 400. */
-  --zh: 'Inter Tight', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  /* Display: Source Han Sans Light (served as Noto Sans SC) for Chinese, Instrument Serif for
+     English. Text: serifs with crisp, cut edges to sit under those titles — Source Han Serif
+     (served as Noto Serif SC) for Chinese, Newsreader for English and for Latin inside Chinese
+     text. Instrument Serif has a single weight, so display weight stays 400. */
+  --zh: 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --zh-text: 'Newsreader', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
   --en-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-  --en-text: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --en-text: 'Newsreader', Georgia, 'Times New Roman', serif;
   --display: var(--zh);
-  --text: var(--zh);
+  --text: var(--zh-text);
   --display-weight: 300;
   --header: 52px;
   --gutter: 24px;
@@ -56,7 +58,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 400 17px/1.7 var(--text);
+  font: 400 17px/1.75 var(--text);
   -webkit-font-smoothing: antialiased;
   transition:
     background-color 0.5s ease,
@@ -69,7 +71,8 @@ body {
 }
 
 :root[data-lang='en'] body {
-  line-height: 1.6;
+  font-size: 18px;
+  line-height: 1.55;
 }
 
 img {
@@ -587,7 +590,8 @@ button {
 }
 
 :root[data-lang='en'] .preface p {
-  line-height: 1.7;
+  font-size: 19px;
+  line-height: 1.6;
   text-align: left;
 }
 
@@ -619,7 +623,8 @@ button {
 }
 
 :root[data-lang='en'] .intro__body {
-  line-height: 1.7;
+  font-size: 19px;
+  line-height: 1.6;
   text-align: left;
 }
 
@@ -689,7 +694,8 @@ button {
 }
 
 :root[data-lang='en'] .synthesis-text p {
-  line-height: 1.7;
+  font-size: 19px;
+  line-height: 1.6;
   text-align: left;
 }
 
