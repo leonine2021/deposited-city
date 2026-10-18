@@ -1,11 +1,3 @@
-/* MiSans Regular (Xiaomi), subset to the site's characters by scripts/subset_font.py */
-@font-face {
-  font-family: 'MiSans';
-  src: url('./fonts/misans-regular.woff2') format('woff2');
-  font-weight: 400;
-  font-display: swap;
-}
-
 :root {
   --paper: #f4f2ed;
   --ink: #161514;
@@ -15,18 +7,17 @@
   --grain: #6e695f;
   --water: #4d7891;
   --vignette-ground: #ebe8e1;
-  /* Display: Source Han Sans Light (served as Noto Sans SC) for Chinese, Instrument Serif for
-     English. Text: MiSans for Chinese, a sans with cleaner cut terminals than Source Han Sans
-     (self-hosted subset; characters it lacks fall back to Source Han Sans), Newsreader for
-     English and for Latin inside Chinese text. Instrument Serif has a single weight, so
-     display weight stays 400. */
-  --zh: 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --zh-text: 'Newsreader', 'MiSans', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', sans-serif;
+  /* Chinese: Source Han Sans Light (served as Noto Sans SC) for display and text alike, one
+     face from the title down to the labels; Latin inside Chinese text falls to Newsreader.
+     English: Instrument Serif for display, Newsreader for text. Instrument Serif has a single
+     weight, so display weight stays 400. */
+  --zh: 'Newsreader', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --en-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --en-text: 'Newsreader', Georgia, 'Times New Roman', serif;
   --display: var(--zh);
-  --text: var(--zh-text);
+  --text: var(--zh);
   --display-weight: 300;
+  --text-weight: 300;
   --header: 52px;
   --gutter: 24px;
   --measure: 34rem;
@@ -37,6 +28,7 @@
   --display: var(--en-display);
   --text: var(--en-text);
   --display-weight: 400;
+  --text-weight: 400;
 }
 
 /* dark wall: the prints keep their own paper, like works hung on a dark gallery wall */
@@ -67,7 +59,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 400 17px/1.75 var(--text);
+  font: var(--text-weight) 18px/1.8 var(--text);
   -webkit-font-smoothing: antialiased;
   transition:
     background-color 0.5s ease,
@@ -80,7 +72,6 @@ body {
 }
 
 :root[data-lang='en'] body {
-  font-size: 18px;
   line-height: 1.55;
 }
 
@@ -128,7 +119,7 @@ button {
 
 .bar__zone {
   position: relative;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
   color: var(--muted);
   white-space: nowrap;
@@ -253,7 +244,7 @@ button {
 }
 
 .label--side .label__medium {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .label--side .label__note {
@@ -269,7 +260,7 @@ button {
 
 .label__no {
   display: block;
-  font: 400 11px/1 var(--text);
+  font: var(--text-weight) 13px/1 var(--text);
   letter-spacing: 0.16em;
   color: var(--muted);
   margin-bottom: 8px;
@@ -289,16 +280,16 @@ button {
 .label__medium {
   display: block;
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.5;
   color: var(--muted);
 }
 
 .label__note {
   display: block;
-  max-width: 22rem;
+  max-width: 24rem;
   margin: 10px auto 0;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--muted);
 }
@@ -328,7 +319,7 @@ button {
   bottom: 12px;
   padding: 0 12px;
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.14em;
   line-height: 1.4;
   color: #8e8a82;
@@ -400,9 +391,9 @@ button {
 }
 
 .detail__caption {
-  max-width: 30rem;
+  max-width: 32rem;
   margin: 8px 0 0;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.7;
   color: var(--muted);
 }
@@ -547,7 +538,7 @@ button {
 .hero__sub {
   margin: 20px 0 0;
   text-align: left;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.04em;
   color: var(--muted);
 }
@@ -558,7 +549,7 @@ button {
   right: 0;
   bottom: calc(28px + env(safe-area-inset-bottom, 0px));
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.14em;
   color: var(--muted);
 }
@@ -593,7 +584,7 @@ button {
 
 .preface p {
   margin: 0;
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.95;
   text-align: justify;
 }
@@ -626,7 +617,7 @@ button {
 
 .intro__body {
   margin: 0;
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.95;
   text-align: justify;
 }
@@ -678,7 +669,7 @@ button {
 
 .kicker {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.18em;
   color: var(--muted);
   margin-bottom: 14px;
@@ -735,7 +726,7 @@ button {
 }
 
 .coda li b {
-  font: 400 11px/1 var(--text);
+  font: var(--text-weight) 13px/1 var(--text);
   letter-spacing: 0.16em;
   color: var(--muted);
 }
@@ -821,7 +812,7 @@ button {
 }
 
 .index button b {
-  font: 400 11px/1 var(--text);
+  font: var(--text-weight) 13px/1 var(--text);
   letter-spacing: 0.16em;
   color: var(--muted);
 }
@@ -838,7 +829,7 @@ button {
 
 .index .meta i {
   font-style: normal;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.14em;
   color: var(--muted);
 }
@@ -851,7 +842,7 @@ button {
 .credit {
   max-width: 64rem;
   margin: 72px auto 0;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
 }
 
