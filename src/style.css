@@ -1,3 +1,11 @@
+/* 京華老宋体 (KingHwa_OldSong), subset to the site's characters by scripts/subset_font.py */
+@font-face {
+  font-family: 'KingHwa OldSong';
+  src: url('./fonts/kinghwa-oldsong.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
   --paper: #f4f2ed;
   --ink: #161514;
@@ -7,15 +15,17 @@
   --grain: #6e695f;
   --water: #4d7891;
   --vignette-ground: #ebe8e1;
-  /* Chinese: Source Han Sans (served as Noto Sans SC), Light for display, Regular for text;
-     Latin inside Chinese text falls to Newsreader. English: Instrument Serif for display,
-     Newsreader for text, a serif with crisp, cut edges to sit under it. Instrument Serif has
-     a single weight, so display weight stays 400. */
-  --zh: 'Newsreader', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  /* Display: Source Han Sans Light (served as Noto Sans SC) for Chinese, Instrument Serif for
+     English. Text: old-style serifs with cut edges to sit under those titles — 京華老宋体 for
+     Chinese (self-hosted subset; characters it lacks fall back to Source Han Sans), Newsreader
+     for English and for Latin inside Chinese text. Instrument Serif has a single weight, so
+     display weight stays 400. */
+  --zh: 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --zh-text: 'Newsreader', 'KingHwa OldSong', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', serif;
   --en-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --en-text: 'Newsreader', Georgia, 'Times New Roman', serif;
   --display: var(--zh);
-  --text: var(--zh);
+  --text: var(--zh-text);
   --display-weight: 300;
   --header: 52px;
   --gutter: 24px;
@@ -57,7 +67,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 400 17px/1.75 var(--text);
+  font: 400 18px/1.75 var(--text);
   -webkit-font-smoothing: antialiased;
   transition:
     background-color 0.5s ease,
@@ -583,7 +593,7 @@ button {
 
 .preface p {
   margin: 0;
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.95;
   text-align: justify;
 }
@@ -616,7 +626,7 @@ button {
 
 .intro__body {
   margin: 0;
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.95;
   text-align: justify;
 }
