@@ -1,14 +1,14 @@
 """Subset the Chinese text face to the characters the site uses.
 
-京華老宋体 (KingHwa_OldSong) is 35 MB whole; the site ships only the glyphs
-its texts need, as src/fonts/kinghwa-oldsong.woff2 (~200 KB). Run this again
-whenever visitor text in src/content.js changes, or the new characters fall
-back to Source Han Sans.
+MiSans (Xiaomi, free for commercial use) is ~6.5 MB per weight; the site
+ships only the glyphs its texts need, as src/fonts/misans-regular.woff2
+(~150 KB). Run this again whenever visitor text in src/content.js changes,
+or the new characters fall back to Source Han Sans.
 
-    npm pack @fontpkg/king-hwa-old-song        # the full TTF, once
-    tar xzf fontpkg-king-hwa-old-song-*.tgz
+    npm pack @fontpkg/mi-sans                  # the full fonts, once
+    tar xzf fontpkg-mi-sans-*.tgz
     pip install fonttools brotli
-    python3 scripts/subset_font.py package/京華老宋体v2.002.ttf
+    python3 scripts/subset_font.py package/MiSans-Regular.otf src/fonts/misans-regular.woff2
 """
 import pathlib
 import subprocess
@@ -16,33 +16,33 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SOURCES = [ROOT / "src" / "content.js", ROOT / "src" / "main.js", ROOT / "index.html"]
-OUT = ROOT / "src" / "fonts" / "kinghwa-oldsong.woff2"
 # always present: ASCII, digits and the punctuation the texts may pick up
 EXTRA = "".join(chr(c) for c in range(0x20, 0x7F)) + "“”‘’…—–·《》〈〉「」、。，；：？！（）【】○×©"
 
 
-def main(ttf):
+def main(source, out):
+    out = pathlib.Path(out)
     chars = set(EXTRA)
     for f in SOURCES:
         chars |= set(f.read_text())
     text = "".join(sorted(c for c in chars if not c.isspace()))
-    chars_file = ROOT / "src" / "fonts" / "subset.txt"
+    chars_file = out.parent / "subset.txt"
+    out.parent.mkdir(parents=True, exist_ok=True)
     chars_file.write_text(text)
-    OUT.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(
         [
-            "pyftsubset", ttf,
+            "pyftsubset", source,
             f"--text-file={chars_file}",
             "--flavor=woff2",
-            f"--output-file={OUT}",
+            f"--output-file={out}",
             "--layout-features=",
             "--no-hinting",
             "--desubroutinize",
         ],
         check=True,
     )
-    print(f"{OUT.name}: {len(text)} characters, {OUT.stat().st_size // 1024} KB")
+    print(f"{out.name}: {len(text)} characters, {out.stat().st_size // 1024} KB")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else ROOT / "src" / "fonts" / "misans-regular.woff2")
