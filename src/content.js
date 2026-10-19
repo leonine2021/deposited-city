@@ -110,11 +110,11 @@ export const works = [
   {
     id: '02',
     zone: 'drawn',
-    title: { zh: '破壁', en: 'Through the Wall' },
+    title: { zh: '隙', en: 'Interval' },
     medium: T.photo,
     note: {
-      zh: '绿从两道坚硬的立面之间涌出来。墙，让开了。',
-      en: 'Green surges between two hard facades. The wall gives way.',
+      zh: '两道坚硬的立面之间，绿，慢慢长了进来。',
+      en: 'Between two hard facades, green grows in, slowly.',
     },
   },
   { id: '03', zone: 'drawn', title: { zh: '划界', en: 'Drawing Borders' }, medium: T.collage },
