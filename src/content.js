@@ -7,7 +7,7 @@ export const site = {
   titleLines: { zh: ['界：', '析出的城市'], en: ['Boundary:', 'The Deposited City'] },
   short: { zh: '界', en: 'Boundary' },
   subtitle: {
-    zh: '一位建筑师关于线的展览 · 建筑师 Wenlu Guo',
+    zh: '一位建筑师关于线的展览 · 建筑师郭雯璐',
     en: "An architect's exhibition on where lines come from · Architect Wenlu Guo",
   },
   thesis: {
@@ -15,7 +15,7 @@ export const site = {
     en: 'Every line is what something left behind after it arrived and went away.',
   },
   preface: {
-    zh: '建筑师 Wenlu Guo 以版画的压印、拼贴与盐析为方法，做了一次关于线的实验。海水退了，沙滩上留下一道白线；杯子挪开，桌上留下一圈水渍；人走多了，草地上踩出一条路。这些线不是图像，是痕迹：像脚印，像水位线，证明有东西来过。城市里到处是这样的线，只是我们习惯了把它们都当作规划的结果。这个展览按来源把线分为三种：画出的、压出的、析出的，它们对应城市的三种生成方式：意志、使用与时间。展览最后提出一个设计主张，析出的城市：画得少而准，把其余留给水、时间和居住者去生长。',
+    zh: '建筑师郭雯璐以版画的压印、拼贴与盐析为方法，做了一次关于线的实验。海水退了，沙滩上留下一道白线；杯子挪开，桌上留下一圈水渍；人走多了，草地上踩出一条路。这些线不是图像，是痕迹：像脚印，像水位线，证明有东西来过。城市里到处是这样的线，只是我们习惯了把它们都当作规划的结果。这个展览按来源把线分为三种：画出的、压出的、析出的，它们对应城市的三种生成方式：意志、使用与时间。展览最后提出一个设计主张，析出的城市：画得少而准，把其余留给水、时间和居住者去生长。',
     en: 'Using the pressing, collage and salt precipitation of printmaking as method, architect Wenlu Guo made an experiment about lines. The tide goes out and leaves a white line on the sand. A glass is lifted and leaves a ring on the table. Enough people cross a lawn and a path appears. These lines are not images but traces: like footprints, like a waterline, they prove something was here. Cities are full of such lines, yet we treat them all as outcomes of planning. This exhibition sorts lines by origin into three kinds, drawn, pressed and deposited, corresponding to three ways a city comes into being: intention, use and time. It ends with a design proposition, the deposited city: draw sparingly and precisely, and leave the rest for water, time and inhabitants to grow.',
   },
   scroll: { zh: '向下滑动，走进展厅', en: 'Scroll to enter' },
@@ -56,7 +56,7 @@ export const site = {
   detail: { zh: '局部', en: 'Detail' },
   pendingWork: { zh: '作品图待补', en: 'Image forthcoming' },
   index: { zh: '作品索引', en: 'Index of works' },
-  credit: { zh: '© 2026 Wenlu Guo · 保留所有权利', en: '© 2026 Wenlu Guo · All rights reserved' },
+  credit: { zh: '© 2026 郭雯璐 · 保留所有权利', en: '© 2026 Wenlu Guo · All rights reserved' },
 }
 
 export const zones = {
