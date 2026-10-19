@@ -11,9 +11,12 @@ Sources, in order of preference:
 
 Each scan is cropped to the printed area plus a margin of real paper, the
 paper tone is neutralized, and a large WebP and a thumbnail are written to
-public/works. Works listed in DETAILS also get NN-detail.webp and NN-detail-thumb.webp:
-a region of the print at full scan resolution, for the detail scenes. Those
-works are shown only as that region, never whole. src/works-meta.json
+public/works.
+
+Region-only works (the abstract ones) are shown only as one region, never
+whole: NN-detail.webp and NN-detail-thumb.webp. The region comes from the
+artist's own crop in ../works/crops/NN.jpg when there is one (CROPS), or
+else is cut from the scan by the fractions in DETAILS. src/works-meta.json
 records pixel sizes, the detail region and which works are pending.
 
 Run: python scripts/prepare_images.py [NN ...]   (needs pillow, numpy; pymupdf for PDFs)
@@ -56,16 +59,20 @@ SCANS = {
 }
 
 # works without a sharp scan yet: a flat placeholder instead of a blurry image
-PENDING = {"04", "09", "11", "13", "14", "15", "16"}
+PENDING = {"04", "09", "11", "14", "15", "16"}
+
+# the artist's own crops, used as the region as they are (no scan needed)
+CROPS = {"03", "06", "10", "13"}
+CROP_DIR = SCAN_DIR / "crops"
 PLACEHOLDER = (220, 217, 210)
 PLACEHOLDER_H = 1200
 
 # work id -> detail region (x0, y0, x1, y1) as fractions of the exported image
 DETAILS = {
     "00": (0.12, 0.22, 0.92, 0.82),  # the sealed black block and the swirl above it
-    "03": (0.30, 0.12, 0.80, 0.55),  # broken black marks of the window grid
-    "06": (0.30, 0.30, 0.75, 0.68),  # thread grooves as vessels
-    "10": (0.33, 0.18, 0.97, 0.62),  # salt crystals on the dark ground
+    "03": (0.30, 0.12, 0.80, 0.55),  # broken black marks (superseded by the artist's crop)
+    "06": (0.30, 0.30, 0.75, 0.68),  # thread grooves as vessels (superseded by the artist's crop)
+    "10": (0.33, 0.18, 0.97, 0.62),  # salt crystals on the dark ground (superseded by the artist's crop)
     "12": (0.27, 0.07, 0.67, 0.47),  # salt rings, each the edge of one drop
 }
 
@@ -169,6 +176,19 @@ def export(key, img):
     return info
 
 
+def export_region(key, img, info=None):
+    """The region image and its thumbnail, from an already-cropped picture."""
+    thumb = img.copy()
+    thumb.thumbnail((THUMB, THUMB), Image.LANCZOS)
+    thumb.save(OUT / f"{key}-detail-thumb.webp", quality=78, method=6)
+    detail = img.copy()
+    detail.thumbnail((DETAIL, DETAIL), Image.LANCZOS)
+    detail.save(OUT / f"{key}-detail.webp", quality=84, method=6)
+    info = dict(info or {"w": detail.width, "h": detail.height})
+    info["detail"] = {"x": 0, "y": 0, "cw": 1, "ch": 1, "w": detail.width, "h": detail.height}
+    return info
+
+
 def placeholder(key, old):
     aspect = old["w"] / old["h"] if old else 4 / 5
     h = PLACEHOLDER_H
@@ -182,7 +202,10 @@ def main(keys):
     OUT.mkdir(parents=True, exist_ok=True)
     meta = json.loads(META.read_text()) if META.exists() else {}
     for key in keys:
-        if key in PENDING:
+        if key in CROPS:
+            img = Image.open(CROP_DIR / f"{key}.jpg").convert("RGB")
+            meta[key] = export_region(key, img, meta.get(key) if key in SCANS else None)
+        elif key in PENDING:
             meta[key] = placeholder(key, meta.get(key))
         else:
             if key in SCANS:

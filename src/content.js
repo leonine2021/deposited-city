@@ -181,4 +181,21 @@ export const details = {
     zh: '每一圈边缘，都是一滴水蒸发的路径。形状由缺席决定。',
     en: 'Each ring is the path of one drop evaporating. The shape was decided by absence.',
   },
+  '13': {
+    zh: '铁和水都走了，留下的是锈走过的路。',
+    en: 'Iron and water have both gone; what stays is the path the rust took.',
+  },
+}
+
+// Theme lines for the covers that do not open a zone: one sentence from the
+// zone's wall text, so the cover still speaks in the exhibition's own words.
+export const coverLines = {
+  '13': {
+    zh: '没有一条出自人手，形状由蒸发的路径决定。',
+    en: 'None came from a hand; their shape was set by the path of evaporation.',
+  },
+  '12': {
+    zh: '水走了，盐结晶在水最后停留的边缘。',
+    en: 'The water left; the salt crystallized along the edge where it last stood.',
+  },
 }

@@ -462,6 +462,19 @@ button {
   line-height: 1.2;
 }
 
+.cover__theme--alone {
+  max-width: 16em;
+  margin: 0;
+  font-size: clamp(26px, 5.4vw, 44px);
+  line-height: 1.4;
+}
+
+:root[data-lang='en'] .cover__theme--alone {
+  max-width: 15em;
+  font-size: clamp(30px, 6vw, 52px);
+  line-height: 1.12;
+}
+
 .cover__after {
   left: var(--gutter);
   right: var(--gutter);
