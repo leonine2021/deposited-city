@@ -103,7 +103,7 @@ const REGION = new Set(['detail', 'cover'])
 const beatId = (beat) => `${REGION.has(beat.kind) ? 'detail' : 'beat'}-${beat.ids.join('-')}`
 
 /* works shown only as a region; nothing on the site shows them whole */
-const detailOnly = new Set(['00', ...choreography.filter((b) => REGION.has(b.kind)).flatMap((b) => b.ids)])
+const detailOnly = new Set(['00', '09', ...choreography.filter((b) => REGION.has(b.kind)).flatMap((b) => b.ids)])
 
 const workById = Object.fromEntries(works.map((w) => [w.id, w]))
 const SALT_KINDS = new Set(['crystallize', 'saltline', 'evaporate', 'drift'])
@@ -290,7 +290,7 @@ document.querySelector('#app').innerHTML = `
     'coda',
     `<section class="scene scene--exit" id="exit">
       <div class="stage">
-        ${detailFigure('00', 'aria-hidden="true"')}
+        ${detailFigure('09', 'aria-hidden="true"')}
         <svg class="ink" aria-hidden="true"></svg>
         <p class="exit__line">${t(site.exit.line)}</p>
         <button class="exit__back" type="button">${t(site.exit.back)}</button>
@@ -351,7 +351,7 @@ for (const el of document.querySelectorAll('.scene')) {
     onEnter: () => el.querySelectorAll('img[loading="lazy"]').forEach((i) => (i.loading = 'eager')),
   })
 }
-scenes.exit(document.querySelector('#exit'))
+triggers['09'] = scenes.exit(document.querySelector('#exit')).st
 
 /* statement: the sentence darkens piece by piece as it scrolls through */
 for (const group of document.querySelectorAll('.statement .zh, .statement .en')) {
@@ -468,7 +468,7 @@ for (const btn of document.querySelectorAll('[data-goto]')) {
   btn.addEventListener('click', () => {
     const st = triggers[btn.dataset.goto]
     if (st) scrollToY(revealedY(st), 2)
-    else document.querySelector(`.work[data-id="${btn.dataset.goto}"]`).scrollIntoView({ block: 'center' })
+    else document.querySelector(`[data-id="${btn.dataset.goto}"]`)?.scrollIntoView({ block: 'center' })
   })
 }
 

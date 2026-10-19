@@ -360,8 +360,7 @@ button {
 }
 
 /* the sealed plate: on a wide band, keep the black block in view */
-.hero .detail img,
-.scene--exit .detail img {
+.hero .detail img {
   object-position: 50% 78%;
 }
 

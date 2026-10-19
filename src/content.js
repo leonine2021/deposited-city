@@ -25,9 +25,10 @@ export const site = {
     en: 'What left this line?',
   },
   exit: {
+    // answers the opening question, "What left this line?"
     line: {
-      zh: '城市之下，水一直都在。',
-      en: 'Beneath the city, the water never left.',
+      zh: '是我们。',
+      en: 'We did.',
     },
     back: { zh: '回到开头', en: 'Back to the beginning' },
   },
@@ -136,6 +137,7 @@ export const works = [
     medium: { zh: '单版画、薄纸拼贴、压印线，纸本', en: 'Monoprint, chine-collé and embossed thread on paper' },
   },
 
+  { id: '09', zone: 'coda', title: { zh: '面', en: 'Face' }, medium: T.collagraph },
   { id: '10', zone: 'deposited', title: { zh: '析出 I', en: 'Deposit I' }, medium: T.salt },
   { id: '13', zone: 'deposited', title: { zh: '洇', en: 'Seep' }, medium: T.mono },
 ]
