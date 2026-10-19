@@ -81,6 +81,7 @@ function label(w) {
  * The kind names a choreography in scenes.js. The bar's zone name follows
  * the work on screen.
  */
+// seven works, few and chosen, so the walk never tires the eye on a screen
 const choreography = [
   { kind: 'cover', ids: ['03'], chapter: true },
   { kind: 'cover', ids: ['06'], chapter: true },
@@ -89,14 +90,6 @@ const choreography = [
   { kind: 'cover', ids: ['13'] },
   { kind: 'trace', ids: ['01'], mode: 'frame' },
   { kind: 'trace', ids: ['05'], mode: 'rise' },
-  { kind: 'cover', ids: ['12'] },
-  { kind: 'push', ids: ['07'], side: 'left' },
-  { kind: 'push', ids: ['08'], side: 'right' },
-  { kind: 'sag', ids: ['09'] },
-  { kind: 'saltline', ids: ['11'] },
-  { kind: 'crystallize', ids: ['14'] },
-  { kind: 'saltline', ids: ['15'] },
-  { kind: 'crystallize', ids: ['16'] },
 ]
 
 const REGION = new Set(['detail', 'cover'])

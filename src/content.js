@@ -1,6 +1,6 @@
 // All visitor-facing text. Wall texts follow the "上墙文字（定稿）" tab of the
 // curatorial doc word for word; work labels follow "展览文字（现场用）".
-// Works 14, 15, 16 carry working titles until the artist confirms them.
+// The site shows seven works chosen by the artist, plus the sealed plate (00).
 
 export const site = {
   title: { zh: '界：析出的城市', en: 'Boundary: The Deposited City' },
@@ -22,10 +22,6 @@ export const site = {
   prologue: {
     zh: '有东西被封存了。走完一圈，再回来看。',
     en: 'Something is sealed. Walk the loop, then come back.',
-  },
-  saltNote: {
-    zh: '从这里开始，墙上的线是《析出 II》的盐边缘放大后的形状。',
-    en: 'From here on, the line on the wall is the enlarged salt edge of Deposit II.',
   },
   synthesis: {
     kicker: { zh: '合题', en: 'Synthesis' },
@@ -123,27 +119,9 @@ export const works = [
     title: { zh: '脉', en: 'Vessels' },
     medium: { zh: '单版画、薄纸拼贴、压印线，纸本', en: 'Monoprint, chine-collé and embossed thread on paper' },
   },
-  {
-    id: '07',
-    zone: 'pressed',
-    title: { zh: '缠', en: 'Wrapped' },
-    medium: { zh: '单版画、压印线，纸本', en: 'Monoprint with embossed thread on paper' },
-  },
-  { id: '08', zone: 'pressed', title: { zh: '网中器官', en: 'Organ in Mesh' }, medium: T.collagraph },
-  { id: '09', zone: 'pressed', title: { zh: '面具与肺', en: 'Mask and Lung' }, medium: T.collagraph },
 
   { id: '10', zone: 'deposited', title: { zh: '析出 I', en: 'Deposit I' }, medium: T.salt },
-  { id: '11', zone: 'deposited', title: { zh: '析出 II', en: 'Deposit II' }, medium: T.salt, note: site.saltNote },
-  {
-    id: '12',
-    zone: 'deposited',
-    title: { zh: '盐花', en: 'Salt Bloom' },
-    medium: { zh: '单版画、盐析、拼贴，纸本', en: 'Monoprint, salt precipitation and collage on paper' },
-  },
   { id: '13', zone: 'deposited', title: { zh: '锈与水', en: 'Rust and Water' }, medium: T.mono },
-  { id: '14', zone: 'deposited', title: { zh: '残片', en: 'Fragments' }, medium: T.collage },
-  { id: '15', zone: 'deposited', title: { zh: '色带', en: 'Bands' }, medium: T.collage },
-  { id: '16', zone: 'deposited', title: { zh: '弧', en: 'Arcs' }, medium: T.mono },
 ]
 
 // Detail scenes: the abstract works are shown only as one region at full scan
@@ -163,17 +141,9 @@ export const details = {
     zh: '一根线压进纸面，留下一道沟。这不是画出的血管，是线走过的证据。',
     en: 'A thread pressed into the paper leaves a groove: not a drawn vessel, but evidence that a thread passed.',
   },
-  '08': {
-    zh: '粗麻网压进纸里。每一个格子都是一次接触，没有一个是描绘。',
-    en: 'Burlap pressed into paper. Every cell is a contact; none is a depiction.',
-  },
   '10': {
     zh: '水走了，盐留在它最后停留的地方。白点是水的脚印。',
     en: 'The water left; the salt stayed where it last stood. The white spots are its footprints.',
-  },
-  '12': {
-    zh: '每一圈边缘，都是一滴水蒸发的路径。形状由缺席决定。',
-    en: 'Each ring is the path of one drop evaporating. The shape was decided by absence.',
   },
   '13': {
     zh: '铁和水都走了，留下的是锈走过的路。',
@@ -187,9 +157,5 @@ export const coverLines = {
   '13': {
     zh: '没有一条出自人手，形状由蒸发的路径决定。',
     en: 'None came from a hand; their shape was set by the path of evaporation.',
-  },
-  '12': {
-    zh: '水走了，盐结晶在水最后停留的边缘。',
-    en: 'The water left; the salt crystallized along the edge where it last stood.',
   },
 }

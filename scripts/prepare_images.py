@@ -52,15 +52,14 @@ SCANS = {
     "03": ("bamboo.jpg", -90),
     "05": ("dream.jpg", -90),
     "06": ("blood.jpg", -90),
-    "07": ("heart.jpg", 90),
-    "08": ("island.jpg", 90),
     "10": ("salt fload001.jpg", 90),
-    "12": ("drops.jpg", -90),
 }
 
 # works without a sharp scan yet: a flat placeholder instead of a blurry image
-PENDING = {"09", "11", "14", "15", "16"}
-# 04 Truss and Salt is not shown on the site
+PENDING = set()
+
+# the works the site shows: seven chosen by the artist, plus the sealed plate
+SHOWN = ["00", "01", "02", "03", "05", "06", "10", "13"]
 
 # the artist's own crops, used as the region as they are (no scan needed)
 CROPS = {"03", "06", "10", "13"}
@@ -74,7 +73,6 @@ DETAILS = {
     "03": (0.30, 0.12, 0.80, 0.55),  # broken black marks (superseded by the artist's crop)
     "06": (0.30, 0.30, 0.75, 0.68),  # thread grooves as vessels (superseded by the artist's crop)
     "10": (0.33, 0.18, 0.97, 0.62),  # salt crystals on the dark ground (superseded by the artist's crop)
-    "12": (0.27, 0.07, 0.67, 0.47),  # salt rings, each the edge of one drop
 }
 
 
@@ -156,7 +154,11 @@ def export(key, img):
     gain = PAPER / np.median(bright, axis=0)
     out = Image.fromarray(np.clip(crop * gain, 0, 255).astype(np.uint8))
 
-    info = save_pair(key, out)
+    if key in DETAILS:
+        # region-only: the whole print is never published
+        info = {"w": out.width, "h": out.height}
+    else:
+        info = save_pair(key, out)
     if key in DETAILS:
         fx0, fy0, fx1, fy1 = DETAILS[key]
         W, H = out.size
@@ -223,4 +225,4 @@ def main(keys):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:] or [f"{i:02d}" for i in range(17)])
+    main(sys.argv[1:] or SHOWN)
