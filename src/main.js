@@ -138,8 +138,10 @@ function coverScene(beat) {
   const center = beat.chapter
     ? `<span class="cover__numeral">${t(z.numeral)}</span>
         <h2 class="cover__name">${t(z.name)}</h2>
-        <p class="cover__theme">${t(z.theme)}</p>`
-    : `<p class="cover__theme cover__theme--alone">${t(coverLines[id] ?? z.theme)}</p>`
+        <p class="cover__theme">${t(z.theme)}</p>
+        ${z.themeBy ? `<span class="cover__by">${t(z.themeBy)}</span>` : ''}`
+    : `<p class="cover__theme cover__theme--alone">${t(coverLines[id] ?? z.theme)}</p>
+        ${coverLines[id]?.by ? `<span class="cover__by">${t(coverLines[id].by)}</span>` : ''}`
   return `<section class="cover scene" id="${beatId(beat)}">
     <div class="stage">
       ${detailFigure(id, 'aria-hidden="true"')}
@@ -191,6 +193,11 @@ function intro(key) {
     <div class="intro__head reveal">
       <svg class="intro__sample" viewBox="0 0 320 40" preserveAspectRatio="xMinYMid meet" aria-hidden="true"
         fill="currentColor" stroke="currentColor" stroke-width="1.25" stroke-linecap="round">${SAMPLE[key]}</svg>
+      ${
+        z.epigraph
+          ? `<blockquote class="epigraph">${t(z.epigraph, 'p')}<cite>${t(z.epigraphBy)}</cite></blockquote>`
+          : ''
+      }
       ${t(z.body, 'p', 'intro__body')}
     </div>
   </section>`
@@ -276,14 +283,7 @@ document.querySelector('#app').innerHTML = `
 
   ${zone(
     'coda',
-    `<section class="coda">
-      <div class="prose reveal">
-        <span class="kicker">${t(site.coda.kicker)}</span>
-        <h2>${t(site.coda.line)}</h2>
-        <ol>${site.coda.objects.map((o, i) => `<li><b>0${i + 1}</b>${t(o)}</li>`).join('')}</ol>
-      </div>
-    </section>
-    <section class="scene scene--exit" id="exit">
+    `<section class="scene scene--exit" id="exit">
       <div class="stage">
         ${detailFigure('00', 'aria-hidden="true"')}
         <svg class="ink" aria-hidden="true"></svg>
