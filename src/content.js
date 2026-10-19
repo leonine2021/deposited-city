@@ -1,6 +1,6 @@
 // All visitor-facing text. Wall texts follow the "上墙文字（定稿）" tab of the
 // curatorial doc word for word; work labels follow "展览文字（现场用）".
-// Works 04, 14, 15, 16 carry working titles until the artist confirms them.
+// Works 14, 15, 16 carry working titles until the artist confirms them.
 
 export const site = {
   title: { zh: '界：析出的城市', en: 'Boundary: The Deposited City' },
@@ -110,12 +110,6 @@ export const works = [
   { id: '01', zone: 'drawn', title: { zh: '河道在楼上', en: 'The River Above the Tower' }, medium: T.photo },
   { id: '02', zone: 'drawn', title: { zh: '绿涌入立面', en: 'Green Enters the Facade' }, medium: T.photo },
   { id: '03', zone: 'drawn', title: { zh: '窗格', en: 'Grid' }, medium: T.collage },
-  {
-    id: '04',
-    zone: 'drawn',
-    title: { zh: '桁架与盐', en: 'Truss and Salt' },
-    medium: { zh: '单版画、照片转印、盐析，纸本', en: 'Monoprint with photo transfer and salt precipitation on paper' },
-  },
   {
     id: '05',
     zone: 'drawn',

@@ -47,7 +47,7 @@ ROTATE_180 = {"01"}  # PDF scan of 01 is upside down
 # work id -> (scan file, degrees to rotate counter-clockwise to stand upright)
 SCANS = {
     "00": ("wave.jpg", 90),
-    "01": ("wtc.jpg", 90),
+    "01": ("wtc.jpg", -90),
     "02": ("brick.jpg", 90),
     "03": ("bamboo.jpg", -90),
     "05": ("dream.jpg", -90),
@@ -59,7 +59,8 @@ SCANS = {
 }
 
 # works without a sharp scan yet: a flat placeholder instead of a blurry image
-PENDING = {"04", "09", "11", "14", "15", "16"}
+PENDING = {"09", "11", "14", "15", "16"}
+# 04 Truss and Salt is not shown on the site
 
 # the artist's own crops, used as the region as they are (no scan needed)
 CROPS = {"03", "06", "10", "13"}

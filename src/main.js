@@ -88,7 +88,6 @@ const choreography = [
   { kind: 'cover', ids: ['10'], chapter: true },
   { kind: 'cover', ids: ['13'] },
   { kind: 'trace', ids: ['01'], mode: 'frame' },
-  { kind: 'trace', ids: ['04'], mode: 'frame' },
   { kind: 'trace', ids: ['05'], mode: 'rise' },
   { kind: 'cover', ids: ['12'] },
   { kind: 'push', ids: ['07'], side: 'left' },
