@@ -48,8 +48,8 @@ export const zones = {
     theme: { zh: '平面是生成元。', en: 'The plan is the generator.' },
     themeBy: { zh: '勒·柯布西耶', en: 'Le Corbusier' },
     body: {
-      zh: '一笔一画，都是意志。\n可在这些纸上，被画出的楼退成了一层薄影；留下来的，是没有人决定的东西。',
-      en: 'Every stroke is an act of will.\nYet on these sheets the drawn building fades to a thin shadow. What stays is what nobody decided.',
+      zh: '一笔一画，都是意志。\n可线一旦离开立面，就软了，弯了，长进了城市。',
+      en: 'Every stroke is an act of will.\nBut once a line leaves the facade, it softens, bends, and grows into the city.',
     },
   },
   pressed: {
@@ -100,9 +100,12 @@ export const works = [
   {
     id: '01',
     zone: 'drawn',
-    title: { zh: '河道在楼上', en: 'The River Above the Tower' },
+    title: { zh: '抽丝', en: 'Drawing the Thread' },
     medium: T.photo,
-    note: { zh: '楼是转印的薄影，河是压进纸里的线。', en: 'The tower is a thin transfer; the river is a thread pressed into the paper.' },
+    note: {
+      zh: '从坚硬的立面里抽出一根线。它变软，弯下来，流进城市。',
+      en: 'A thread drawn out of a hard facade softens, bends, and runs into the city.',
+    },
   },
   {
     id: '02',
@@ -138,8 +141,8 @@ export const details = {
     en: 'Something lies under the black.',
   },
   '03': {
-    zh: '窗格是画出来的。到了纸上，只剩断续的黑。',
-    en: 'The window grid was drawn. On paper, only broken black remains.',
+    zh: '不是画出的线，是一块一块拼出的格。',
+    en: 'Not a drawn line: a grid pieced together, block by block.',
   },
   '06': {
     zh: '一根线按进纸里，留下一道沟。不是画的，是走过的。',
@@ -157,6 +160,10 @@ export const details = {
 
 // The quotation over a cover that does not open a zone.
 export const coverLines = {
+  '03': {
+    zh: '图案，是重复留下的痕迹。',
+    en: 'A pattern is what repetition leaves behind.',
+  },
   '13': {
     zh: '人不能两次踏进同一条河流。',
     en: 'You cannot step twice into the same river.',

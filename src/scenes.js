@@ -595,25 +595,36 @@ export function elevation(section, aspects) {
 
 /* --------------------------------------------------------------- whole */
 
-/** A whole work fills the screen: it surfaces out of the wall, then its label. */
+/**
+ * A whole work fills the screen: it surfaces out of the wall, then its label.
+ * When it opens a chapter, the chapter's heading stands beside it first and
+ * gives way to the label.
+ */
 export function whole(section, [aspect]) {
   const { stage, figs, labels } = parts(section)
   const [fig] = figs
   const [label] = labels
+  const head = stage.querySelector('.whole__chapter')
   let b
 
   return pinScene(section, {
-    length: 1,
+    length: head ? 1.5 : 1,
     layout() {
       b = fitFull(stage, aspect)
       place(fig, b)
       placeLabel(label, b)
+      if (head) placeLabel(head, b)
     },
     render(p) {
-      const o = ease.out(seg(p, 0, 0.45))
+      const o = ease.out(seg(p, 0, head ? 0.3 : 0.45))
       fig.style.opacity = o
       fig.style.transform = `scale(${1.03 - 0.03 * o})`
-      fade(label, seg(p, 0.45, 0.68))
+      if (head) {
+        fade(head, Math.min(seg(p, 0.08, 0.26), 1 - seg(p, 0.5, 0.64)))
+        fade(label, seg(p, 0.64, 0.82))
+      } else {
+        fade(label, seg(p, 0.45, 0.68))
+      }
     },
   })
 }

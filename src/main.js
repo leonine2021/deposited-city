@@ -65,6 +65,9 @@ function label(w) {
  * rather than zone by zone. Two ways of showing a work, by what it is, and
  * each work is shown in one of them only:
  *
+ * - a chapter may also open on a whole work (`whole` with `chapter`): its
+ *   number, name and quotation stand on the wall beside the work, then give
+ *   way to the work's label;
  * - the abstract prints (strokes, grooves, salt, rust) are `cover`s: the
  *   artist's own crop of the print fills the screen as the ground for a
  *   line of text, edges falling into the wall, then gives way to the work's
@@ -81,12 +84,12 @@ function label(w) {
  */
 // seven works, few and chosen, so the walk never tires the eye on a screen
 const choreography = [
-  { kind: 'cover', ids: ['03'], chapter: true },
+  { kind: 'whole', ids: ['01'], chapter: true },
+  { kind: 'cover', ids: ['03'] },
   { kind: 'cover', ids: ['06'], chapter: true },
   { kind: 'whole', ids: ['02'] },
   { kind: 'cover', ids: ['10'], chapter: true },
   { kind: 'cover', ids: ['13'] },
-  { kind: 'whole', ids: ['01'] },
   { kind: 'whole', ids: ['05'] },
 ]
 
@@ -159,9 +162,26 @@ function coverScene(beat) {
   </section>`
 }
 
+/** The zone's number, name and quotation, set on the wall beside a whole work before its label. */
+function chapterHead(w) {
+  const z = zones[w.zone]
+  return `<div class="whole__chapter">
+    <span class="cover__numeral">${t(z.numeral)}</span>
+    <h2 class="whole__name">${t(z.name)}</h2>
+    <p class="whole__theme">${t(z.theme)}</p>
+    ${z.themeBy ? `<span class="cover__by">${t(z.themeBy)}</span>` : ''}
+  </div>`
+}
+
 function beatScene(beat) {
   if (beat.kind === 'cover') return coverScene(beat)
   if (beat.kind === 'detail') return detailScene(beat)
+  if (beat.kind === 'whole') {
+    const [w] = beat.ids.map((id) => workById[id])
+    return `<section class="scene scene--whole" id="${beatId(beat)}">
+      <div class="stage">${figure(w)}${beat.chapter ? chapterHead(w) : ''}${label(w)}</div>
+    </section>`
+  }
   const ws = beat.ids.map((id) => workById[id])
   const layer = SALT_KINDS.has(beat.kind)
     ? '<canvas class="salt" aria-hidden="true"></canvas>'
