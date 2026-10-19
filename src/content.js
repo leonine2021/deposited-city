@@ -118,9 +118,12 @@ export const works = [
   {
     id: '05',
     zone: 'drawn',
-    title: { zh: '网与线圈', en: 'Net and Loop' },
+    title: { zh: '悬梦', en: 'Suspended Dream' },
     medium: { zh: '单版画、照片转印、压印线，纸本', en: 'Monoprint, photo transfer and embossed thread on paper' },
-    note: { zh: '网格是规划，线圈是生活。', en: 'The grid is the plan; the loops are life.' },
+    note: {
+      zh: '看展的人悬在一张网上，路灯和鸽子叠进同一个梦。',
+      en: 'Viewers hang in a net; a streetlight and pigeons fold into the same dream.',
+    },
   },
 
   {
@@ -161,8 +164,8 @@ export const details = {
 // The quotation over a cover that does not open a zone.
 export const coverLines = {
   '03': {
-    zh: '图案，是重复留下的痕迹。',
-    en: 'A pattern is what repetition leaves behind.',
+    zh: '再走近一些，楼和人都散了，只剩下痕迹。',
+    en: 'Come closer: the towers and the people dissolve, and only traces remain.',
   },
   '13': {
     zh: '人不能两次踏进同一条河流。',

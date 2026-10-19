@@ -82,15 +82,18 @@ function label(w) {
  * The kind names a choreography in scenes.js. The bar's zone name follows
  * the work on screen.
  */
-// seven works, few and chosen, so the walk never tires the eye on a screen
+// seven works, few and chosen, so the walk never tires the eye on a screen.
+// From the concrete to the abstract: the three figurative prints first, whole,
+// so a visitor can read them at once; then the abstract regions, where lines
+// are tied to what made them (pattern, pressing, salt, water).
 const choreography = [
   { kind: 'whole', ids: ['01'], chapter: true },
+  { kind: 'whole', ids: ['05'] },
+  { kind: 'whole', ids: ['02'] },
   { kind: 'cover', ids: ['03'] },
   { kind: 'cover', ids: ['06'], chapter: true },
-  { kind: 'whole', ids: ['02'] },
   { kind: 'cover', ids: ['10'], chapter: true },
   { kind: 'cover', ids: ['13'] },
-  { kind: 'whole', ids: ['05'] },
 ]
 
 const REGION = new Set(['detail', 'cover'])
