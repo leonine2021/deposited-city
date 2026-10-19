@@ -48,8 +48,8 @@ export const zones = {
     theme: { zh: '平面是生成元。', en: 'The plan is the generator.' },
     themeBy: { zh: '勒·柯布西耶', en: 'Le Corbusier' },
     body: {
-      zh: '一笔一画，都是意志。\n可线一旦离开立面，就软了，弯了，长进了城市。',
-      en: 'Every stroke is an act of will.\nBut once a line leaves the facade, it softens, bends, and grows into the city.',
+      zh: '一笔一画，都是意志。\n可画出来的线关不住：它从立面里抽成丝，在梦里松开，又从墙缝里长出绿来。',
+      en: 'Every stroke is an act of will.\nBut a drawn line will not stay put: it is drawn out of the facade, loosens in a dream, and grows green through the gaps in the wall.',
     },
   },
   pressed: {
@@ -66,8 +66,8 @@ export const zones = {
     },
     epigraphBy: { zh: '米歇尔·德·塞托《日常生活实践》', en: 'Michel de Certeau, The Practice of Everyday Life' },
     body: {
-      zh: '粗麻按进纸，棉线压出沟，脚步踩出路。\n这些线不是画的，是按出来的。',
-      en: 'Burlap pressed into paper, thread into a groove, feet into a path.\nThese lines were not drawn. They were pressed.',
+      zh: '棉线压进纸里，城市划进干裂的土地。\n这些线不是画的，是按进去的。',
+      en: 'Thread pressed into paper, the city scored into cracked ground.\nThese lines were not drawn. They were pressed in.',
     },
   },
   deposited: {
@@ -95,7 +95,7 @@ const T = {
 }
 
 export const works = [
-  { id: '00', zone: 'prologue', title: { zh: '盖板', en: 'Cover' }, medium: T.mono },
+  { id: '00', zone: 'prologue', title: { zh: '覆', en: 'Overlay' }, medium: T.mono },
 
   {
     id: '01',
@@ -117,7 +117,7 @@ export const works = [
       en: 'Between two hard facades, green grows in, slowly.',
     },
   },
-  { id: '03', zone: 'drawn', title: { zh: '划界', en: 'Drawing Borders' }, medium: T.collage },
+  { id: '03', zone: 'pressed', title: { zh: '划界', en: 'Drawing Borders' }, medium: T.collage },
   {
     id: '05',
     zone: 'drawn',

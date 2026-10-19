@@ -85,15 +85,17 @@ function label(w) {
 // seven works, few and chosen, so the walk never tires the eye on a screen.
 // From the concrete to the abstract: the three figurative prints first, whole,
 // so a visitor can read them at once; then the abstract regions, where lines
-// are tied to what made them (pressing, salt). The walk ends on a pair: hard,
-// dry lines scored into land (03), then water seeping past every border (13).
+// are tied to what made them. Three chapters of two or three works each:
+// drawn (the city drawn, and lines slipping out of it), pressed (hard things
+// pressed or scored into another material: contact, friction), deposited
+// (water and absence). Scored land (03) sits next to water (10, 13).
 const choreography = [
   { kind: 'whole', ids: ['01'], chapter: true },
   { kind: 'whole', ids: ['05'] },
   { kind: 'whole', ids: ['02'] },
   { kind: 'cover', ids: ['06'], chapter: true },
-  { kind: 'cover', ids: ['10'], chapter: true },
   { kind: 'cover', ids: ['03'] },
+  { kind: 'cover', ids: ['10'], chapter: true },
   { kind: 'cover', ids: ['13'] },
 ]
 
