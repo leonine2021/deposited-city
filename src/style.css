@@ -620,7 +620,6 @@ button {
 .cover__name,
 .cover__theme,
 .prologue__line,
-.exit__line,
 .label__title,
 .synthesis-text h2 {
   text-wrap: balance;
@@ -793,29 +792,13 @@ button {
 
 /* ---------- exit ---------- */
 
-.exit__line {
-  position: absolute;
-  left: var(--gutter);
-  right: var(--gutter);
-  margin: 0;
-  text-align: center;
-  font: var(--display-weight) clamp(21px, 5.6vw, 30px)/1.6 var(--display);
-}
-
-:root[data-lang='en'] .exit__line {
-  font-size: clamp(26px, 7vw, 38px);
-  line-height: 1.2;
-}
-
-.water {
-  stroke: var(--water);
-  stroke-width: 1.5;
+.exit {
+  display: flex;
+  justify-content: center;
+  padding: 14vh var(--gutter) 10vh;
 }
 
 .exit__back {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   min-height: 44px;
   padding: 0 22px;
   border: 0;

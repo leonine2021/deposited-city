@@ -25,11 +25,6 @@ export const site = {
     en: 'What left this line?',
   },
   exit: {
-    // answers the opening question, "What left this line?"
-    line: {
-      zh: '是我们。',
-      en: 'We did.',
-    },
     back: { zh: '回到开头', en: 'Back to the beginning' },
   },
   detail: { zh: '局部', en: 'Detail' },
@@ -160,14 +155,23 @@ export const details = {
     zh: '白点，是水的脚印。',
     en: "The white spots are the water's footprints.",
   },
+  '09': {
+    zh: '覆住的，是一张脸。',
+    en: 'What was covered was a face.',
+  },
   '13': {
     zh: '水慢慢洇开，没有一条边界守得住。',
     en: 'Water seeps outward, slowly. No border holds.',
   },
 }
 
-// The quotation over a cover that does not open a zone.
+// The line over a cover that does not open a zone.
 export const coverLines = {
+  // the ending answers the opening question, "What left this line?"
+  '09': {
+    zh: '是我们。',
+    en: 'We did.',
+  },
   '03': {
     zh: '城市，在干燥的土地上划下界线。',
     en: 'The city scores its borders into dry ground.',
