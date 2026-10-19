@@ -134,7 +134,7 @@ export const works = [
   },
 
   { id: '10', zone: 'deposited', title: { zh: '析出 I', en: 'Deposit I' }, medium: T.salt },
-  { id: '13', zone: 'deposited', title: { zh: '锈与水', en: 'Rust and Water' }, medium: T.mono },
+  { id: '13', zone: 'deposited', title: { zh: '洇', en: 'Seep' }, medium: T.mono },
 ]
 
 // One line under each region, after its cover's text gives way.
@@ -144,8 +144,8 @@ export const details = {
     en: 'Something lies under the black.',
   },
   '03': {
-    zh: '不是画出的线，是一块一块拼出的格。',
-    en: 'Not a drawn line: a grid pieced together, block by block.',
+    zh: '坚硬的笔，干裂的地。每一道分割，都是一次摩擦。',
+    en: 'A hard stroke on cracked ground. Every division is a friction.',
   },
   '06': {
     zh: '一根线按进纸里，留下一道沟。不是画的，是走过的。',
@@ -156,16 +156,16 @@ export const details = {
     en: "The white spots are the water's footprints.",
   },
   '13': {
-    zh: '铁和水都走了。锈，记下了它们的路。',
-    en: 'Iron and water are gone. The rust kept their path.',
+    zh: '水慢慢洇开，没有一条边界守得住。',
+    en: 'Water seeps outward, slowly. No border holds.',
   },
 }
 
 // The quotation over a cover that does not open a zone.
 export const coverLines = {
   '03': {
-    zh: '再走近一些，楼和人都散了，只剩下痕迹。',
-    en: 'Come closer: the towers and the people dissolve, and only traces remain.',
+    zh: '城市，在干燥的土地上划下界线。',
+    en: 'The city scores its borders into dry ground.',
   },
   '13': {
     zh: '人不能两次踏进同一条河流。',
