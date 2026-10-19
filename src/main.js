@@ -71,12 +71,10 @@ function label(w) {
  *   label. The first cover of each zone carries the zone's number, name and
  *   theme line and is followed by the zone's wall text (`chapter`); the
  *   others carry one sentence from that text (`line`);
- * - the figurative prints (a tower, a facade, a figure, an organ) are shown
- *   whole, as large as the stage allows, never up close, each with its
- *   zone's logic of the line meeting it: ruled around it (trace/frame) or
- *   standing it on a ground line (trace/rise); bent aside by it sliding in
- *   (push) or pressed into a hollow (sag); salt grains settling around it
- *   (crystallize) or into the wall's salt line beneath it (saltline).
+ * - the figurative prints (a tower, a facade, a figure) are shown whole,
+ *   filling the screen as far as they can without cropping, never up close
+ *   (`whole`). The line choreographies (trace, push, sag, saltline...) stay
+ *   in scenes.js but are not used: the walk is pictures and words only.
  *
  * The kind names a choreography in scenes.js. The bar's zone name follows
  * the work on screen.
@@ -85,11 +83,11 @@ function label(w) {
 const choreography = [
   { kind: 'cover', ids: ['03'], chapter: true },
   { kind: 'cover', ids: ['06'], chapter: true },
-  { kind: 'trace', ids: ['02'], mode: 'rise' },
+  { kind: 'whole', ids: ['02'] },
   { kind: 'cover', ids: ['10'], chapter: true },
   { kind: 'cover', ids: ['13'] },
-  { kind: 'trace', ids: ['01'], mode: 'frame' },
-  { kind: 'trace', ids: ['05'], mode: 'rise' },
+  { kind: 'whole', ids: ['01'] },
+  { kind: 'whole', ids: ['05'] },
 ]
 
 const REGION = new Set(['detail', 'cover'])
@@ -263,25 +261,6 @@ document.querySelector('#app').innerHTML = `
 
   ${walk()}
   ${zone(
-    'synthesis',
-    `<section class="scene scene--synthesis" id="synthesis">
-      <div class="stage">
-        <canvas class="salt" aria-hidden="true"></canvas>
-        <svg class="ink" aria-hidden="true"></svg>
-        <figure class="work vignette" aria-label="${site.synthesis.title.en}">${t(site.synthesis.pending)}</figure>
-      </div>
-    </section>
-    <section class="synthesis-text">
-      <div class="prose reveal">
-        <span class="kicker">${t(site.synthesis.kicker)}</span>
-        <h2>${t(site.synthesis.title)}</h2>
-        ${t(site.synthesis.body, 'p')}
-        <span class="label__medium">${t(site.synthesis.label)}</span>
-      </div>
-    </section>`,
-  )}
-
-  ${zone(
     'coda',
     `<section class="scene scene--exit" id="exit">
       <div class="stage">
@@ -335,7 +314,6 @@ for (const beat of choreography) {
         : scenes[beat.kind](el, beat.ids.map(aspect), seed, beat)
   for (const id of beat.ids) triggers[id] = scene.st
 }
-scenes.synthesis(document.querySelector('#synthesis'))
 
 /* works often start off-stage (sliding or dropping in), where lazy loading would
    only fetch them at the last moment; start loading each beat well ahead */

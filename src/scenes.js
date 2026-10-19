@@ -148,6 +148,38 @@ function placeBeside(el, b, side = 'left') {
   el.style.top = `${b.b - el.offsetHeight}px`
 }
 
+/**
+ * A whole work as large as the screen allows without cropping: from the bar
+ * to the bottom edge on a wide screen (label on the wall beside it), the
+ * full width on a narrow one (label beneath).
+ */
+function fitFull(stage, aspect) {
+  const s = stageBox(stage)
+  const room = s.H - s.top
+  if (s.W > s.H * 1.05) {
+    let h = room
+    let w = h * aspect
+    const maxW = s.W - 2 * 200
+    if (w > maxW) {
+      w = maxW
+      h = w / aspect
+    }
+    const x = (s.W - w) / 2
+    const y = s.top + (room - h) / 2
+    return { ...s, x, y, w, h, r: x + w, b: y + h, wide: true }
+  }
+  let w = s.W
+  let h = w / aspect
+  const maxH = room - 120
+  if (h > maxH) {
+    h = maxH
+    w = h * aspect
+  }
+  const x = (s.W - w) / 2
+  const y = s.top
+  return { ...s, x, y, w, h, r: x + w, b: y + h, wide: false }
+}
+
 /** Beside the work on a wide stage, beneath it on a narrow one. */
 function placeLabel(el, b, side = 'left') {
   if (b.wide) placeBeside(el, b, side)
@@ -557,6 +589,31 @@ export function elevation(section, aspects) {
         ticks[i].style.opacity = seg(rise, 0.85, 1)
         fade(labels[i], seg(p, 0.6 + i * 0.12, 0.76 + i * 0.12))
       })
+    },
+  })
+}
+
+/* --------------------------------------------------------------- whole */
+
+/** A whole work fills the screen: it surfaces out of the wall, then its label. */
+export function whole(section, [aspect]) {
+  const { stage, figs, labels } = parts(section)
+  const [fig] = figs
+  const [label] = labels
+  let b
+
+  return pinScene(section, {
+    length: 1,
+    layout() {
+      b = fitFull(stage, aspect)
+      place(fig, b)
+      placeLabel(label, b)
+    },
+    render(p) {
+      const o = ease.out(seg(p, 0, 0.45))
+      fig.style.opacity = o
+      fig.style.transform = `scale(${1.03 - 0.03 * o})`
+      fade(label, seg(p, 0.45, 0.68))
     },
   })
 }

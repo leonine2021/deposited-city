@@ -24,19 +24,6 @@ export const site = {
     zh: '一条线，是什么留下的？',
     en: 'What left this line?',
   },
-  synthesis: {
-    kicker: { zh: '合题', en: 'Synthesis' },
-    title: { zh: '析出的城市：洛杉矶河', en: 'The Deposited City: Los Angeles River' },
-    body: {
-      zh: '画得少，画得准。\n其余的，留给水、时间，和住在这里的人。',
-      en: 'Draw little, and draw it precisely.\nLeave the rest to water, to time, and to the people who live there.',
-    },
-    label: {
-      zh: '《析出的城市：洛杉矶河》 · 数字绘图，硬板输出',
-      en: 'The Deposited City: Los Angeles River · Digital drawing, print on board',
-    },
-    pending: { zh: '作品图即将上线', en: 'Image forthcoming' },
-  },
   exit: {
     line: {
       zh: '城市之下，水一直都在。',
@@ -96,7 +83,6 @@ export const zones = {
       en: 'The water left; the salt stayed where it last stood.\nNot one of these lines came from a hand. Their shape was given by absence.',
     },
   },
-  synthesis: { name: { zh: '合题', en: 'Synthesis' } },
   coda: { name: { zh: '尾声', en: 'Coda' } },
 }
 

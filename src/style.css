@@ -324,6 +324,16 @@ button {
   color: #8e8a82;
 }
 
+/* ---------- pictures and words only ----------
+   No drawn lines, salt grains, line samples or progress rule. The scenes still
+   compute them; they are simply not shown. Delete this block to bring them back. */
+.ink,
+.salt,
+.intro__sample,
+.bar__progress {
+  display: none !important;
+}
+
 /* ---------- veil ---------- */
 
 /* the edges fall away into the wall: an image seen up close, before it is understood */
