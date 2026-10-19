@@ -110,11 +110,14 @@ export const works = [
   {
     id: '02',
     zone: 'drawn',
-    title: { zh: '绿涌入立面', en: 'Green Enters the Facade' },
+    title: { zh: '破壁', en: 'Through the Wall' },
     medium: T.photo,
-    note: { zh: '绿涌进来，立面让开了。', en: 'The green comes in; the facade gives way.' },
+    note: {
+      zh: '绿从两道坚硬的立面之间涌出来。墙，让开了。',
+      en: 'Green surges between two hard facades. The wall gives way.',
+    },
   },
-  { id: '03', zone: 'drawn', title: { zh: '窗格', en: 'Grid' }, medium: T.collage },
+  { id: '03', zone: 'drawn', title: { zh: '划界', en: 'Drawing Borders' }, medium: T.collage },
   {
     id: '05',
     zone: 'drawn',
