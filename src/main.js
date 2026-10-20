@@ -98,7 +98,7 @@ const choreography = [
   { kind: 'cover', ids: ['10'], chapter: true },
   { kind: 'cover', ids: ['13'] },
   // the ending: the mask answers the opening question
-  { kind: 'cover', ids: ['09'] },
+  { kind: 'cover', ids: ['08'] },
 ]
 
 const REGION = new Set(['detail', 'cover'])

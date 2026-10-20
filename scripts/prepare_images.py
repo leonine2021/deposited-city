@@ -59,10 +59,10 @@ SCANS = {
 PENDING = set()
 
 # the works the site shows: seven chosen by the artist, plus the sealed plate
-SHOWN = ["00", "01", "02", "03", "05", "06", "09", "10", "13"]
+SHOWN = ["00", "01", "02", "03", "05", "06", "08", "10", "13"]
 
 # the artist's own crops, used as the region as they are (no scan needed)
-CROPS = {"03", "06", "09", "10", "13"}
+CROPS = {"03", "06", "08", "10", "13"}
 CROP_DIR = SCAN_DIR / "crops"
 PLACEHOLDER = (220, 217, 210)
 PLACEHOLDER_H = 1200

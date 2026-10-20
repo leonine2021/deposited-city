@@ -132,7 +132,7 @@ export const works = [
     medium: { zh: '单版画、薄纸拼贴、压印线，纸本', en: 'Monoprint, chine-collé and embossed thread on paper' },
   },
 
-  { id: '09', zone: 'coda', title: { zh: '面', en: 'Face' }, medium: T.collagraph },
+  { id: '08', zone: 'coda', title: { zh: '络', en: 'Mesh' }, medium: T.collagraph },
   { id: '10', zone: 'deposited', title: { zh: '析出 I', en: 'Deposit I' }, medium: T.salt },
   { id: '13', zone: 'deposited', title: { zh: '洇', en: 'Seep' }, medium: T.mono },
 ]
@@ -155,9 +155,9 @@ export const details = {
     zh: '白点，是水的脚印。',
     en: "The white spots are the water's footprints.",
   },
-  '09': {
-    zh: '覆住的，是一张脸。',
-    en: 'What was covered was a face.',
+  '08': {
+    zh: '网压进了身体。线，一直在我们里面。',
+    en: 'The mesh is pressed into the body. The lines were in us all along.',
   },
   '13': {
     zh: '水慢慢洇开，没有一条边界守得住。',
@@ -168,7 +168,7 @@ export const details = {
 // The line over a cover that does not open a zone.
 export const coverLines = {
   // the ending answers the opening question, "What left this line?"
-  '09': {
+  '08': {
     zh: '是我们。',
     en: 'We did.',
   },
