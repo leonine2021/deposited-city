@@ -39,7 +39,7 @@ OUT = ROOT / "public" / "works"
 META = ROOT / "src" / "works-meta.json"
 
 LARGE = 2600
-DETAIL = 2400
+DETAIL = 3000  # covers fill a retina screen: ~2880px across
 THUMB = 640
 PAPER = np.array([246, 245, 241], dtype=np.float32)
 ROTATE_180 = {"01"}  # PDF scan of 01 is upside down
@@ -132,7 +132,7 @@ def load_pdf(key):
 def save_pair(key, out):
     large = out.copy()
     large.thumbnail((LARGE, LARGE), Image.LANCZOS)
-    large.save(OUT / f"{key}.webp", quality=84, method=6)
+    large.save(OUT / f"{key}.webp", quality=90, method=6)
     thumb = out.copy()
     thumb.thumbnail((THUMB, THUMB), Image.LANCZOS)
     thumb.save(OUT / f"{key}-thumb.webp", quality=78, method=6)
@@ -167,7 +167,7 @@ def export(key, img):
         thumb.thumbnail((THUMB, THUMB), Image.LANCZOS)
         thumb.save(OUT / f"{key}-detail-thumb.webp", quality=78, method=6)
         detail.thumbnail((DETAIL, DETAIL), Image.LANCZOS)
-        detail.save(OUT / f"{key}-detail.webp", quality=84, method=6)
+        detail.save(OUT / f"{key}-detail.webp", quality=90, method=6)
         info["detail"] = {
             "x": round(fx0, 3),
             "y": round(fy0, 3),
@@ -186,7 +186,7 @@ def export_region(key, img, info=None):
     thumb.save(OUT / f"{key}-detail-thumb.webp", quality=78, method=6)
     detail = img.copy()
     detail.thumbnail((DETAIL, DETAIL), Image.LANCZOS)
-    detail.save(OUT / f"{key}-detail.webp", quality=84, method=6)
+    detail.save(OUT / f"{key}-detail.webp", quality=90, method=6)
     info = dict(info or {"w": detail.width, "h": detail.height})
     info["detail"] = {"x": 0, "y": 0, "cw": 1, "ch": 1, "w": detail.width, "h": detail.height}
     return info
