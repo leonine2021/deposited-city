@@ -34,8 +34,8 @@ export const site = {
 }
 
 // Each zone opens on a quotation (theme, with its author) laid over a region of
-// a print; the zone's text that follows is one or two short sentences, with an
-// optional second quotation (epigraph) above it.
+// a print; the zone's text that follows, if any, is one or two short sentences,
+// with an optional second quotation (epigraph) above it.
 export const zones = {
   prologue: { name: { zh: '序', en: 'Prologue' } },
   drawn: {
@@ -43,10 +43,7 @@ export const zones = {
     name: { zh: '画出的线', en: 'Drawn' },
     theme: { zh: '平面是生成元。', en: 'The plan is the generator.' },
     themeBy: { zh: '勒·柯布西耶', en: 'Le Corbusier' },
-    body: {
-      zh: '一笔一画，都是意志。\n可画出来的线关不住：它从立面里抽成丝，在梦里松开，又从墙缝里长出绿来。',
-      en: 'Every stroke is an act of will.\nBut a drawn line will not stay put: it is drawn out of the facade, loosens in a dream, and grows green through the gaps in the wall.',
-    },
+    // no wall text: the chapter goes straight from its cover to the works
   },
   pressed: {
     numeral: { zh: '二', en: '2' },

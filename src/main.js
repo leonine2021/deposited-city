@@ -215,6 +215,7 @@ const SAMPLE = {
 
 function intro(key) {
   const z = zones[key]
+  if (!z.body && !z.epigraph) return ''
   return `<section class="intro" data-sample="${key}">
     <div class="intro__head reveal">
       <svg class="intro__sample" viewBox="0 0 320 40" preserveAspectRatio="xMinYMid meet" aria-hidden="true"
@@ -224,7 +225,7 @@ function intro(key) {
           ? `<blockquote class="epigraph">${t(z.epigraph, 'p')}<cite>${t(z.epigraphBy)}</cite></blockquote>`
           : ''
       }
-      ${t(z.body, 'p', 'intro__body')}
+      ${z.body ? t(z.body, 'p', 'intro__body') : ''}
     </div>
   </section>`
 }
