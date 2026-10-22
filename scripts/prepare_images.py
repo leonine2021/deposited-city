@@ -61,9 +61,6 @@ PENDING = set()
 # the works the site shows: seven chosen by the artist, plus the sealed plate
 SHOWN = ["00", "01", "02", "03", "05", "06", "08", "10", "13"]
 
-# whole works the artist prepared herself (already cropped and adjusted): used as they are
-WHOLE_FILES = {"05": "05-borderless.jpg"}
-
 # the artist's own crops, used as the region as they are (no scan needed)
 CROPS = {"03", "06", "08", "10", "13"}
 CROP_DIR = SCAN_DIR / "crops"
@@ -208,10 +205,7 @@ def main(keys):
     OUT.mkdir(parents=True, exist_ok=True)
     meta = json.loads(META.read_text()) if META.exists() else {}
     for key in keys:
-        if key in WHOLE_FILES:
-            img = Image.open(SCAN_DIR / WHOLE_FILES[key]).convert("RGB")
-            meta[key] = save_pair(key, img)
-        elif key in CROPS:
+        if key in CROPS:
             img = Image.open(CROP_DIR / f"{key}.jpg").convert("RGB")
             meta[key] = export_region(key, img, meta.get(key) if key in SCANS else None)
         elif key in PENDING:
