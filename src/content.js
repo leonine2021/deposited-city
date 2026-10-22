@@ -52,10 +52,10 @@ export const zones = {
     numeral: { zh: '二', en: '2' },
     name: { zh: '压出的线', en: 'Pressed' },
     theme: {
-      zh: '其实地上本没有路，走的人多了，也便成了路。',
-      en: 'At first there was no road. When many walk one way, a road is made.',
+      zh: '建筑由它所见证的行动来定义，\n一如由它围合的墙。',
+      en: 'Architecture is defined by the actions it witnesses as much as by the enclosure of its walls.',
     },
-    themeBy: { zh: '鲁迅《故乡》', en: 'Lu Xun, My Old Home' },
+    themeBy: { zh: '伯纳德·屈米《建筑与断裂》', en: 'Bernard Tschumi, Architecture and Disjunction' },
     epigraph: {
       zh: '行走者交错的路径，赋予空间以形状。',
       en: 'Their intertwined paths give their shape to spaces.',

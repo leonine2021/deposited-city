@@ -917,3 +917,5 @@ button {
     opacity: 1;
   }
 }
+
+.cover__theme { white-space: pre-line; }
