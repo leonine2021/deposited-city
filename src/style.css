@@ -371,6 +371,9 @@ button {
 .detail[data-id='13'] img {
   object-position: 50% 22%;
 }
+.detail[data-id='10'] img {
+  object-position: 35% 50%;
+}
 
 .detail img {
   width: 100%;
