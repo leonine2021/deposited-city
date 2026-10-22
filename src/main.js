@@ -91,7 +91,7 @@ function label(w) {
 // (water and absence). Scored land (03) sits next to water (10, 13).
 const choreography = [
   { kind: 'whole', ids: ['01'], chapter: true },
-  { kind: 'whole', ids: ['05'] },
+  { kind: 'bleed', ids: ['05'] },
   { kind: 'whole', ids: ['02'] },
   { kind: 'cover', ids: ['06'], chapter: true },
   { kind: 'cover', ids: ['03'] },
@@ -181,8 +181,37 @@ function chapterHead(w) {
   </div>`
 }
 
+/**
+ * A whole work filling the screen edge to edge (the artist's choice for 05):
+ * it surfaces out of the veil like a cover, then its label appears. On a wide
+ * screen the top and bottom of the print run past the edges.
+ */
+function bleedScene(beat) {
+  const [id] = beat.ids
+  const w = workById[id]
+  const m = meta[id]
+  return `<section class="cover scene scene--bleed" id="${beatId(beat)}">
+    <div class="stage">
+      <figure class="detail" data-id="${id}" aria-hidden="true">
+        <img src="${img(id)}" width="${m.w}" height="${m.h}" alt="${w.title.en}, Wenlu Guo" decoding="async" loading="lazy" />
+      </figure>
+      <div class="veil" aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+      <svg class="ink" aria-hidden="true"></svg>
+      <div class="cover__center"></div>
+      <div class="cover__after label">
+        <span class="label__no">${id}</span>
+        <span class="label__title">${t(quoted(w.title))}</span>
+        <span class="label__medium">${t(w.medium)}</span>
+        ${w.note ? `<p class="detail__caption">${t(w.note)}</p>` : ''}
+      </div>
+    </div>
+  </section>`
+}
+
 function beatScene(beat) {
   if (beat.kind === 'cover') return coverScene(beat)
+  if (beat.kind === 'bleed') return bleedScene(beat)
   if (beat.kind === 'detail') return detailScene(beat)
   if (beat.kind === 'whole') {
     const [w] = beat.ids.map((id) => workById[id])
@@ -330,7 +359,7 @@ for (const beat of choreography) {
   const el = document.querySelector(`#${beatId(beat)}`)
   const seed = Number(beat.ids[0]) * 7919
   const scene =
-    beat.kind === 'cover'
+    beat.kind === 'cover' || beat.kind === 'bleed'
       ? scenes.cover(el)
       : beat.kind === 'detail'
         ? scenes.detail(el, beat, seed)

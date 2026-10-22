@@ -364,6 +364,16 @@ button {
   object-position: 50% 78%;
 }
 
+/* a whole work filling the screen: the print stays clear, only its far edges and the
+   label's corner fall into the wall */
+.scene--bleed .veil {
+  background: radial-gradient(ellipse 100% 95% at 50% 45%, transparent 62%, var(--paper) 100%);
+}
+
+.scene--bleed .scrim {
+  background: linear-gradient(to top, var(--paper) 0%, color-mix(in srgb, var(--paper) 82%, transparent) 20%, color-mix(in srgb, var(--paper) 30%, transparent) 36%, transparent 50%);
+}
+
 /* the ending: keep both reds, the teardrop and the meshed disc, in a wide frame */
 .detail[data-id='08'] img {
   object-position: 50% 58%;
