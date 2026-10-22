@@ -919,3 +919,21 @@ button {
 }
 
 .cover__theme { white-space: pre-line; }
+
+/* Chinese: the smallest grey text, one step larger */
+:root[data-lang='zh'] .label__no,
+:root[data-lang='zh'] .hero__cue,
+:root[data-lang='zh'] .credit,
+:root[data-lang='zh'] .meta i {
+  font-size: 14px;
+}
+:root[data-lang='zh'] .epigraph cite,
+:root[data-lang='zh'] .cover__by,
+:root[data-lang='zh'] .bar__zone,
+:root[data-lang='zh'] .label__medium,
+:root[data-lang='zh'] .label__note {
+  font-size: 15px;
+}
+:root[data-lang='zh'] .detail__caption {
+  font-size: 16px;
+}
