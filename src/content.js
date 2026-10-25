@@ -95,10 +95,6 @@ export const works = [
     zone: 'drawn',
     title: { zh: '抽丝', en: 'Drawing the Thread' },
     medium: T.photo,
-    note: {
-      zh: '从坚硬的立面里抽出一根线。它变软，弯下来，流进城市。',
-      en: 'A thread drawn out of a hard facade softens, bends, and runs into the city.',
-    },
   },
   {
     id: '02',
