@@ -59,8 +59,8 @@ export const zones = {
     },
     epigraphBy: { zh: '米歇尔·德·塞托《日常生活实践》', en: 'Michel de Certeau, The Practice of Everyday Life' },
     body: {
-      zh: '棉线压进纸里，城市划进干裂的土地。\n这些线不是画的，是按进去的。',
-      en: 'Thread pressed into paper, the city scored into cracked ground.\nThese lines were not drawn. They were pressed in.',
+      zh: '有些线，不是画出来的。\n是重量，是摩擦，是一次又一次的经过。',
+      en: 'Some lines are not drawn.\nThey are weight, and friction, and passing after passing.',
     },
   },
   deposited: {
