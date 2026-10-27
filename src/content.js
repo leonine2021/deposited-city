@@ -8,8 +8,8 @@ export const site = {
   titleLines: { zh: ['界：', '析出的城市'], en: ['Boundary:', 'The Deposited City'] },
   short: { zh: '界', en: 'Boundary' },
   subtitle: {
-    zh: '一位建筑师关于线的展览 · 建筑师郭雯璐',
-    en: "An architect's exhibition on where lines come from · Architect Wenlu Guo",
+    zh: '一位建筑设计师，用线想象城市 · 郭雯璐',
+    en: 'An architect imagines the city in lines · Wenlu Guo',
   },
   thesis: {
     zh: '每一条线，都是有东西来过的证据。',
