@@ -67,13 +67,16 @@ export const zones = {
     numeral: { zh: '三', en: '3' },
     name: { zh: '析出的线', en: 'Deposited' },
     theme: {
-      zh: '凿户牖以为室，当其无，有室之用。',
-      en: 'Doors and windows are cut to make a room; it is the empty space that makes it of use.',
+      zh: '竣工结束了建造，\n风化接着建造。',
+      en: 'Finishing ends construction,\nweathering constructs the finish.',
     },
-    themeBy: { zh: '《老子》第十一章', en: 'Laozi, Tao Te Ching, 11' },
+    themeBy: {
+      zh: '莫斯塔法维、莱瑟巴罗《论风化》',
+      en: 'Mohsen Mostafavi & David Leatherbarrow, On Weathering',
+    },
     body: {
-      zh: '水走了，盐留在水最后停留的地方。\n没有一条线出自人手。形状，是缺席给的。',
-      en: 'The water left; the salt stayed where it last stood.\nNot one of these lines came from a hand. Their shape was given by absence.',
+      zh: '水走了，盐留在它最后停留的地方。\n软的水，刻进硬的地。没有一条线出自人手。',
+      en: 'The water left; the salt stayed where it last stood.\nSoft water cut into hard ground. Not one of these lines came from a hand.',
     },
   },
   coda: { name: { zh: '尾声', en: 'Coda' } },
