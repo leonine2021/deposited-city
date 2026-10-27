@@ -105,8 +105,8 @@ export const works = [
     title: { zh: '隙', en: 'Interval' },
     medium: T.photo,
     note: {
-      zh: '两栋楼之间，只剩一道窄窄的缝。\n绿色从缝里慢慢长进来：再坚硬的立面，也会给生命留一点空隙。',
-      en: 'Between two buildings, only a narrow gap is left.\nGreen grows in through it, slowly: even the hardest facade leaves room for something alive.',
+      zh: '两道坚硬的立面之间，绿，慢慢长了进来。',
+      en: 'Between two hard facades, green grows in, slowly.',
     },
   },
   { id: '03', zone: 'pressed', title: { zh: '划界', en: 'Drawing Borders' }, medium: T.collage },
@@ -116,8 +116,8 @@ export const works = [
     title: { zh: '悬梦', en: 'Suspended Dream' },
     medium: { zh: '单版画、照片转印、压印线，纸本', en: 'Monoprint, photo transfer and embossed thread on paper' },
     note: {
-      zh: '几个看展的人，悬在一张网上。\n路灯、鸽子和城市的天空叠在一起，分不清哪一层是真的，像一场在城市里做的梦。',
-      en: 'A few visitors hang suspended in a net.\nStreetlights, pigeons and the city sky are laid over one another until no layer is clearly the real one, like a dream dreamt inside the city.',
+      zh: '看展的人悬在一张网上，路灯和鸽子叠进同一个梦。',
+      en: 'Viewers hang in a net; a streetlight and pigeons fold into the same dream.',
     },
   },
 
@@ -144,8 +144,8 @@ export const details = {
     en: 'The land had no borders.\nThe city set down a stroke, and the cracks spread along it.',
   },
   '10': {
-    zh: '盐粒、油和水在纸上彼此推开。\n水干了，盐和油留在原来的位置，结成了这些白点。',
-    en: 'Salt, oil and water push one another apart on the paper.\nThe water dries; the salt and oil stay where they were and set into these white spots.',
+    zh: '盐粒、油和水彼此推开，留下这些白点。',
+    en: 'Salt, oil and water push each other apart, and leave these white spots.',
   },
   '08': {
     zh: '络，是网，也是身体里的经络。\n街道、管线、边界，一层层压进纸里，最后长成了血管和指纹的样子。\n我们以为线在城市里，其实它早已在我们身上。',
