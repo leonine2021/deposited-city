@@ -27,10 +27,10 @@ export const site = {
   // after the last work: the show is coming to a physical space
   soon: {
     kicker: { zh: '线下展览', en: 'In person' },
-    title: { zh: '这些线，\n即将在真实的空间里与你相遇。', en: 'These lines will soon\nmeet you in a real room.' },
+    title: { zh: '析出的城市，\n即将在真实的空间中展开。', en: 'The Deposited City\nwill soon unfold in a real space.' },
     body: {
-      zh: '我会在这里公布展览的时间与地点。\n期待与你相见。',
-      en: 'I will announce the dates and venue here.\nI look forward to seeing you there.',
+      zh: '具体时间与地点，将在此公布。\n敬请期待。',
+      en: 'Dates and venue will be announced here.\nComing soon.',
     },
   },
   exit: {
