@@ -148,7 +148,16 @@ function coverScene(beat) {
   const [id] = beat.ids
   const w = workById[id]
   const z = zones[w.zone]
-  const center = beat.chapter
+  const line = coverLines[id]
+  const center = line?.echo
+    ? `<div class="cover__steps">
+        <div class="cover__step"><p class="cover__theme cover__theme--alone">${t(site.prologue)}</p></div>
+        <div class="cover__step">
+          <p class="cover__theme cover__theme--alone">${t(line)}</p>
+          <p class="cover__theme cover__note">${t(line.note)}</p>
+        </div>
+      </div>`
+    : beat.chapter
     ? `<span class="cover__numeral">${t(z.numeral)}</span>
         <h2 class="cover__name">${t(z.name)}</h2>
         <p class="cover__theme">${t(z.theme)}</p>

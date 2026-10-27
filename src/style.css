@@ -945,3 +945,16 @@ button {
 :root[data-lang='zh'] .label__title {
   font-size: 18px;
 }
+
+/* the ending: question and answer share one place on the wall */
+.cover__steps {
+  display: grid;
+  align-items: end;
+}
+.cover__step {
+  grid-area: 1 / 1;
+}
+.cover__note {
+  margin-top: 20px;
+  color: var(--muted);
+}

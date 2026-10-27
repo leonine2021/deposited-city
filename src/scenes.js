@@ -403,7 +403,13 @@ export function cover(section, { hero = false } = {}) {
   const intro = { t: reduced || !hero ? 1 : 0 }
   // a chapter opening is a pause: its heading holds for a long breath before the work's label
   const chapter = !hero && !!center.querySelector('.cover__numeral')
-  const T = chapter
+  // the ending: the opening question returns, gives way to its answer, then a closing note
+  const steps = center.querySelectorAll('.cover__step')
+  const note = center.querySelector('.cover__note')
+  const echo = steps.length === 2
+  const T = echo
+    ? { len: 3.4, inn: [0.03, 0.12], out: [0.7, 0.8], veil: [0.7, 0.86], after: [0.82, 0.92] }
+    : chapter
     ? { len: 2.8, inn: [0.03, 0.16], out: [0.46, 0.58], veil: [0.46, 0.66], after: [0.64, 0.78] }
     : { len: 2, inn: [0.04, 0.2], out: [0.38, 0.52], veil: [0.1, 0.55], after: [0.56, 0.72] }
   let b
@@ -425,6 +431,13 @@ export function cover(section, { hero = false } = {}) {
         const inn = ease.out(seg(p, ...T.inn))
         center.style.opacity = Math.min(inn, 1 - out)
         center.style.transform = `translate3d(0,${(1 - inn) * 24 - out * 40}px,0)`
+        if (echo) {
+          fade(steps[0], 1 - seg(p, 0.27, 0.34))
+          const a = seg(p, 0.36, 0.44)
+          steps[1].style.opacity = a
+          steps[1].style.transform = `translate3d(0,${(1 - a) * 14}px,0)`
+          fade(note, seg(p, 0.5, 0.58))
+        }
       } else {
         center.style.opacity = 1 - out
         center.style.transform = `translate3d(0,${-out * 40}px,0)`

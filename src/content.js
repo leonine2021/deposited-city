@@ -159,10 +159,15 @@ export const details = {
 
 // The line over a cover that does not open a zone.
 export const coverLines = {
-  // the ending: the lines of the city run both ways
+  // the ending: the opening question returns, then its answer
   '08': {
-    zh: '我们走过城市，\n城市也走过我们。',
-    en: 'We pass through the city.\nThe city passes through us.',
+    echo: true,
+    zh: '是我们。',
+    en: 'We did.',
+    note: {
+      zh: '我们走过城市，\n城市也走过我们。',
+      en: 'We pass through the city.\nThe city passes through us.',
+    },
   },
   '03': {
     zh: '城市，在干燥的土地上划下界线。',
