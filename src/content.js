@@ -12,8 +12,8 @@ export const site = {
     en: 'An architect imagines the city in lines · Wenlu Guo',
   },
   thesis: {
-    zh: '每一条线，都是有东西来过的证据。',
-    en: 'Every line is evidence that something was here.',
+    zh: '离开的，都留下了线。',
+    en: 'Whatever leaves, leaves a line.',
   },
   preface: {
     zh: '潮水退去，沙上一道白线。\n杯子挪开，桌上一圈水渍。\n人走多了，草地上一条路。\n\n城市里的线，也是这样来的。\n只是我们，把它们都当成了图纸。',
