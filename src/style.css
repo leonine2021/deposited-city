@@ -9,10 +9,10 @@
   --vignette-ground: #ebe8e1;
   /* Chinese: Source Han Sans Light (served as Noto Sans SC) for display and text alike, one
      face from the title down to the labels; Latin inside Chinese text falls to Newsreader.
-     English: Instrument Serif for display, Newsreader for text. Instrument Serif has a single
-     weight, so display weight stays 400. */
+     English: Source Sans 3 Light for display (the Latin sibling of Source Han Sans: same
+     open, light texture as the Chinese), Newsreader for text. */
   --zh: 'Newsreader', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --en-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --en-display: 'Source Sans 3', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
   --en-text: 'Newsreader', Georgia, 'Times New Roman', serif;
   --display: var(--zh);
   --text: var(--zh);
@@ -27,7 +27,7 @@
 :root[data-lang='en'] {
   --display: var(--en-display);
   --text: var(--en-text);
-  --display-weight: 400;
+  --display-weight: 300;
   --text-weight: 400;
 }
 
