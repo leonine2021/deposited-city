@@ -143,10 +143,6 @@ export const details = {
     zh: '坚硬的笔，干裂的地。每一道分割，都是一次摩擦。',
     en: 'A hard stroke on cracked ground. Every division is a friction.',
   },
-  '06': {
-    zh: '一根线按进纸里，留下一道沟。不是画的，是走过的。',
-    en: 'A thread pressed into paper leaves a groove: not drawn, but passed through.',
-  },
   '10': {
     zh: '盐粒、油和水彼此推开，留下这些白点。',
     en: 'Salt, oil and water push each other apart, and leave these white spots.',
