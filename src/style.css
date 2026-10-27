@@ -8,12 +8,12 @@
   --water: #4d7891;
   --vignette-ground: #ebe8e1;
   /* Chinese: Source Han Sans Light (served as Noto Sans SC) for display and text alike, one
-     face from the title down to the labels; Latin inside Chinese text falls to Newsreader.
-     English: Source Sans 3 Light for display (the Latin sibling of Source Han Sans: same
-     open, light texture as the Chinese), Newsreader for text. */
-  --zh: 'Newsreader', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+     face from the title down to the labels; Latin and numerals inside Chinese text use
+     Source Sans 3, its Latin sibling.
+     English: Source Sans 3 Light throughout, display and text alike, one face like the Chinese. */
+  --zh: 'Source Sans 3', 'Noto Sans SC', 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --en-display: 'Source Sans 3', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
-  --en-text: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --en-text: var(--en-display);
   --display: var(--zh);
   --text: var(--zh);
   --display-weight: 300;
@@ -28,7 +28,7 @@
   --display: var(--en-display);
   --text: var(--en-text);
   --display-weight: 300;
-  --text-weight: 400;
+  --text-weight: 300;
 }
 
 /* dark wall: the prints keep their own paper, like works hung on a dark gallery wall */
@@ -961,3 +961,29 @@ button {
 
 .detail__caption,
 .label__note { white-space: pre-line; }
+
+/* ---------- English: one open face, with room between the letters ---------- */
+:root[data-lang='en'] body {
+  letter-spacing: 0.02em;
+  word-spacing: 0.04em;
+}
+:root[data-lang='en'] .hero__title,
+:root[data-lang='en'] .cover__name,
+:root[data-lang='en'] .whole__name {
+  letter-spacing: 0.06em;
+  word-spacing: 0.08em;
+  line-height: 1.1;
+}
+:root[data-lang='en'] .statement p,
+:root[data-lang='en'] .prologue__line,
+:root[data-lang='en'] .cover__theme,
+:root[data-lang='en'] .whole__theme,
+:root[data-lang='en'] .cover__theme--alone,
+:root[data-lang='en'] .epigraph p {
+  letter-spacing: 0.035em;
+  word-spacing: 0.06em;
+  line-height: 1.4;
+}
+:root[data-lang='en'] .label__title {
+  letter-spacing: 0.04em;
+}
