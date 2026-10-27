@@ -75,8 +75,8 @@ export const zones = {
       en: 'Frank Lloyd Wright, An Autobiography',
     },
     body: {
-      zh: '水走了，盐留在它最后停留的地方。\n软的水，刻进硬的地。没有一条线出自人手。',
-      en: 'The water left; the salt stayed where it last stood.\nSoft water cut into hard ground. Not one of these lines came from a hand.',
+      zh: '水不会画图。\n它只是慢慢退去，把走过的路，一粒一粒，留成了盐。',
+      en: 'Water does not draw.\nIt only withdraws, slowly, and leaves the way it went in salt, grain by grain.',
     },
   },
   coda: { name: { zh: '尾声', en: 'Coda' } },
@@ -159,18 +159,18 @@ export const details = {
 
 // The line over a cover that does not open a zone.
 export const coverLines = {
-  // the ending answers the opening question, "What left this line?"
+  // the ending: the lines of the city run both ways
   '08': {
-    zh: '是我们。',
-    en: 'We did.',
+    zh: '我们走过城市，\n城市也走过我们。',
+    en: 'We pass through the city.\nThe city passes through us.',
   },
   '03': {
     zh: '城市，在干燥的土地上划下界线。',
     en: 'The city scores its borders into dry ground.',
   },
   '13': {
-    zh: '人不能两次踏进同一条河流。',
-    en: 'You cannot step twice into the same river.',
-    by: { zh: '赫拉克利特', en: 'Heraclitus' },
+    zh: '建筑真正的光、色彩与珍贵，\n要到时间金色的污痕里去找。',
+    en: 'It is in that golden stain of time that we are to look for\nthe real light, and colour, and preciousness of architecture.',
+    by: { zh: '约翰·罗斯金《建筑的七盏明灯》', en: 'John Ruskin, The Seven Lamps of Architecture' },
   },
 }

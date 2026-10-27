@@ -401,23 +401,28 @@ export function cover(section, { hero = false } = {}) {
   svg.innerHTML = '<path/>'
   const line = svg.firstChild
   const intro = { t: reduced || !hero ? 1 : 0 }
+  // a chapter opening is a pause: its heading holds for a long breath before the work's label
+  const chapter = !hero && !!center.querySelector('.cover__numeral')
+  const T = chapter
+    ? { len: 2.8, inn: [0.03, 0.16], out: [0.46, 0.58], veil: [0.46, 0.66], after: [0.64, 0.78] }
+    : { len: 2, inn: [0.04, 0.2], out: [0.38, 0.52], veil: [0.1, 0.55], after: [0.56, 0.72] }
   let b
 
   const scene = pinScene(section, {
-    length: 1.6,
+    length: hero ? 1.6 : T.len,
     layout() {
       b = stageBox(stage)
       viewBox(svg, b)
     },
     render(p) {
       // the plate surfaces, then the title gives way to the work's label
-      const o = hero ? ease.out(intro.t) : ease.out(seg(p, 0, 0.3))
+      const o = hero ? ease.out(intro.t) : ease.out(seg(p, 0, chapter ? 0.18 : 0.3))
       fig.style.opacity = o
       im.style.transform = `scale(${1.08 - 0.08 * o})`
-      veil.style.opacity = 1 - 0.55 * ease.inOut(seg(p, 0.1, 0.5))
-      const out = ease.inOut(seg(p, 0.3, 0.5))
+      veil.style.opacity = 1 - 0.55 * ease.inOut(hero ? seg(p, 0.1, 0.5) : seg(p, ...T.veil))
+      const out = hero ? ease.inOut(seg(p, 0.3, 0.5)) : ease.inOut(seg(p, ...T.out))
       if (!hero) {
-        const inn = ease.out(seg(p, 0.04, 0.26))
+        const inn = ease.out(seg(p, ...T.inn))
         center.style.opacity = Math.min(inn, 1 - out)
         center.style.transform = `translate3d(0,${(1 - inn) * 24 - out * 40}px,0)`
       } else {
@@ -425,7 +430,7 @@ export function cover(section, { hero = false } = {}) {
         center.style.transform = `translate3d(0,${-out * 40}px,0)`
       }
       center.style.pointerEvents = out > 0.5 ? 'none' : ''
-      fade(after, seg(p, 0.54, 0.7))
+      fade(after, hero ? seg(p, 0.54, 0.7) : seg(p, ...T.after))
       if (cue) cue.style.opacity = 1 - seg(p, 0, 0.12)
       const y = lerp(b.top, b.H + 2, ease.inOut(seg(p, 0.56, 1)))
       line.setAttribute('d', y - b.top > 0.5 ? `M${b.cx} ${b.top}V${y}` : '')
@@ -608,7 +613,7 @@ export function whole(section, [aspect]) {
   let b
 
   return pinScene(section, {
-    length: head ? 1.5 : 1,
+    length: head ? 2.8 : 1,
     layout() {
       b = fitFull(stage, aspect)
       place(fig, b)
@@ -616,12 +621,12 @@ export function whole(section, [aspect]) {
     },
     render(p) {
       // a chapter heading stands alone on the wall first, then the work surfaces
-      const o = head ? ease.out(seg(p, 0.4, 0.62)) : ease.out(seg(p, 0, 0.45))
+      const o = head ? ease.out(seg(p, 0.52, 0.7)) : ease.out(seg(p, 0, 0.45))
       fig.style.opacity = o
       fig.style.transform = `scale(${1.03 - 0.03 * o})`
       if (head) {
-        fade(head, Math.min(seg(p, 0, 0.1), 1 - seg(p, 0.28, 0.38)))
-        fade(label, seg(p, 0.66, 0.84))
+        fade(head, Math.min(seg(p, 0.02, 0.14), 1 - seg(p, 0.42, 0.52)))
+        fade(label, seg(p, 0.74, 0.88))
       } else {
         fade(label, seg(p, 0.45, 0.68))
       }
