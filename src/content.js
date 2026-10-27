@@ -67,12 +67,12 @@ export const zones = {
     numeral: { zh: '三', en: '3' },
     name: { zh: '析出的线', en: 'Deposited' },
     theme: {
-      zh: '竣工结束了建造，\n风化接着建造。',
-      en: 'Finishing ends construction,\nweathering constructs the finish.',
+      zh: '房子不该建在山上，\n它应当属于这座山。',
+      en: 'No house should ever be on a hill or on anything.\nIt should be of the hill.',
     },
     themeBy: {
-      zh: '莫斯塔法维、莱瑟巴罗《论风化》',
-      en: 'Mohsen Mostafavi & David Leatherbarrow, On Weathering',
+      zh: '弗兰克·劳埃德·赖特《一部自传》',
+      en: 'Frank Lloyd Wright, An Autobiography',
     },
     body: {
       zh: '水走了，盐留在它最后停留的地方。\n软的水，刻进硬的地。没有一条线出自人手。',
