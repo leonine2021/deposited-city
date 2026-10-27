@@ -153,7 +153,7 @@ function placeBeside(el, b, side = 'left') {
  * to the bottom edge on a wide screen (label on the wall beside it), the
  * full width on a narrow one (label beneath).
  */
-function fitFull(stage, aspect) {
+function fitFull(stage, aspect, label) {
   const s = stageBox(stage)
   const room = s.H - s.top
   if (s.W > s.H * 1.05) {
@@ -170,7 +170,13 @@ function fitFull(stage, aspect) {
   }
   let w = s.W
   let h = w / aspect
-  const maxH = room - 120
+  // beneath the work: leave room for the whole label, however many lines its note runs to
+  let below = 120
+  if (label) {
+    placeBelow(label, { b: 0 })
+    below = Math.max(120, label.offsetHeight + 22 + 28)
+  }
+  const maxH = room - below
   if (h > maxH) {
     h = maxH
     w = h * aspect
@@ -628,7 +634,7 @@ export function whole(section, [aspect]) {
   return pinScene(section, {
     length: head ? 2.8 : 1,
     layout() {
-      b = fitFull(stage, aspect)
+      b = fitFull(stage, aspect, label)
       place(fig, b)
       placeLabel(label, b)
     },

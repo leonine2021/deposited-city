@@ -959,4 +959,5 @@ button {
   color: var(--muted);
 }
 
-.detail__caption { white-space: pre-line; }
+.detail__caption,
+.label__note { white-space: pre-line; }
