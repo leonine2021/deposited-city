@@ -53,7 +53,7 @@ function figure(w, extra = '') {
 
 function label(w) {
   return `<div class="label">
-    <span class="label__no">${w.id}</span>
+    <span class="label__no">${no(w.id)}</span>
     <span class="label__title">${t(quoted(w.title))}</span>
     <span class="label__medium">${t(w.medium)}</span>
     ${w.note ? `<span class="label__note">${t(w.note)}</span>` : ''}
@@ -108,6 +108,10 @@ const beatId = (beat) => `${REGION.has(beat.kind) ? 'detail' : 'beat'}-${beat.id
 const detailOnly = new Set(['00', ...choreography.filter((b) => REGION.has(b.kind)).flatMap((b) => b.ids)])
 
 const workById = Object.fromEntries(works.map((w) => [w.id, w]))
+
+/* the number a viewer sees: the order on the screen (00 is the opening plate), not the catalogue id */
+const showOrder = ['00', ...choreography.flatMap((b) => b.ids)]
+const no = (id) => String(showOrder.indexOf(id)).padStart(2, '0')
 const SALT_KINDS = new Set(['crystallize', 'saltline', 'evaporate', 'drift'])
 
 /** The region of a work, edge to edge; its text sits in a band beneath. */
@@ -129,7 +133,7 @@ function detailScene(beat) {
       <div class="veil" aria-hidden="true"></div>
       <div class="detail__meta">
         <div class="detail__text">
-          <span class="label__no">${t(site.detail)} · ${id}</span>
+          <span class="label__no">${t(site.detail)} · ${no(id)}</span>
           <span class="label__title">${t(quoted(w.title))}</span>
           <span class="label__medium">${t(w.medium)}</span>
           ${details[id] ? t(details[id], 'p', 'detail__caption') : ''}
@@ -161,7 +165,7 @@ function coverScene(beat) {
         ${center}
       </div>
       <div class="cover__after label">
-        <span class="label__no">${t(site.detail)} · ${id}</span>
+        <span class="label__no">${t(site.detail)} · ${no(id)}</span>
         <span class="label__title">${t(quoted(w.title))}</span>
         <span class="label__medium">${t(w.medium)}</span>
         ${details[id] ? t(details[id], 'p', 'detail__caption') : ''}
@@ -298,10 +302,11 @@ document.querySelector('#app').innerHTML = `
 
   <footer class="index">
     <h2>${t(site.index)}</h2>
-    <ol>${works
+    <ol>${showOrder
+      .map((id) => workById[id])
       .map(
         (w) => `<li><button type="button" data-goto="${w.id}">
-          <b>${w.id}</b><span class="meta">${t(quoted(w.title))}${detailOnly.has(w.id) ? `<i>${t(site.detail)}</i>` : ''}</span>
+          <b>${no(w.id)}</b><span class="meta">${t(quoted(w.title))}${detailOnly.has(w.id) ? `<i>${t(site.detail)}</i>` : ''}</span>
         </button></li>`,
       )
       .join('')}</ol>
