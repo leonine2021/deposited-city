@@ -920,20 +920,25 @@ button {
 
 .cover__theme { white-space: pre-line; }
 
-/* Chinese: the smallest grey text, one step larger */
+/* Chinese: grey text sized for reading on screen */
 :root[data-lang='zh'] .label__no,
 :root[data-lang='zh'] .hero__cue,
 :root[data-lang='zh'] .credit,
 :root[data-lang='zh'] .meta i {
-  font-size: 14px;
+  font-size: 15px;
 }
 :root[data-lang='zh'] .epigraph cite,
 :root[data-lang='zh'] .cover__by,
 :root[data-lang='zh'] .bar__zone,
-:root[data-lang='zh'] .label__medium,
-:root[data-lang='zh'] .label__note {
-  font-size: 15px;
-}
-:root[data-lang='zh'] .detail__caption {
+:root[data-lang='zh'] .label__medium {
   font-size: 16px;
+}
+:root[data-lang='zh'] .label__note,
+:root[data-lang='zh'] .detail__caption {
+  font-size: 17px;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+:root[data-lang='zh'] .label__title {
+  font-size: 18px;
 }
