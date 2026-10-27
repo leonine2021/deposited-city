@@ -25,6 +25,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      # the folder root (/exhibition/) points to the current show
+      - run: cp pages-root/index.html dist/index.html
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
