@@ -140,20 +140,20 @@ export const details = {
     en: 'Something lies under the black.',
   },
   '03': {
-    zh: '坚硬的笔，干裂的地。每一道分割，都是一次摩擦。',
-    en: 'A hard stroke on cracked ground. Every division is a friction.',
+    zh: '土地原本没有边界。\n城市落下一笔，干裂便顺着笔画蔓延开来。',
+    en: 'The land had no borders.\nThe city set down a stroke, and the cracks spread along it.',
   },
   '10': {
     zh: '盐粒、油和水彼此推开，留下这些白点。',
     en: 'Salt, oil and water push each other apart, and leave these white spots.',
   },
   '08': {
-    zh: '网压进了身体。线，一直在我们里面。',
-    en: 'The mesh is pressed into the body. The lines were in us all along.',
+    zh: '络，是网，也是身体里的经络。\n街道、管线、边界，一层层压进纸里，最后长成了血管和指纹的样子。\n我们以为线在城市里，其实它早已在我们身上。',
+    en: 'Luo is a net, and the meridians of the body.\nStreets, pipes and borders, pressed into paper layer on layer, end up looking like veins and fingerprints.\nWe thought the lines were out in the city. They were in us all along.',
   },
   '13': {
-    zh: '水慢慢洇开，没有一条边界守得住。',
-    en: 'Water seeps outward, slowly. No border holds.',
+    zh: '雨一遍遍洗过大地，铁锈从土里渗出来。\n蓝与褐慢慢洇在一起，是时间留在地表的颜色。',
+    en: 'Rain washes the ground again and again; rust seeps up out of the earth.\nBlue and brown bleed slowly into each other: the colour time leaves on the land.',
   },
 }
 
