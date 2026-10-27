@@ -170,13 +170,13 @@ function coverScene(beat) {
   </section>`
 }
 
-/** The zone's number, name and quotation, set on the wall beside a whole work before its label. */
+/** The zone's number, name and quotation, alone on the wall before the whole work surfaces (same place and size as a cover's). */
 function chapterHead(w) {
   const z = zones[w.zone]
   return `<div class="whole__chapter">
     <span class="cover__numeral">${t(z.numeral)}</span>
-    <h2 class="whole__name">${t(z.name)}</h2>
-    <p class="whole__theme">${t(z.theme)}</p>
+    <h2 class="cover__name">${t(z.name)}</h2>
+    <p class="cover__theme">${t(z.theme)}</p>
     ${z.themeBy ? `<span class="cover__by">${t(z.themeBy)}</span>` : ''}
   </div>`
 }

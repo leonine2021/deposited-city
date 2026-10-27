@@ -613,15 +613,15 @@ export function whole(section, [aspect]) {
       b = fitFull(stage, aspect)
       place(fig, b)
       placeLabel(label, b)
-      if (head) placeLabel(head, b)
     },
     render(p) {
-      const o = ease.out(seg(p, 0, head ? 0.3 : 0.45))
+      // a chapter heading stands alone on the wall first, then the work surfaces
+      const o = head ? ease.out(seg(p, 0.4, 0.62)) : ease.out(seg(p, 0, 0.45))
       fig.style.opacity = o
       fig.style.transform = `scale(${1.03 - 0.03 * o})`
       if (head) {
-        fade(head, Math.min(seg(p, 0.08, 0.26), 1 - seg(p, 0.5, 0.64)))
-        fade(label, seg(p, 0.64, 0.82))
+        fade(head, Math.min(seg(p, 0, 0.1), 1 - seg(p, 0.28, 0.38)))
+        fade(label, seg(p, 0.66, 0.84))
       } else {
         fade(label, seg(p, 0.45, 0.68))
       }
