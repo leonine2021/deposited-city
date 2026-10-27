@@ -29,8 +29,8 @@ export const site = {
     kicker: { zh: '线下展览', en: 'In person' },
     title: { zh: '这些线，\n即将在真实的空间里与你相遇。', en: 'These lines will soon\nmeet you in a real room.' },
     body: {
-      zh: '展览时间与地点将在本页另行公布。\n敬请期待。',
-      en: 'Dates and venue will be announced on this page.\nWe look forward to seeing you there.',
+      zh: '我会在这里公布展览的时间与地点。\n期待与你相见。',
+      en: 'I will announce the dates and venue here.\nI look forward to seeing you there.',
     },
   },
   exit: {
