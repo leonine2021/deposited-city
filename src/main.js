@@ -304,7 +304,14 @@ document.querySelector('#app').innerHTML = `
   ${walk()}
   ${zone(
     'coda',
-    `<section class="exit" id="exit">
+    `<section class="soon" id="soon">
+      <div class="soon__inner reveal">
+        <span class="soon__kicker">${t(site.soon.kicker)}</span>
+        <h2 class="soon__title">${t(site.soon.title)}</h2>
+        <p class="soon__body">${t(site.soon.body)}</p>
+      </div>
+    </section>
+    <section class="exit" id="exit">
       <button class="exit__back" type="button">${t(site.exit.back)}</button>
     </section>`,
   )}

@@ -987,3 +987,45 @@ button {
 :root[data-lang='en'] .label__title {
   letter-spacing: 0.04em;
 }
+
+/* ---------- coming soon: the physical show ---------- */
+.soon {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 18vh var(--gutter) 8vh;
+}
+.soon__inner {
+  width: 100%;
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+.soon__kicker {
+  display: block;
+  margin-bottom: 22px;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+.soon__title {
+  margin: 0;
+  white-space: pre-line;
+  font: var(--display-weight) clamp(24px, 5vw, 40px)/1.5 var(--display);
+  text-wrap: balance;
+}
+.soon__body {
+  margin: 28px 0 0;
+  white-space: pre-line;
+  font-size: 18px;
+  line-height: 1.95;
+  color: var(--muted);
+}
+:root[data-lang='en'] .soon__title {
+  font-size: clamp(28px, 5.6vw, 48px);
+  line-height: 1.3;
+  letter-spacing: 0.035em;
+}
+:root[data-lang='en'] .soon__body {
+  font-size: 19px;
+  line-height: 1.6;
+}

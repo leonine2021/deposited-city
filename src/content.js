@@ -24,6 +24,15 @@ export const site = {
     zh: '一条线，是什么留下的？',
     en: 'What left this line?',
   },
+  // after the last work: the show is coming to a physical space
+  soon: {
+    kicker: { zh: '线下展览', en: 'In person' },
+    title: { zh: '这些线，\n即将在真实的空间里与你相遇。', en: 'These lines will soon\nmeet you in a real room.' },
+    body: {
+      zh: '展览时间与地点将在本页另行公布。\n敬请期待。',
+      en: 'Dates and venue will be announced on this page.\nWe look forward to seeing you there.',
+    },
+  },
   exit: {
     back: { zh: '回到开头', en: 'Back to the beginning' },
   },
