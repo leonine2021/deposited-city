@@ -148,8 +148,8 @@ export const details = {
     en: 'A thread pressed into paper leaves a groove: not drawn, but passed through.',
   },
   '10': {
-    zh: '白点，是水的脚印。',
-    en: "The white spots are the water's footprints.",
+    zh: '盐粒、油和水彼此推开，留下这些白点。',
+    en: 'Salt, oil and water push each other apart, and leave these white spots.',
   },
   '08': {
     zh: '网压进了身体。线，一直在我们里面。',
