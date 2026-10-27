@@ -16,8 +16,8 @@ export const site = {
     en: 'Every line is a passing.',
   },
   preface: {
-    zh: '潮水退去，沙上一道白线。\n杯子挪开，桌上一圈水渍。\n人走多了，草地上一条路。\n\n城市里的线，也是这样来的。\n只是我们，把它们都当成了图纸。',
-    en: 'The tide goes out: a white line on the sand.\nA glass is lifted: a ring on the table.\nEnough feet cross a lawn: a path.\n\nThe lines of a city come the same way.\nWe just take them all for drawings.',
+    zh: '潮水退去，沙上一道盐白。\n雨水流过，墙上一道锈痕。\n人走多了，荒地上踏出一条路。\n\n城市的每一条线，\n都是先被经过，才被画下。',
+    en: 'The tide withdraws: a line of salt on the sand.\nRain runs down: a seam of rust on the wall.\nFeet keep crossing: a path through the field.\n\nEvery line in a city\nwas passed through before it was drawn.',
   },
   scroll: { zh: '向下滑动', en: 'Scroll' },
   prologue: {
