@@ -662,17 +662,18 @@ button {
 }
 
 .statement p {
-  max-width: 13em;
+  max-width: 18em;
   margin: 0 auto;
   padding: 0 var(--gutter);
-  font: var(--display-weight) clamp(30px, 8.4vw, 64px)/1.45 var(--display);
+  /* same size as the prologue line, 一条线，是什么留下的？ */
+  font: var(--display-weight) clamp(24px, 5vw, 40px)/1.5 var(--display);
   text-align: center;
 }
 
 :root[data-lang='en'] .statement p {
-  max-width: 14em;
-  font-size: clamp(36px, 9.4vw, 72px);
-  line-height: 1.08;
+  max-width: 16em;
+  font-size: clamp(28px, 5.6vw, 48px);
+  line-height: 1.15;
 }
 
 .statement .piece {
